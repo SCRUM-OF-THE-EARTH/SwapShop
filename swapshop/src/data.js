@@ -1,0 +1,1 @@
+export let apiDir = "https://sudocode.co.za/SwapShop/backend/";
