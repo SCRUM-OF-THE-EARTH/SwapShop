@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import SignInScreen from './classes/SignInScreen';
 
 export default function App() {
-  return <SignInScreen></SignInScreen>
+  return <SignInScreen></SignInScreen> 
 }
 
 const styles = StyleSheet.create({
