@@ -8,11 +8,13 @@
     $password = $_REQUEST['pass'];
     $email = $_REQUEST['email'];
 
-    $query = "INSERT INTO user_login_details (fname, lname, username, password, email) VALUES ('$fname','$lname','$username','$password','$email')";
+    $query = "INSERT INTO user_login_details (fname, lname, username, password, email) VALUES ('$fname','$lname','$username','$password','$email');";
 
-    if ($result = $conn->query()) {
-        echo "success";
-    } else {
-        echo "failure";
+
+    $results = array("success"=>0);
+    if ($result = $conn->query($query)) {
+        $results["success"] = 1;
     }
+
+    echo json_encode($results);
 ?>

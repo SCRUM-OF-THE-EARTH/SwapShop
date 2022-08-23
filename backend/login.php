@@ -20,7 +20,7 @@
 
 
     function checkLogin($username, $password, $conn) {
-        $sql = "SELECT COUNT(*) AS valid FROM user_login_details WHERE username='$username' AND password='$password'";
+        $sql = "SELECT *, COUNT(*) AS valid FROM user_login_details WHERE username='$username' AND password='$password'";
         
         if ($res = $conn->query($sql)) {
             $row = $res->fetch_assoc();
