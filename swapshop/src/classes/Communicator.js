@@ -1,17 +1,11 @@
+import APIcommands from "../helpers/APIcommands.js";
+
 export class Communicator {
     constructor() {
         this.url = "https://sudocode.co.za/SwapShop/backend/";
         this.APIfile = "";
         this.params = [];
-        this.calls = [
-            {
-                command: "register_account",
-                file: "registerAccount.php",
-                param_names: [
-                    "fname", "lname", "user", "pass", "email"
-                ]
-            },
-        ];
+        this.calls = APIcommands;
 
     }
 
@@ -57,12 +51,20 @@ export class Communicator {
         })
 
         console.log(APIurl);
+        let results;
 
         fetch(APIurl)
         .then(data => data.json())
         .then(data => {
-            this.results = data;
-            return data;
-        })
+            if (call.return_type == "boolean"){
+                if (data.success == 1) {
+                    results = true;
+                } else {
+                    results = false;
+                }
+            }
+        });
+
+        return results;
     }
 }
