@@ -5,6 +5,15 @@ export default APIcommands = [
         param_names: [
             "fname", "lname", "user", "pass", "email"
         ],
-        return_type: "boolean",
+        // return_type: "boolean",
+    },
+
+    {
+        command: "login_account",
+        file: "login.php",
+        param_names: [
+            "user", "pass"
+        ],
+        // return_type: 
     },
 ];

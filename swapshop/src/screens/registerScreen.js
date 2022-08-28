@@ -22,7 +22,12 @@ import { Registering_User } from '../classes/User_Account.js'
  }
 
  function register(fullName, username, password, email) {
-    Alert.alert(`registering a new account with:\nName: ${fullName}\nUsername: ${username}\nPassword: ${password}\n Email: ${email}`);
-    let new_user = new Registering_User(fullName, username, password, email);
-    new_user.logUser();
+
+    let new_user = new Registering_User(fullName, username, email);
+    let success = new_user.register_Account(password);
+    // if (success) {
+    //     console.log("new accoutn ha been successfully registered");
+    // } else {
+    //     console.log("new accoutn was not successfully registered");
+    // }
  }

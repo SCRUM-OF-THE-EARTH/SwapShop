@@ -17,6 +17,11 @@ export class User_Account {
         console.groupEnd();
     }
 
+    setID(id) {
+        this.id = id;
+        return this;
+    }
+
     setFisrtName(fname){
         this.fname = fname;
         return this;
@@ -70,21 +75,51 @@ export class User_Account {
     }
 }
 
+export class Login_user extends User_Account {
+    constructor(username) {
+        super();
+        this.communicator = new Communicator();
+        this.setUsername(username);
+    }
+
+    async Login(password) {
+        let response = await this.communicator.makeRequestByCommand("login_account", [this.username, password]);
+        
+        if (response["success"] == 1) {
+            this.setID(response["id"])
+            .setUsername(response["username"])
+            .setFisrtName(response["fname"])
+            .setLastName(response["lname"])
+            .setEmail(response["email"]);
+
+            return true;
+        }
+
+        return false;
+    }
+        
+}
+
 export class Registering_User extends User_Account {
-    constructor(fullName, username, password, email) {
+    constructor(fullName, username, email) {
         super();
         this.setFullName(fullName)
         .setUsername(username)
         .setEmail(email);
         this.communicator = new Communicator();
-        this.register_Account(password);
 
-        
     }
 
-    register_Account(password) {
-        let results = this.communicator.makeRequestByCommand("register_account", [this.getFirstName(), this.getLastName(), this.getUsername(), password, this.getEmail()]);
-        console.log(results);
+    async register_Account(password) {
+        let response = await this.communicator.makeRequestByCommand("register_account", [this.getFirstName(), this.getLastName(), this.getUsername(), password, this.getEmail()]);
+    
+        if (response["success"] == 1) {
+            this.setID(response["id"]);
+            return true;
+        }
+
+        return false;   
+        
     }
 
 }

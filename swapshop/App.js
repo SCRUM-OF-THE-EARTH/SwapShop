@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import Navigator from './src/screens/stackNavigator.js';
 
-import { LoginScreen } from './src/screens/loginScreen.js';
+import LoginScreen from './src/screens/loginScreen.js';
 import RegisterScreen from './src/screens/registerScreen.js';
 
 export default function App() {

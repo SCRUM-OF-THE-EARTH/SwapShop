@@ -24,7 +24,6 @@ export class Communicator {
 
         this.calls.forEach(item => {
             if (item.command == command){
-                console.log("finding item in json_array", item);
                 results = item;
                 return;
             }
@@ -33,38 +32,28 @@ export class Communicator {
         return results;
     }
 
-    makeRequestByCommand(commandName, param_values) {
-        let call = this.getCallByCommand(commandName);
+    constructURL(commandName, param_values) {
 
-        console.log(call);
+        let call = this.getCallByCommand(commandName);
 
         let APIurl = this.url + call.file+"?";
 
-        console.group("constructing API url")
         call.param_names.forEach((param, i) => {
-            console.log(param, param_values)
             APIurl += param+"="+param_values[i];
-            console.log()
             if (i != call.param_names.length-1){
                 APIurl += "&&";
             }
         })
 
-        console.log(APIurl);
-        let results;
+        return APIurl;
+    }
 
-        fetch(APIurl)
-        .then(data => data.json())
-        .then(data => {
-            if (call.return_type == "boolean"){
-                if (data.success == 1) {
-                    results = true;
-                } else {
-                    results = false;
-                }
-            }
-        });
+    async makeRequestByCommand(commandName, param_values) {
+        let APIurl = this.constructURL(commandName, param_values);        
 
-        return results;
+        let response = await fetch(APIurl);
+        let json = await response.json();
+        return json;
+
     }
 }

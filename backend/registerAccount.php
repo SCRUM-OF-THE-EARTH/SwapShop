@@ -11,9 +11,17 @@
     $query = "INSERT INTO user_login_details (fname, lname, username, password, email) VALUES ('$fname','$lname','$username','$password','$email');";
 
 
-    $results = array("success"=>0);
+    $results = array("success"=>0,"id"=>0);
     if ($result = $conn->query($query)) {
-        $results["success"] = 1;
+        $query = "SELECT LAST_INSERT_ID() as id";
+
+        if ($result = $conn->query($query)){
+
+            $results["success"] = 1;
+            $row = $result->fetch_assoc();
+            $results["id"] = $row["id"];
+            
+        }
     }
 
     echo json_encode($results);
