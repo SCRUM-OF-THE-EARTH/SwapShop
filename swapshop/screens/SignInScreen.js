@@ -1,8 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Alert} from 'react-native';
 import React, {useState} from 'react';
+import SignUpScreen from './SignUpScreen';
+// import {StackNavigator, DrawerNavigator, TabNavigator} from 'react-navigation';
 
-export default function SignInScreen() {
+// export default function SignInScreen() {
+const SignInScreen = ({navigation}) => {
+
   //
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,11 +20,13 @@ export default function SignInScreen() {
           style={styles.image}
       />
 
+      {/*<Button title="Go to signUp page" onPress={() => navigation.navigate('SignUpScreen')}/>*/}
+
 
       <View style = {styles.inputView}>
         <TextInput style = {styles.TextInput}
                    placeholder="Email"
-                   placeholderTextColor="#003f5c"
+                   placeholderTextColor="white"
                    onChangeText={(email) => setEmail(email)}/>
 
       </View>
@@ -28,29 +34,41 @@ export default function SignInScreen() {
       <View style = {styles.inputView}>
         <TextInput style = {styles.TextInput}
                    placeholder="Password"
-                   placeholderTextColor="#003f5c"
+                   placeholderTextColor="white"
                    onChangeText={(password) => setEmail(password)}/>
 
       </View>
 
-      <TouchableOpacity>
-        <Text style = {styles.forgot_button}> Forgot Password?</Text>
-      </TouchableOpacity>
+
+      <View style={styles.forgot_button} >
+        <Button
+            buttonTextStyle = {{color: "black"}}
+            title="forgot password?"
+            color="black"
 
 
+            onPress={() => navigation.navigate('forgotPasswordScreen')}
+        />
+      </View>
 
-      <TouchableOpacity style = {styles.loginBtn}>
-        <Text style = {styles.login_text}>LOGIN</Text>
-      </TouchableOpacity>
+      <View style={styles.loginBtn} >
+        <Button
+                title="SIGN IN"
+                color="#59788E"
 
+                onPress={() => navigation.navigate('MainScreen')}
+        />
+      </View>
 
-
-
-
-      <TouchableOpacity style = {styles.signupBtn}>
-        <Text style = {styles.login_text}>SIGN-UP</Text>
-      </TouchableOpacity>
+      <View style = {styles.signupBtn}>
+        <Button
+            title="SIGN UP"
+            color = "#8e8259"
+            onPress={() => navigation.navigate('SignUpScreen')}
+        />
+      </View>
       <Text>Don't have an account?</Text>
+      
 
 
 
@@ -58,6 +76,7 @@ export default function SignInScreen() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -85,6 +104,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderColor:"red",
 
+
   },
 
   TextInput:{
@@ -93,13 +113,17 @@ const styles = StyleSheet.create({
     flex:1,
     padding: 10,
     marginLeft:-100,
+    color:"white",
 
 
   },
 
   forgot_button:{
     height: 30,
-    marginBottom:30,
+    marginBottom:50,
+    marginTop:-15,
+    backgroundColor:"green",
+
   },
 
   loginBtn:{
@@ -136,3 +160,5 @@ const styles = StyleSheet.create({
 
 
 });
+
+export default SignInScreen;
