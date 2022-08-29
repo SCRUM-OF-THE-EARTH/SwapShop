@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
@@ -48,6 +49,19 @@ const App = () =>{
         </NavigationContainer>
     );
 };
+=======
+import { StyleSheet, View } from 'react-native';
+import RegisterScreen from './src/screens/registerScreen.js';
+import LoginScreen from './src/screens/loginScreen.js';
+
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <LoginScreen/>
+    </View>
+  );
+}
+>>>>>>> main
 
 const styles = StyleSheet.create({
   container: {

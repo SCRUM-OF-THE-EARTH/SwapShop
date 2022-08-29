@@ -1,3 +1,4 @@
+<<<<<<< HEAD:swapshop/screens/SignUpScreen.js
 import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
 import React, {useState} from 'react';
@@ -8,6 +9,19 @@ const SignUpScreen = () =>{
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+=======
+import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import {useState} from 'react';
+import { Registering_User } from '../classes/User_Account.js';
+import { StatusBar } from 'expo-status-bar';
+
+export default function registerScreen() {
+    
+    const [fullName, onChangeName] = useState('');
+    const [username, onChangeUsername] = useState('');
+    const [password, onChangePassword] = useState('');
+    const [email, onChangeEmail] = useState('');
+>>>>>>> main:swapshop/src/screens/registerScreen.js
 
     return (
         <View style={styles.container}>
@@ -16,31 +30,55 @@ const SignUpScreen = () =>{
             <Text>Welcome to SwapShop</Text>
 
             <Image
-                source={require("../assets/logo_signup.png")}
+                source={require("../../assets/logo_signup.png")}
                 style={styles.image}
             />
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Name"
+<<<<<<< HEAD:swapshop/screens/SignUpScreen.js
                            placeholderTextColor="white"
                            onChangeText={(name) => setName(name)}/>
+=======
+                           placeholderTextColor="#003f5c"
+                           onChangeText={(name) => onChangeName(name)}/>
+
+            </View>
+
+            <View style = {styles.inputView}>
+                <TextInput style = {styles.TextInput}
+                           placeholder="Username"
+                           placeholderTextColor="#003f5c"
+                           onChangeText={(name) => onChangeUsername(name)}/>
+>>>>>>> main:swapshop/src/screens/registerScreen.js
 
             </View>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Email"
+<<<<<<< HEAD:swapshop/screens/SignUpScreen.js
                            placeholderTextColor="white"
                            onChangeText={(email) => setEmail(email)}/>
+=======
+                           placeholderTextColor="#003f5c"
+                           onChangeText={(email) => onChangeEmail(email)}/>
+>>>>>>> main:swapshop/src/screens/registerScreen.js
 
             </View>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Password"
+<<<<<<< HEAD:swapshop/screens/SignUpScreen.js
                            placeholderTextColor="white"
                            onChangeText={(password) => setEmail(password)}/>
+=======
+                           placeholderTextColor="#003f5c"
+                           secureTextEntry={true}
+                           onChangeText={(password) => onChangePassword(password)}/>
+>>>>>>> main:swapshop/src/screens/registerScreen.js
 
             </View>
 
@@ -50,8 +88,17 @@ const SignUpScreen = () =>{
 
 
 
+<<<<<<< HEAD:swapshop/screens/SignUpScreen.js
             {/*<TouchableOpacity style = {styles.loginBtn}>*/}
             {/*    <Text style = {styles.login_text}>SIGNUP</Text>*/}
+=======
+            <TouchableOpacity style = {styles.loginBtn}>
+                <Text style = {styles.login_text} onPress={() => register(fullName, username, password, email)}>SIGNUP</Text>
+            </TouchableOpacity>
+
+            {/*<TouchableOpacity>*/}
+            {/*    <Text style = {styles.forgot_button}> Already have an account?</Text>*/}
+>>>>>>> main:swapshop/src/screens/registerScreen.js
             {/*</TouchableOpacity>*/}
 
             {/*/!*<TouchableOpacity>*!/*/}
@@ -88,6 +135,17 @@ const SignUpScreen = () =>{
         </View>
     );
 }
+
+function register(fullName, username, password, email) {
+
+    let new_user = new Registering_User(fullName, username, email);
+    let success = new_user.register_Account(password);
+    // if (success) {
+    //     console.log("new accoutn ha been successfully registered");
+    // } else {
+    //     console.log("new accoutn was not successfully registered");
+    // }
+ }
 
 const styles = StyleSheet.create({
     container: {
