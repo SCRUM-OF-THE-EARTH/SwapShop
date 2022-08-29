@@ -1,27 +1,13 @@
-<<<<<<< HEAD:swapshop/screens/SignUpScreen.js
 import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
 import React, {useState} from 'react';
 
 const SignUpScreen = () =>{
-// export default function SignUpScreen() {
-    //
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-=======
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
-import {useState} from 'react';
-import { Registering_User } from '../classes/User_Account.js';
-import { StatusBar } from 'expo-status-bar';
-
-export default function registerScreen() {
     
     const [fullName, onChangeName] = useState('');
     const [username, onChangeUsername] = useState('');
     const [password, onChangePassword] = useState('');
     const [email, onChangeEmail] = useState('');
->>>>>>> main:swapshop/src/screens/registerScreen.js
 
     return (
         <View style={styles.container}>
@@ -37,13 +23,8 @@ export default function registerScreen() {
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Name"
-<<<<<<< HEAD:swapshop/screens/SignUpScreen.js
                            placeholderTextColor="white"
-                           onChangeText={(name) => setName(name)}/>
-=======
-                           placeholderTextColor="#003f5c"
                            onChangeText={(name) => onChangeName(name)}/>
-
             </View>
 
             <View style = {styles.inputView}>
@@ -51,64 +32,26 @@ export default function registerScreen() {
                            placeholder="Username"
                            placeholderTextColor="#003f5c"
                            onChangeText={(name) => onChangeUsername(name)}/>
->>>>>>> main:swapshop/src/screens/registerScreen.js
-
             </View>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Email"
-<<<<<<< HEAD:swapshop/screens/SignUpScreen.js
                            placeholderTextColor="white"
-                           onChangeText={(email) => setEmail(email)}/>
-=======
-                           placeholderTextColor="#003f5c"
                            onChangeText={(email) => onChangeEmail(email)}/>
->>>>>>> main:swapshop/src/screens/registerScreen.js
-
             </View>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Password"
-<<<<<<< HEAD:swapshop/screens/SignUpScreen.js
                            placeholderTextColor="white"
-                           onChangeText={(password) => setEmail(password)}/>
-=======
-                           placeholderTextColor="#003f5c"
                            secureTextEntry={true}
                            onChangeText={(password) => onChangePassword(password)}/>
->>>>>>> main:swapshop/src/screens/registerScreen.js
-
             </View>
 
-            {/*<TouchableOpacity>*/}
-            {/*    <Text style = {styles.forgot_button}> Forgot Password?</Text>*/}
-            {/*</TouchableOpacity>*/}
-
-
-
-<<<<<<< HEAD:swapshop/screens/SignUpScreen.js
-            {/*<TouchableOpacity style = {styles.loginBtn}>*/}
-            {/*    <Text style = {styles.login_text}>SIGNUP</Text>*/}
-=======
             <TouchableOpacity style = {styles.loginBtn}>
                 <Text style = {styles.login_text} onPress={() => register(fullName, username, password, email)}>SIGNUP</Text>
             </TouchableOpacity>
-
-            {/*<TouchableOpacity>*/}
-            {/*    <Text style = {styles.forgot_button}> Already have an account?</Text>*/}
->>>>>>> main:swapshop/src/screens/registerScreen.js
-            {/*</TouchableOpacity>*/}
-
-            {/*/!*<TouchableOpacity>*!/*/}
-            {/*/!*    <Text style = {styles.forgot_button}> Already have an account?</Text>*!/*/}
-            {/*/!*</TouchableOpacity>*!/*/}
-
-            {/*<TouchableOpacity style = {styles.signupBtn}>*/}
-            {/*    <Text style = {styles.login_text}>SIGN-IN</Text>*/}
-            {/*</TouchableOpacity>*/}
-
 
 
             <View style = {styles.loginBtn}>

@@ -20,7 +20,7 @@ const forgotPasswordScreen = ({navigation}) =>{
            TO RETRIEVE YOUR PASSWORD RESET  INSTRUCTIONS</Text>
 
            <Image
-               source={require("../assets/img.png")}
+               source={require("../../assets/img.png")}
                style={styles.image}
            />
 
