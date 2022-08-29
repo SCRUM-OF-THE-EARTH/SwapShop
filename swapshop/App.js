@@ -1,13 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-
-import SignInScreen from './screens/SignInScreen';
-
+import { StyleSheet, View } from 'react-native';
+import RegisterScreen from './src/screens/registerScreen.js';
+import LoginScreen from './src/screens/loginScreen.js';
 
 export default function App() {
-  
-  return <SignInScreen></SignInScreen>
+  return (
+    <View style={styles.container}>
+      <LoginScreen/>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
