@@ -3,11 +3,11 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from
 import React, {useState} from 'react';
 
 const SignUpScreen = () =>{
-// export default function SignUpScreen() {
-    //
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    
+    const [fullName, onChangeName] = useState('');
+    const [username, onChangeUsername] = useState('');
+    const [password, onChangePassword] = useState('');
+    const [email, onChangeEmail] = useState('');
 
     return (
         <View style={styles.container}>
@@ -16,7 +16,7 @@ const SignUpScreen = () =>{
             <Text>Welcome to SwapShop</Text>
 
             <Image
-                source={require("../assets/logo_signup.png")}
+                source={require("../../assets/logo_signup.png")}
                 style={styles.image}
             />
 
@@ -24,44 +24,34 @@ const SignUpScreen = () =>{
                 <TextInput style = {styles.TextInput}
                            placeholder="Name"
                            placeholderTextColor="white"
-                           onChangeText={(name) => setName(name)}/>
+                           onChangeText={(name) => onChangeName(name)}/>
+            </View>
 
+            <View style = {styles.inputView}>
+                <TextInput style = {styles.TextInput}
+                           placeholder="Username"
+                           placeholderTextColor="#003f5c"
+                           onChangeText={(name) => onChangeUsername(name)}/>
             </View>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Email"
                            placeholderTextColor="white"
-                           onChangeText={(email) => setEmail(email)}/>
-
+                           onChangeText={(email) => onChangeEmail(email)}/>
             </View>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Password"
                            placeholderTextColor="white"
-                           onChangeText={(password) => setEmail(password)}/>
-
+                           secureTextEntry={true}
+                           onChangeText={(password) => onChangePassword(password)}/>
             </View>
 
-            {/*<TouchableOpacity>*/}
-            {/*    <Text style = {styles.forgot_button}> Forgot Password?</Text>*/}
-            {/*</TouchableOpacity>*/}
-
-
-
-            {/*<TouchableOpacity style = {styles.loginBtn}>*/}
-            {/*    <Text style = {styles.login_text}>SIGNUP</Text>*/}
-            {/*</TouchableOpacity>*/}
-
-            {/*/!*<TouchableOpacity>*!/*/}
-            {/*/!*    <Text style = {styles.forgot_button}> Already have an account?</Text>*!/*/}
-            {/*/!*</TouchableOpacity>*!/*/}
-
-            {/*<TouchableOpacity style = {styles.signupBtn}>*/}
-            {/*    <Text style = {styles.login_text}>SIGN-IN</Text>*/}
-            {/*</TouchableOpacity>*/}
-
+            <TouchableOpacity style = {styles.loginBtn}>
+                <Text style = {styles.login_text} onPress={() => register(fullName, username, password, email)}>SIGNUP</Text>
+            </TouchableOpacity>
 
 
             <View style = {styles.loginBtn}>
@@ -88,6 +78,17 @@ const SignUpScreen = () =>{
         </View>
     );
 }
+
+function register(fullName, username, password, email) {
+
+    let new_user = new Registering_User(fullName, username, email);
+    let success = new_user.register_Account(password);
+    // if (success) {
+    //     console.log("new accoutn ha been successfully registered");
+    // } else {
+    //     console.log("new accoutn was not successfully registered");
+    // }
+ }
 
 const styles = StyleSheet.create({
     container: {

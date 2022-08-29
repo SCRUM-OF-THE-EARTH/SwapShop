@@ -20,14 +20,14 @@
 
 
     function checkLogin($username, $password, $conn) {
-        $sql = "SELECT COUNT(*) AS valid FROM user_login_details WHERE username='$username' AND password='$password'";
+        $sql = "SELECT *, COUNT(*) AS success FROM user_login_details WHERE username='$username' AND password='$password'";
         
         if ($res = $conn->query($sql)) {
             $row = $res->fetch_assoc();
-            if ($row['valid'] == 1){
+            if ($row['success'] == 1){
                 echo json_encode($row);
             } else {
-                echo "Password is incorrect";
+                echo Json_encode($row);
             }
             return;
         }

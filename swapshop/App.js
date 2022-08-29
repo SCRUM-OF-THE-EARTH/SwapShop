@@ -1,19 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from '@react-navigation/stack';
 
-import SignInScreen from './screens/SignInScreen';
-import forgotPasswordScreen from "./screens/forgotPasswordScreen";
-import SignUpScreen from "./screens/SignUpScreen";
-import MainScreen from "./screens/MainScreen";
+import SignInScreen from './src/screens/SignInScreen';
+import forgotPasswordScreen from "./src/screens/forgotPasswordScreen";
+import SignUpScreen from "./src/screens/SignUpScreen";
+import MainScreen from "./src/screens/MainScreen";
 
 const RootStack = createStackNavigator();
-
-
-
-
 // export default function App() {
 // // const App = () =>{
 //
