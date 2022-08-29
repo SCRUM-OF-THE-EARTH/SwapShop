@@ -27,6 +27,23 @@ jobs:
           name: "creating coverage badges"
           command: "cd swapshop; npm run badges"
 
+      - run:
+          name: "configure git"
+          command: "got config user.email 'ciaranjotter@gmail.com'; git config user.name 'circle ci'"      
+          
+      - run:
+          name: "adding all the files to git"
+          command: "git add ."
+        
+      - run: 
+          name: "making a new git commit"
+          command: "git commit --allow-empty -m 'updating coverage badges for README.md [ci skip]'"
+
+      - run:
+          name: "pushing to branch"
+          command: "git push"
+
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
