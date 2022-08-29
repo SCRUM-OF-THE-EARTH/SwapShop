@@ -1,14 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView, Image, TextInput, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 
 export default function SignInScreen() {
-  //
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="auto"/>
 
       <Image
@@ -55,7 +55,7 @@ export default function SignInScreen() {
 
 
 
-    </View>
+    </SafeAreaView>
   );
 }
 

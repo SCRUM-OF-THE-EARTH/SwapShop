@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 
+import { NavigationContainer } from '@react-navigation/native';
 export default function SignUpScreen() {
     //
     const [name, setName] = useState('');
