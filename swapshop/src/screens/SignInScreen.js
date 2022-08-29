@@ -2,21 +2,21 @@ import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Alert} from 'react-native';
 import React, {useState} from 'react';
 import SignUpScreen from './SignUpScreen';
+import { Login_user } from '../classes/User_Account.js'
 // import {StackNavigator, DrawerNavigator, TabNavigator} from 'react-navigation';
 
 // export default function SignInScreen() {
 const SignInScreen = ({navigation}) => {
 
-  //
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+    const [username, onChangeUsername] = useState('');
+    const [password, onChangePassword] = useState('');
 
-  return (
-    <View style={styles.container}>
-      <StatusBar style="auto"/>
+    return(
+    
+      <View style={styles.container}>
 
       <Image
-          source={require("../assets/logo3.png")}
+          source={require("../../assets/logo3.png")}
           style={styles.image}
       />
 
@@ -25,18 +25,16 @@ const SignInScreen = ({navigation}) => {
 
       <View style = {styles.inputView}>
         <TextInput style = {styles.TextInput}
-                   placeholder="Email"
+                   placeholder="Username"
                    placeholderTextColor="white"
-                   onChangeText={(email) => setEmail(email)}/>
-
+                   onChangeText={(username) => onChangeUsername(username)}/>
       </View>
 
       <View style = {styles.inputView}>
         <TextInput style = {styles.TextInput}
                    placeholder="Password"
                    placeholderTextColor="white"
-                   onChangeText={(password) => setEmail(password)}/>
-
+                   onChangeText={(password) => onChangePassword(password)}/>
       </View>
 
 
@@ -55,8 +53,7 @@ const SignInScreen = ({navigation}) => {
         <Button
                 title="SIGN IN"
                 color="#59788E"
-
-                onPress={() => navigation.navigate('MainScreen')}
+                onPress={() => Login(username, password, navigation)}
         />
       </View>
 
@@ -74,11 +71,22 @@ const SignInScreen = ({navigation}) => {
 
 
     </View>
-  );
-}
+    );  
+ }
 
+async function Login(username, password, navigation){
+  console.log(username, password);
+  let login_user = new Login_user(username);
+  let success = await login_user.Login(password);
+  console.log(success);
 
-const styles = StyleSheet.create({
+  if (success) {
+    navigation.navigate('MainScreen');
+  }
+
+ }
+
+ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
