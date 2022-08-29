@@ -1,5 +1,5 @@
 {
-    "output": "../README.md",
+    "output": "../../README.md",
     "input": {
         "main.md":{"noYAML":true},
         "coverage.md":{"noYAML": true}
