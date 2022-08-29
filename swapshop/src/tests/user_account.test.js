@@ -4,7 +4,7 @@ require('jest-fetch-mock').enableMocks()
 fetchMock.dontMock();
 
 function generateString(length){
-    return results = Math.random().toString(36).substring(0,length);
+    return results = Math.random().toString(36).substring(2,length);
 }
 
 let fname = generateString(7);
@@ -24,26 +24,24 @@ describe("testing the register account system for user aaccount", () => {
         expect(test_Reguser.getEmail()).toBe(email);
     })
 
-    test("as a registering user when I input my detals I can register a new account", async () => {
-        test_Reguser.register_Account(password).then(data => {
+    test("as a registering user when I input my detals I can register a new account", () => {
+        return test_Reguser.register_Account(password).then(data => {
             expect(data).toBe(true);
-        })
-        
+        });
     })
 
     test("as a logining in user when I input my username and password my details will be saved", () => {
         expect(test_LogUser.getUsername()).toBe(username);   
     });
 
-    test("as a loggining in user when I input my username and password I can fetch my detila from the database and log into the app", async () => {
+    test("as a loggining in user when I input my username and password I can fetch my detila from the database and log into the app", () => {
         
-        test_LogUser.Login(password).then((data) => {
-            expectd(data).toBe(true);
+        return test_LogUser.Login(password).then((data) => {
+            expect(data).toBe(true);
             expect(test_LogUser.getFirstName()).toBe(fname);
             expect(test_LogUser.getLastName()).toBe(lname);
             expect(test_LogUser.getEmail()).toBe(email);
-        })
-     
+        });
     })
 
 })

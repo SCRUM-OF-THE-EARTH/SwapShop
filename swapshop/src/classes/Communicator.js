@@ -51,8 +51,9 @@ export class Communicator {
     async makeRequestByCommand(commandName, param_values) {
         let APIurl = this.constructURL(commandName, param_values);        
 
-        let response = await fetch(APIurl);
-        let json = await response.json();
+        let response = await fetch(APIurl).catch(e=>console.error(e))
+        let json = response.json();
+        
         return json;
 
     }
