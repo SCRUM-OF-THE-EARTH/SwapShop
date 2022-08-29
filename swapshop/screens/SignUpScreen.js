@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
 import React, {useState} from 'react';
 
-import { NavigationContainer } from '@react-navigation/native';
-export default function SignUpScreen() {
+const SignUpScreen = () =>{
+// export default function SignUpScreen() {
     //
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -23,16 +23,15 @@ export default function SignUpScreen() {
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Name"
-                           placeholderTextColor="#003f5c"
+                           placeholderTextColor="white"
                            onChangeText={(name) => setName(name)}/>
 
             </View>
 
-
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Email"
-                           placeholderTextColor="#003f5c"
+                           placeholderTextColor="white"
                            onChangeText={(email) => setEmail(email)}/>
 
             </View>
@@ -40,9 +39,7 @@ export default function SignUpScreen() {
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Password"
-                           placeholderTextColor="#003f5c"
-                           underlineColorAndroid="transparent"
-
+                           placeholderTextColor="white"
                            onChangeText={(password) => setEmail(password)}/>
 
             </View>
@@ -53,17 +50,37 @@ export default function SignUpScreen() {
 
 
 
-            <TouchableOpacity style = {styles.loginBtn}>
-                <Text style = {styles.login_text}>SIGNUP</Text>
-            </TouchableOpacity>
-
-            {/*<TouchableOpacity>*/}
-            {/*    <Text style = {styles.forgot_button}> Already have an account?</Text>*/}
+            {/*<TouchableOpacity style = {styles.loginBtn}>*/}
+            {/*    <Text style = {styles.login_text}>SIGNUP</Text>*/}
             {/*</TouchableOpacity>*/}
 
-            <TouchableOpacity style = {styles.signupBtn}>
-                <Text style = {styles.login_text}>SIGN-IN</Text>
-            </TouchableOpacity>
+            {/*/!*<TouchableOpacity>*!/*/}
+            {/*/!*    <Text style = {styles.forgot_button}> Already have an account?</Text>*!/*/}
+            {/*/!*</TouchableOpacity>*!/*/}
+
+            {/*<TouchableOpacity style = {styles.signupBtn}>*/}
+            {/*    <Text style = {styles.login_text}>SIGN-IN</Text>*/}
+            {/*</TouchableOpacity>*/}
+
+
+
+            <View style = {styles.loginBtn}>
+                <Button style = {styles.loginBtn}
+                    title="SIGN UP"
+                    color = "#59788E"
+                    onPress={() => navigation.navigate('SignUpScreen')}
+                />
+            </View>
+
+            <View style = {styles.signupBtn}>
+                <Button
+                    title="SIGN IN"
+                    color = "#312d2a"
+                    opacity = "0.9"
+
+                    onPress={() => navigation.navigate('MainScreen')}
+                />
+            </View>
             <Text>Already have an account?</Text>
 
 
@@ -75,7 +92,8 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#8E8259',
+        // backgroundColor: '#8E8259',
+        backgroundColor : "white",
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -102,16 +120,13 @@ const styles = StyleSheet.create({
     },
 
     TextInput:{
-        height:30,
-        width:400,
-        flex:1,
-        padding: 10,
-        marginLeft:-100,
-        color:"white",
-        fontFamily:"bold",
-        fontSize:20,
-        borderBottomWidth:1,
-        backgroundColor:"#59788E",
+            height:50,
+            width:400,
+            flex:1,
+            padding: 10,
+            marginLeft:-100,
+            color:"white",
+
 
 
 
@@ -156,3 +171,5 @@ const styles = StyleSheet.create({
 
 
 });
+
+export default SignUpScreen;
