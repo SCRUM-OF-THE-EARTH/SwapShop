@@ -29,7 +29,7 @@ jobs:
 
       - run:
           name: "configure git"
-          command: "got config user.email 'ciaranjotter@gmail.com'; git config user.name 'circle ci'"      
+          command: "git config user.email 'ciaranjotter@gmail.com'; git config user.name 'circle ci'"      
           
       - run:
           name: "adding all the files to git"
