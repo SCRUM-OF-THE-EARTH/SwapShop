@@ -14,10 +14,8 @@ const SignUpScreen = ({navigation}) =>{
         <View style={styles.container}>
             <StatusBar style="auto"/>
 
-            <Text>Welcome to SwapShop</Text>
-
             <Image
-                source={require("../../assets/logo_signup.png")}
+                source={require("../../assets/appLogo.png")}
                 style={styles.image}
             />
 
@@ -31,23 +29,23 @@ const SignUpScreen = ({navigation}) =>{
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Username"
-                           placeholderTextColor="white"
+                           placeholderTextColor="#3CB371"
                            onChangeText={(name) => onChangeUsername(name)}/>
             </View>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Email"
-                           placeholderTextColor="white"
+                           placeholderTextColor="#3CB371"
                            onChangeText={(email) => onChangeEmail(email)}/>
             </View>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
-                           placeholder="Password"
-                           placeholderTextColor="white"
-                           secureTextEntry={true}
-                           onChangeText={(password) => onChangePassword(password)}/>
+                        placeholder="Password"
+                        placeholderTextColor="#3CB371"
+                        secureTextEntry={true}
+                        onChangeText={(password) => onChangePassword(password)}/>
             </View>
 
             {/*removed this touchable and exported its functionality onto the button that already existed*/}
@@ -60,22 +58,20 @@ const SignUpScreen = ({navigation}) =>{
             <View style = {styles.loginBtn}>
                 <Button style = {styles.loginBtn}
                     title="SIGN UP"
-                    color = "#59788E" onPress={()=> register(fullName, username, password, email)}
+                    color = "#3CB371" onPress={()=> register(fullName, username, password, email)}
 
                 />
             </View>
+
+            <Text> Already have an account?</Text>
 
             <View style = {styles.signupBtn}>
                 <Button
-                    title="SIGN IN"
-                    color = "#312d2a"
-
+                    title="LOG IN"
+                    color = "#2E8B57"
                     onPress={() => navigation.navigate('SignInScreen')}
                 />
             </View>
-            <Text>Already have an account?</Text>
-
-
 
         </View>
     );
@@ -111,7 +107,7 @@ const styles = StyleSheet.create({
     },
 
     inputView :{
-        backgroundColor:"#59788E",
+        backgroundColor:"#F5F5F5",
         borderRadius:30,
         width:"70%",
         height: 45,
@@ -128,7 +124,7 @@ const styles = StyleSheet.create({
             flex:1,
             padding: 10,
             marginLeft:150,
-            color:"white",
+            color:"#3CB371",
 
 
 
@@ -147,7 +143,8 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         marginTop:10,
-        backgroundColor:"#59788E",
+        marginBottom:50,
+        backgroundColor:"#3CB371",
 
     },
 
@@ -157,8 +154,8 @@ const styles = StyleSheet.create({
         height:50,
         alignItems:"center",
         justifyContent:"center",
-        marginTop:20,
-        backgroundColor:"#rgba(49,45,45,0.94)",
+        marginTop:5,
+        backgroundColor:"#2E8B57",
 
     },
 

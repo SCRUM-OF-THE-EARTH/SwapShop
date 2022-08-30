@@ -27,16 +27,16 @@ const ForgotPasswordScreen = ({navigation}) =>{
            <View style = {styles.inputView}>
                <TextInput style = {styles.TextInput}
                           placeholder="Email"
-                          placeholderTextColor="white"
+                          placeholderTextColor="#2E8B57"
                           onChangeText={(email) => setEmail(email)}/>
 
            </View>
 
 
-        <View>
+        <View style={styles.forgot_button}>
             <Button
                 title="RESET PASSWORD"
-                color= "red"
+                color= "#2E8B57"
                 onPress={() => navigation.navigate('SignInScreen')}
 
             />
@@ -55,8 +55,13 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:"white",
+        backgroundColor:"#F5F5F5",
 
+    },
+    forgot_button:{
+        height: 80,
+        marginBottom:-20,
+        marginTop:20,
     },
     image:{
         height:250,
@@ -66,15 +71,13 @@ const styles = StyleSheet.create({
 
     },
     inputView :{
-        backgroundColor:"#59788E",
+        backgroundColor:"white",
         borderRadius:30,
         width:"70%",
         height: 45,
-        marginTop: 60,
+        marginTop: 75,
         marginBottom: 20,
         alignItems: "center",
-        borderColor:"red",
-
 
     },
 
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
         fontSize:20,
         // fontFamily:"bold",
         textAlign:"center",
-        color: "gray"
+        color: "#3CB371"
 
     },
 

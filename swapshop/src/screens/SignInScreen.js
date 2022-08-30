@@ -16,7 +16,7 @@ const SignInScreen = ({navigation}) => {
       <View style={styles.container}>
 
       <Image
-          source={require("../../assets/logo3.png")}
+          source={require("../../assets/appLogo.png")}
           style={styles.image}
       />
 
@@ -26,51 +26,45 @@ const SignInScreen = ({navigation}) => {
       <View style = {styles.inputView}>
         <TextInput style = {styles.TextInput}
                    placeholder="Username"
-                   placeholderTextColor="white"
+                   placeholderTextColor="#3CB371"
                    onChangeText={(username) => onChangeUsername(username)}/>
       </View>
 
       <View style = {styles.inputView}>
         <TextInput style = {styles.TextInput}
                    placeholder="Password"
-                   placeholderTextColor="white"
+                   placeholderTextColor="#3CB371"
                    onChangeText={(password) => onChangePassword(password)}/>
       </View>
 
 
       <View style = {styles.forgot_button}>
-
-        <Button
-
-            title="forgot password?"
-            color="#8e8259"
-            onPress={() => navigation.navigate('ForgotPasswordScreen')}
-        />
+        <TouchableOpacity style={styles.forgot_button} 
+        onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+          <Text style={{color: "#2E8B57"}}> Forgot Password? </Text>
+        </TouchableOpacity>
 
       </View>
 
       <View style={styles.loginBtn} >
         <Button
-                title="SIGN IN"
-                color="#59788E"
+                title="LOG IN"
+                color="#2E8B57"
                 // onPress={() => Login(username, password, navigation)}
                 onPress = {() => navigation.navigate('MainScreen')}
         />
       </View>
 
+      <Text>Don't have an account?</Text>
+
       <View style = {styles.signupBtn}>
         <Button
             title="SIGN UP"
-            color = "#8e8259"
+            color = "#3CB371"
             onPress = {() => navigation.navigate('SignUpScreen')}
         />
       </View>
-      <Text>Don't have an account?</Text>
       
-
-
-
-
     </View>
     );  
  }
@@ -106,7 +100,7 @@ async function Login(username, password, navigation){
   },
 
   inputView :{
-    backgroundColor:"#59788E",
+    backgroundColor:"#F5F5F5",
     borderRadius:50,
     width:"70%",
     height: 45,
@@ -131,12 +125,7 @@ async function Login(username, password, navigation){
   forgot_button:{
     height: 80,
     marginBottom:-20,
-      marginTop:-20,
-
-
-
-
-
+    marginTop:0,
   },
 
   loginBtn:{
@@ -145,8 +134,9 @@ async function Login(username, password, navigation){
     height:50,
     alignItems:"center",
     justifyContent:"center",
-    marginTop:10,
-    backgroundColor:"#59788E",
+    marginTop:0,
+    marginBottom:50,
+    backgroundColor:"#2E8B57",
 
   },
 
@@ -156,8 +146,8 @@ async function Login(username, password, navigation){
     height:50,
     alignItems:"center",
     justifyContent:"center",
-    marginTop:20,
-    backgroundColor:"#8e8259",
+    marginTop:10,
+    backgroundColor:"#3CB371",
 
   },
 
