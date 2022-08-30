@@ -2,7 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
 import React, {useState} from 'react';
 
-const SignUpScreen = () =>{
+// const SignUpScreen = ({navigation}) => {
+const SignUpScreen = ({navigation}) =>{
     
     const [fullName, onChangeName] = useState('');
     const [username, onChangeUsername] = useState('');
@@ -20,17 +21,17 @@ const SignUpScreen = () =>{
                 style={styles.image}
             />
 
-            <View style = {styles.inputView}>
-                <TextInput style = {styles.TextInput}
-                           placeholder="Name"
-                           placeholderTextColor="white"
-                           onChangeText={(name) => onChangeName(name)}/>
-            </View>
+            {/*<View style = {styles.inputView}>*/}
+            {/*    <TextInput style = {styles.TextInput}*/}
+            {/*               placeholder="Name"*/}
+            {/*               placeholderTextColor="white"*/}
+            {/*               onChangeText={(name) => onChangeName(name)}/>*/}
+            {/*</View>*/}
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Username"
-                           placeholderTextColor="#003f5c"
+                           placeholderTextColor="white"
                            onChangeText={(name) => onChangeUsername(name)}/>
             </View>
 
@@ -49,16 +50,18 @@ const SignUpScreen = () =>{
                            onChangeText={(password) => onChangePassword(password)}/>
             </View>
 
-            <TouchableOpacity style = {styles.loginBtn}>
-                <Text style = {styles.login_text} onPress={() => register(fullName, username, password, email)}>SIGNUP</Text>
-            </TouchableOpacity>
+            {/*removed this touchable and exported its functionality onto the button that already existed*/}
+
+            {/*<TouchableOpacity style = {styles.loginBtn}>*/}
+            {/*    <Text style = {styles.login_text} onPress={() => register(fullName, username, password, email)}>SIGNUP</Text>*/}
+            {/*</TouchableOpacity>*/}
 
 
             <View style = {styles.loginBtn}>
                 <Button style = {styles.loginBtn}
                     title="SIGN UP"
-                    color = "#59788E"
-                    onPress={() => navigation.navigate('SignUpScreen')}
+                    color = "#59788E" onPress={()=> register(fullName, username, password, email)}
+
                 />
             </View>
 
@@ -66,9 +69,8 @@ const SignUpScreen = () =>{
                 <Button
                     title="SIGN IN"
                     color = "#312d2a"
-                    opacity = "0.9"
 
-                    onPress={() => navigation.navigate('MainScreen')}
+                    onPress={() => navigation.navigate('SignInScreen')}
                 />
             </View>
             <Text>Already have an account?</Text>
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
             width:400,
             flex:1,
             padding: 10,
-            marginLeft:-100,
+            marginLeft:150,
             color:"white",
 
 
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
     },
 
     loginBtn:{
-        width:"20%",
+        width:"30%",
         borderRadius:25,
         height:50,
         alignItems:"center",
@@ -150,12 +152,12 @@ const styles = StyleSheet.create({
     },
 
     signupBtn:{
-        width:"20%",
+        width:"30%",
         borderRadius:25,
         height:50,
         alignItems:"center",
         justifyContent:"center",
-        marginTop:40,
+        marginTop:20,
         backgroundColor:"#rgba(49,45,45,0.94)",
 
     },

@@ -1,12 +1,16 @@
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity,Dimensions} from 'react-native';
 import React, {useState} from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from '@react-navigation/stack';
 
+
+
 import SignInScreen from './src/screens/SignInScreen';
-import forgotPasswordScreen from "./src/screens/forgotPasswordScreen";
+import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import MainScreen from "./src/screens/MainScreen";
+
+const {height, width} = Dimensions.get('window');
 
 const RootStack = createStackNavigator();
 // export default function App() {
@@ -33,11 +37,12 @@ const App = () =>{
             <RootStack.Navigator>
                 {/*<RootStack.Screen name = "forgotPasswordScreen" component = {forgotPasswordScreen}/>*/}
 
-                <RootStack.Screen name = "Welcome Back" component = {SignInScreen}/>
+                <RootStack.Screen name = "SignInScreen" component = {SignInScreen}/>
+                <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
                 <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
 
-                <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
-                <RootStack.Screen name = "forgotPasswordScreen" component = {forgotPasswordScreen}/>
+
+                <RootStack.Screen name = "ForgotPasswordScreen" component = {ForgotPasswordScreen}/>
 
             </RootStack.Navigator>
         </NavigationContainer>
@@ -49,6 +54,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+      window: "100%",
+      aspectRatio: 10/3,
+      padding: "8rem",
+      width:"100%",
+      height:"100%"
+
+
+
   },
 
 });
