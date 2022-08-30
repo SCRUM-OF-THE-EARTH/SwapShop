@@ -34,6 +34,7 @@ const SignInScreen = ({navigation}) => {
         <TextInput style = {styles.TextInput}
                    placeholder="Password"
                    placeholderTextColor="#3CB371"
+                   secureTextEntry={true}
                    onChangeText={(password) => onChangePassword(password)}/>
       </View>
 
@@ -106,7 +107,6 @@ async function Login(username, password, navigation){
     height: 45,
     marginBottom: 20,
     alignItems: "center",
-    borderColor:"red",
 
 
   },
@@ -117,7 +117,7 @@ async function Login(username, password, navigation){
     flex:1,
     padding: 10,
     marginLeft:150,
-    color:"red",
+    color:"gray",
 
 
   },
