@@ -38,22 +38,23 @@ const SignInScreen = ({navigation}) => {
       </View>
 
 
-      <View style={styles.forgot_button} >
+      <View style = {styles.forgot_button}>
+
         <Button
-            buttonTextStyle = {{color: "black"}}
+
             title="forgot password?"
-            color="black"
-
-
-            onPress={() => navigation.navigate('forgotPasswordScreen')}
+            color="#8e8259"
+            onPress={() => navigation.navigate('ForgotPasswordScreen')}
         />
+
       </View>
 
       <View style={styles.loginBtn} >
         <Button
                 title="SIGN IN"
                 color="#59788E"
-                onPress={() => Login(username, password, navigation)}
+                // onPress={() => Login(username, password, navigation)}
+                onPress = {() => navigation.navigate('MainScreen')}
         />
       </View>
 
@@ -61,7 +62,7 @@ const SignInScreen = ({navigation}) => {
         <Button
             title="SIGN UP"
             color = "#8e8259"
-            onPress={() => navigation.navigate('SignUpScreen')}
+            onPress = {() => navigation.navigate('SignUpScreen')}
         />
       </View>
       <Text>Don't have an account?</Text>
@@ -92,6 +93,7 @@ async function Login(username, password, navigation){
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+
   },
 
   //styling the logo
@@ -105,7 +107,7 @@ async function Login(username, password, navigation){
 
   inputView :{
     backgroundColor:"#59788E",
-    borderRadius:30,
+    borderRadius:50,
     width:"70%",
     height: 45,
     marginBottom: 20,
@@ -120,22 +122,25 @@ async function Login(username, password, navigation){
     width:400,
     flex:1,
     padding: 10,
-    marginLeft:-100,
-    color:"white",
+    marginLeft:150,
+    color:"red",
 
 
   },
 
   forgot_button:{
-    height: 30,
-    marginBottom:50,
-    marginTop:-15,
-    backgroundColor:"green",
+    height: 80,
+    marginBottom:-20,
+      marginTop:-20,
+
+
+
+
 
   },
 
   loginBtn:{
-    width:"20%",
+    width:"30%",
     borderRadius:25,
     height:50,
     alignItems:"center",
@@ -146,12 +151,12 @@ async function Login(username, password, navigation){
   },
 
   signupBtn:{
-    width:"20%",
+    width:"30%",
     borderRadius:25,
     height:50,
     alignItems:"center",
     justifyContent:"center",
-    marginTop:40,
+    marginTop:20,
     backgroundColor:"#8e8259",
 
   },
@@ -160,7 +165,7 @@ async function Login(username, password, navigation){
   login_text:{
     fontSize:20,
     color: "black",
-    fontFamily: "bold"
+    // fontFamily: "bold"
 
   },
 

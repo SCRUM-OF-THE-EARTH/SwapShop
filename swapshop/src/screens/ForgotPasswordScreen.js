@@ -7,7 +7,7 @@ import React, {useState} from 'react';
 
 // export default function forgotPasswordScreen() {
 
-const forgotPasswordScreen = ({navigation}) =>{
+const ForgotPasswordScreen = ({navigation}) =>{
 
     const [email, setEmail] = useState('');
     return(
@@ -17,7 +17,7 @@ const forgotPasswordScreen = ({navigation}) =>{
    <View style={styles.container}>
 
        <Text style={styles.textHeader}>ENTER YOUR EMAIL ADDRESS
-           TO RETRIEVE YOUR PASSWORD RESET  INSTRUCTIONS</Text>
+           TO RETRIEVE YOUR PASSWORD</Text>
 
            <Image
                source={require("../../assets/img.png")}
@@ -31,8 +31,6 @@ const forgotPasswordScreen = ({navigation}) =>{
                           onChangeText={(email) => setEmail(email)}/>
 
            </View>
-
-
 
 
         <View>
@@ -58,6 +56,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor:"white",
+
     },
     image:{
         height:250,
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
 
     textHeader:{
         fontSize:20,
-        fontFamily:"bold",
+        // fontFamily:"bold",
         textAlign:"center",
         color: "gray"
 
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
         width:400,
         flex:1,
         padding: 10,
-        marginLeft:-100,
+        marginLeft:150,
         color:"white",
 
 
@@ -100,4 +99,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default forgotPasswordScreen;
+export default ForgotPasswordScreen;
