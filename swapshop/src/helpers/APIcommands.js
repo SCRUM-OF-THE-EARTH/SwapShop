@@ -5,7 +5,6 @@ export default APIcommands = [
         param_names: [
             "fname", "lname", "user", "pass", "email"
         ],
-        // return_type: "boolean",
     },
 
     {
@@ -13,7 +12,14 @@ export default APIcommands = [
         file: "login.php",
         param_names: [
             "user", "pass"
-        ],
-        // return_type: 
+        ], 
     },
+    {
+        command: "fetch-trade-items",
+        file: "fetchtradeItems.php"
+    },
+    {
+        command: "fetch-user-accounts",
+        file: "fetchUserAccounts.php"
+    }
 ];

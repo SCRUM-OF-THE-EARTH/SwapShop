@@ -1,5 +1,8 @@
 import { Communicator } from './Communicator.js';
 
+const communicator = new Communicator();
+
+
 export class User_Account {
     constructor() {
         this.fname ="";
@@ -15,6 +18,8 @@ export class User_Account {
         console.log("Username: "+this.username);
         console.log("Email: "+this.email);
         console.groupEnd();
+
+        return this;
     }
 
     setID(id) {
@@ -78,24 +83,24 @@ export class User_Account {
 export class Login_user extends User_Account {
     constructor(username) {
         super();
-        this.communicator = new Communicator();
         this.setUsername(username);
     }
 
     async Login(password) {
-        let response = await this.communicator.makeRequestByCommand("login_account", [this.username, password]);
-        
-        if (response["success"] == 1) {
-            this.setID(response["id"])
-            .setUsername(response["username"])
-            .setFisrtName(response["fname"])
-            .setLastName(response["lname"])
-            .setEmail(response["email"]);
+        let response = await communicator.makeRequestByCommand("login_account", [this.username, password]);
 
-            return true;
+        if (!response) {
+            return false;
         }
+                this.setID(response["id"])
+                .setUsername(response["username"])
+                .setFisrtName(response["fname"])
+                .setLastName(response["lname"])
+                .setEmail(response["email"]);
 
-        return false;
+            
+
+        return true;
     }
         
 }
@@ -111,14 +116,14 @@ export class Registering_User extends User_Account {
     }
 
     async register_Account(password) {
-        let response = await this.communicator.makeRequestByCommand("register_account", [this.getFirstName(), this.getLastName(), this.getUsername(), password, this.getEmail()]);
+        let response = await communicator.makeRequestByCommand("register_account", [this.getFirstName(), this.getLastName(), this.getUsername(), password, this.getEmail()]);
     
-        if (response["success"] == 1) {
-            this.setID(response["id"]);
-            return true;
+        if (!response) {
+            return false;
         }
-
-        return false;   
+        this.setID(response["id"]);
+        return true;
+ 
         
     }
 

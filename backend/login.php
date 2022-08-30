@@ -7,16 +7,21 @@
 
     $query = "SELECT COUNT(*) AS exist FROM user_login_details WHERE username='$username'";
 
+    $output = array("success"=>0, "results"=>0);
+
     if ($result = $conn->query($query)) {
         $row = $result->fetch_assoc();
+
         if ($row["exist"] == 1){
-            checkLogin($username, $password, $conn);
-        } else {
-            echo "no account with username $username exists";
+            $results = checkLogin($username, $password, $conn);
+            if ($results != 0) {
+                $output['success'] = 1;
+            }
+            $output["results"] = $results;
         }
-    } else {
-        echo "something went wrong with Query";
     }
+
+    echo json_encode($output);
 
 
     function checkLogin($username, $password, $conn) {
@@ -24,14 +29,14 @@
         
         if ($res = $conn->query($sql)) {
             $row = $res->fetch_assoc();
+
             if ($row['success'] == 1){
-                echo json_encode($row);
-            } else {
-                echo Json_encode($row);
+                return $row;
             }
-            return;
+
         }
-        echo "something went wrong with query";
+
+        return 0;
     }
 
 ?>

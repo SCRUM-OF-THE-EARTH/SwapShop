@@ -10,19 +10,20 @@
 
     $query = "INSERT INTO user_login_details (fname, lname, username, password, email) VALUES ('$fname','$lname','$username','$password','$email');";
 
+    $output = array("success"=>0, "results"=>0);
 
-    $results = array("success"=>0,"id"=>0);
+    $id = array("id"=>0);
     if ($result = $conn->query($query)) {
         $query = "SELECT LAST_INSERT_ID() as id";
 
         if ($result = $conn->query($query)){
 
-            $results["success"] = 1;
+            $output["success"] = 1;
             $row = $result->fetch_assoc();
-            $results["id"] = $row["id"];
-            
+            $id["id"] = $row["id"];
+            $output["results"] = $id;
         }
     }
 
-    echo json_encode($results);
+    echo json_encode($output);
 ?>
