@@ -3,21 +3,24 @@ import { Communicator } from "./Communicator";
 const communicator = new Communicator();
 
 export class Item_List {
-    constructor() {
+    constructor(command) {
         this.json_items;
+        this.fetchItems(command);
         this.items = [];
         console.log("item list has been created");
     }
 
-    async fetchItems(command, constructorFunc) {
+    async fetchItems(command) {
         this.json_items = await communicator.makeRequestByCommand(command);
-        this.loadItems(constructorFunc)
-        return this;
     }
 
     loadItems(contructorFunc) {
+        console.log(this.json_items)
         this.json_items.forEach(item => {
-            this.Items.push(contructorFunc(item));
+            console.log(item);
+            this.items.push(contructorFunc(item));
         });
+
+        this.items
     }
 }

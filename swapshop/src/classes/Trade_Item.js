@@ -2,7 +2,9 @@ import { Communicator } from "./Communicator";
 
 
 export class Trade_Item {
-    constructor() {
+    constructor(item) {
+        console.log("new trade item has been created with:")
+        console.log(item)
         this.item_name;
         this.item_value;
         this.owner;

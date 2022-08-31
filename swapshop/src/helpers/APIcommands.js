@@ -16,10 +16,12 @@ export default APIcommands = [
     },
     {
         command: "fetch-trade-items",
-        file: "fetchtradeItems.php"
+        file: "fetchtradeItems.php",
+        param_names: []
     },
     {
         command: "fetch-user-accounts",
-        file: "fetchUserAccounts.php"
+        file: "fetchUserAccounts.php",
+        param_names: []
     }
 ];

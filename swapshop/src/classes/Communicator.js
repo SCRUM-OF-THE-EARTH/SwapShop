@@ -61,7 +61,7 @@ export class Communicator {
         console.log(json)
 
         if (json['success'] == 1) {
-            console.log("this query returned a result")
+            console.log("successfully fetched json from API")
             return json["results"];   
         }
 

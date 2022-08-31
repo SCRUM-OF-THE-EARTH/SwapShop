@@ -4,7 +4,7 @@
 
     $query = "SELECT * FROM trade_items;";
 
-    $output = array("success"=>0, "items"=>0);
+    $output = array("success"=>0, "results"=>0);
     $tradeItems = array();
 
     if ($results = $conn->query($query)) {
@@ -12,7 +12,7 @@
             $tradeItems[] = $row;
         }
         $output['success'] = 1;
-        $output['items'] = $tradeItems;
+        $output['results'] = $tradeItems;
     }
 
     echo json_encode($output);
