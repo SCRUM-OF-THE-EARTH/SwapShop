@@ -66,7 +66,7 @@ const SignUpScreen = ({navigation}) =>{
             <View style = {styles.loginBtn}>
                 <Button style = {styles.loginBtn}
                     title="SIGN UP"
-                    color = "#3CB371" onPress={()=> register(fullName, username, password, email)}
+                    color = "#3CB371" onPress={()=> register(fullName, username, password, email, navigation)}
 
                 />
             </View>
@@ -85,16 +85,16 @@ const SignUpScreen = ({navigation}) =>{
     );
 }
 
-function register(fullName, username, password, email) {
+function register(fullName, username, password, email, navigation) {
 
     let new_user = new Registering_User(fullName, username, email);
     let success = new_user.register_Account(password);
     
-    // if (success) {
-    //     console.log("new accoutn ha been successfully registered");
-    // } else {
-    //     console.log("new accoutn was not successfully registered");
-    // }
+    if (success) {
+        navigation.navigate('SignInScreen');
+    } else {
+        console.log("new accoutn was not successfully registered");
+    }
  }
 
 const styles = StyleSheet.create({
