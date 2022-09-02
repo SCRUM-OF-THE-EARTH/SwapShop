@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from
 import React, {useEffect, useState} from 'react';
 import { Item_List } from '../classes/Item_List';
 import { Trade_Item } from '../classes/Trade_Item';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export const trade_items_list = new Item_List("fetch-trade-items");
 let displayItems = [];
@@ -31,7 +32,7 @@ const MainScreen = ({navigation}) =>{
 
     let screen = (<View style={styles.container}>
         <Text>This is the main page</Text>
-        {displayItems}
+        <ScrollView>{displayItems}</ScrollView>
         <Button title='post a new item' onPress={() => navigation.navigate('addItemScreen')}/>
         </View>);
 
