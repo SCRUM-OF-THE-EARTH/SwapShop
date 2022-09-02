@@ -55,7 +55,7 @@ const SignInScreen = ({navigation}) => {
                 title="LOG IN"
                 color="#2E8B57"
                 // onPress={() => Login(username, password, navigation)}
-                onPress = {() => navigation.navigate('MainScreen')}
+                onPress = {() => Login(username, password, navigation)}
         />
       </View>
 
