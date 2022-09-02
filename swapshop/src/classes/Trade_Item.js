@@ -53,8 +53,8 @@ export class Trade_Item {
     createItemBlock() {
         return (
             <View>
-                <Text>{this.item_name}</Text>
-                <Text>{this.item_description}</Text>
+                <Text>Item Name: {this.item_name}</Text>
+                <Text>Item Description: {this.item_description}</Text>
                 <Text>Estimated value: {this.item_value}</Text>
             </View>
         );

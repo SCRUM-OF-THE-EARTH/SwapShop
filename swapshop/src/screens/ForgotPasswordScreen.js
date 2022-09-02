@@ -7,7 +7,7 @@ import React, {useState} from 'react';
 
 // export default function forgotPasswordScreen() {
 
-const forgotPasswordScreen = ({navigation}) =>{
+const ForgotPasswordScreen = ({navigation}) =>{
 
     const [email, setEmail] = useState('');
     return(
@@ -17,7 +17,7 @@ const forgotPasswordScreen = ({navigation}) =>{
    <View style={styles.container}>
 
        <Text style={styles.textHeader}>ENTER YOUR EMAIL ADDRESS
-           TO RETRIEVE YOUR PASSWORD RESET  INSTRUCTIONS</Text>
+           TO RETRIEVE YOUR PASSWORD</Text>
 
            <Image
                source={require("../../assets/img.png")}
@@ -27,18 +27,16 @@ const forgotPasswordScreen = ({navigation}) =>{
            <View style = {styles.inputView}>
                <TextInput style = {styles.TextInput}
                           placeholder="Email"
-                          placeholderTextColor="white"
+                          placeholderTextColor="#2E8B57"
                           onChangeText={(email) => setEmail(email)}/>
 
            </View>
 
 
-
-
-        <View>
+        <View style={styles.forgot_button}>
             <Button
                 title="RESET PASSWORD"
-                color= "red"
+                color= "#2E8B57"
                 onPress={() => navigation.navigate('SignInScreen')}
 
             />
@@ -57,7 +55,13 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:"white",
+        backgroundColor:"#F5F5F5",
+
+    },
+    forgot_button:{
+        height: 80,
+        marginBottom:-20,
+        marginTop:20,
     },
     image:{
         height:250,
@@ -67,23 +71,21 @@ const styles = StyleSheet.create({
 
     },
     inputView :{
-        backgroundColor:"#59788E",
+        backgroundColor:"white",
         borderRadius:30,
         width:"70%",
         height: 45,
-        marginTop: 60,
+        marginTop: 75,
         marginBottom: 20,
         alignItems: "center",
-        borderColor:"red",
-
 
     },
 
     textHeader:{
         fontSize:20,
-        fontFamily:"bold",
+        // fontFamily:"bold",
         textAlign:"center",
-        color: "gray"
+        color: "#3CB371"
 
     },
 
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
         width:400,
         flex:1,
         padding: 10,
-        marginLeft:-100,
+        marginLeft:150,
         color:"white",
 
 
@@ -100,4 +102,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default forgotPasswordScreen;
+export default ForgotPasswordScreen;

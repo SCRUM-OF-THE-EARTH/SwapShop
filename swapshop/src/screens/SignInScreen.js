@@ -19,7 +19,7 @@ const SignInScreen = ({navigation}) => {
       <View style={styles.container}>
 
       <Image
-          source={require("../../assets/logo3.png")}
+          source={require("../../assets/appLogo.png")}
           style={styles.image}
       />
 
@@ -29,50 +29,46 @@ const SignInScreen = ({navigation}) => {
       <View style = {styles.inputView}>
         <TextInput style = {styles.TextInput}
                    placeholder="Username"
-                   placeholderTextColor="white"
+                   placeholderTextColor="#3CB371"
                    onChangeText={(username) => onChangeUsername(username)}/>
       </View>
 
       <View style = {styles.inputView}>
         <TextInput style = {styles.TextInput}
                    placeholder="Password"
-                   placeholderTextColor="white"
+                   placeholderTextColor="#3CB371"
+                   secureTextEntry={true}
                    onChangeText={(password) => onChangePassword(password)}/>
       </View>
 
 
-      <View style={styles.forgot_button} >
-        <Button
-            buttonTextStyle = {{color: "black"}}
-            title="forgot password?"
-            color="black"
+      <View style = {styles.forgot_button}>
+        <TouchableOpacity style={styles.forgot_button} 
+        onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+          <Text style={{color: "#2E8B57"}}> Forgot Password? </Text>
+        </TouchableOpacity>
 
-
-            onPress={() => navigation.navigate('forgotPasswordScreen')}
-        />
       </View>
 
       <View style={styles.loginBtn} >
         <Button
-                title="SIGN IN"
-                color="#59788E"
-                onPress={() => Login(username, password, navigation)}
+                title="LOG IN"
+                color="#2E8B57"
+                // onPress={() => Login(username, password, navigation)}
+                onPress = {() => navigation.navigate('MainScreen')}
         />
       </View>
+
+      <Text>Don't have an account?</Text>
 
       <View style = {styles.signupBtn}>
         <Button
             title="SIGN UP"
-            color = "#8e8259"
-            onPress={() => navigation.navigate('SignUpScreen')}
+            color = "#3CB371"
+            onPress = {() => navigation.navigate('SignUpScreen')}
         />
       </View>
-      <Text>Don't have an account?</Text>
       
-
-
-
-
     </View>
     );  
  }
@@ -95,6 +91,7 @@ async function Login(username, password, navigation){
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+
   },
 
   //styling the logo
@@ -107,13 +104,12 @@ async function Login(username, password, navigation){
   },
 
   inputView :{
-    backgroundColor:"#59788E",
-    borderRadius:30,
+    backgroundColor:"#F5F5F5",
+    borderRadius:50,
     width:"70%",
     height: 45,
     marginBottom: 20,
     alignItems: "center",
-    borderColor:"red",
 
 
   },
@@ -123,39 +119,38 @@ async function Login(username, password, navigation){
     width:400,
     flex:1,
     padding: 10,
-    marginLeft:-100,
-    color:"white",
+    marginLeft:150,
+    color:"gray",
 
 
   },
 
   forgot_button:{
-    height: 30,
-    marginBottom:50,
-    marginTop:-15,
-    backgroundColor:"green",
-
+    height: 80,
+    marginBottom:-20,
+    marginTop:0,
   },
 
   loginBtn:{
-    width:"20%",
+    width:"30%",
+    borderRadius:25,
+    height:50,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop:0,
+    marginBottom:50,
+    backgroundColor:"#2E8B57",
+
+  },
+
+  signupBtn:{
+    width:"30%",
     borderRadius:25,
     height:50,
     alignItems:"center",
     justifyContent:"center",
     marginTop:10,
-    backgroundColor:"#59788E",
-
-  },
-
-  signupBtn:{
-    width:"20%",
-    borderRadius:25,
-    height:50,
-    alignItems:"center",
-    justifyContent:"center",
-    marginTop:40,
-    backgroundColor:"#8e8259",
+    backgroundColor:"#3CB371",
 
   },
 
@@ -163,7 +158,7 @@ async function Login(username, password, navigation){
   login_text:{
     fontSize:20,
     color: "black",
-    fontFamily: "bold"
+    // fontFamily: "bold"
 
   },
 

@@ -3,7 +3,8 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from
 import React, {useState} from 'react';
 import { Registering_User } from '../classes/User_Account';
 
-const SignUpScreen = () =>{
+// const SignUpScreen = ({navigation}) => {
+const SignUpScreen = ({navigation}) =>{
     
     const [fullName, onChangeName] = useState('');
     const [username, onChangeUsername] = useState('');
@@ -14,81 +15,79 @@ const SignUpScreen = () =>{
         <View style={styles.container}>
             <StatusBar style="auto"/>
 
-            <Text>Welcome to SwapShop</Text>
-
             <Image
-                source={require("../../assets/logo_signup.png")}
+                source={require("../../assets/appLogo.png")}
                 style={styles.image}
             />
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
-                           placeholder="Name"
-                           placeholderTextColor="white"
-                           onChangeText={(name) => onChangeName(name)}/>
+                           placeholder="Full Name"
+                           placeholderTextColor="#3CB371"
+                           onChangeText={(fullName) => onChangeName(fullName)}/>
             </View>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Username"
-                           placeholderTextColor="#003f5c"
-                           onChangeText={(name) => onChangeUsername(name)}/>
+                           placeholderTextColor="#3CB371"
+                           onChangeText={(username) => onChangeUsername(username)}/>
             </View>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
                            placeholder="Email"
-                           placeholderTextColor="white"
+                           placeholderTextColor="#3CB371"
                            onChangeText={(email) => onChangeEmail(email)}/>
             </View>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
-                           placeholder="Password"
-                           placeholderTextColor="white"
-                           secureTextEntry={true}
-                           onChangeText={(password) => onChangePassword(password)}/>
+                        placeholder="Password"
+                        placeholderTextColor="#3CB371"
+                        secureTextEntry={true}
+                        onChangeText={(password) => onChangePassword(password)}/>
             </View>
 
-            <TouchableOpacity style = {styles.loginBtn}>
-                <Text style = {styles.login_text} onPress={() => register(fullName, username, password, email)}>SIGNUP</Text>
-            </TouchableOpacity>
+            {/*removed this touchable and exported its functionality onto the button that already existed*/}
+
+            {/*<TouchableOpacity style = {styles.loginBtn}>*/}
+            {/*    <Text style = {styles.login_text} onPress={() => register(fullName, username, password, email)}>SIGNUP</Text>*/}
+            {/*</TouchableOpacity>*/}
 
 
             <View style = {styles.loginBtn}>
                 <Button style = {styles.loginBtn}
                     title="SIGN UP"
-                    color = "#59788E"
-                    onPress={() => navigation.navigate('SignUpScreen')}
+                    color = "#3CB371" onPress={()=> register(fullName, username, password, email, navigation)}
+
                 />
             </View>
+
+            <Text> Already have an account?</Text>
 
             <View style = {styles.signupBtn}>
                 <Button
-                    title="SIGN IN"
-                    color = "#312d2a"
-                    opacity = "0.9"
-
-                    onPress={() => navigation.navigate('MainScreen')}
+                    title="LOG IN"
+                    color = "#2E8B57"
+                    onPress={() => navigation.navigate('SignInScreen')}
                 />
             </View>
-            <Text>Already have an account?</Text>
-
-
 
         </View>
     );
 }
 
-function register(fullName, username, password, email) {
+function register(fullName, username, password, email, navigation) {
 
     let new_user = new Registering_User(fullName, username, email);
     let success = new_user.register_Account(password);
-    // if (success) {
-    //     console.log("new accoutn ha been successfully registered");
-    // } else {
-    //     console.log("new accoutn was not successfully registered");
-    // }
+    
+    if (success) {
+        navigation.navigate('SignInScreen');
+    } else {
+        console.log("new accoutn was not successfully registered");
+    }
  }
 
 const styles = StyleSheet.create({
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
     },
 
     inputView :{
-        backgroundColor:"#59788E",
+        backgroundColor:"#F5F5F5",
         borderRadius:30,
         width:"70%",
         height: 45,
@@ -126,12 +125,8 @@ const styles = StyleSheet.create({
             width:400,
             flex:1,
             padding: 10,
-            marginLeft:-100,
-            color:"white",
-
-
-
-
+            marginLeft:150,
+            color:"gray",
     },
 
     forgot_button:{
@@ -140,24 +135,25 @@ const styles = StyleSheet.create({
     },
 
     loginBtn:{
-        width:"20%",
+        width:"30%",
         borderRadius:25,
         height:50,
         alignItems:"center",
         justifyContent:"center",
         marginTop:10,
-        backgroundColor:"#59788E",
+        marginBottom:30,
+        backgroundColor:"#3CB371",
 
     },
 
     signupBtn:{
-        width:"20%",
+        width:"30%",
         borderRadius:25,
         height:50,
         alignItems:"center",
         justifyContent:"center",
-        marginTop:40,
-        backgroundColor:"#rgba(49,45,45,0.94)",
+        marginTop:5,
+        backgroundColor:"#2E8B57",
 
     },
 
