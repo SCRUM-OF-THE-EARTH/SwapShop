@@ -1,16 +1,16 @@
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity,Dimensions} from 'react-native';
-import React, {useState} from 'react';
-import {NavigationContainer} from "@react-navigation/native";
-import {createStackNavigator} from '@react-navigation/stack';
-import SignInScreen from './src/screens/SignInScreen';
-import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
-import SignUpScreen from "./src/screens/SignUpScreen";
-import AddItemScreen from "./src/screens/addItem.js"
-import MainScreen from "./src/screens/MainScreen";
+//import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity,Dimensions} from 'react-native';
+//import React, {useState} from 'react';
+//import {NavigationContainer} from "@react-navigation/native";
+//import {createStackNavigator} from '@react-navigation/stack';
+//import SignInScreen from './src/screens/SignInScreen';
+//import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
+//import SignUpScreen from "./src/screens/SignUpScreen";
+//import AddItemScreen from "./src/screens/addItem.js"
+//import MainScreen from "./src/screens/MainScreen";
 
-const {height, width} = Dimensions.get('window');
+//const {height, width} = Dimensions.get('window');
 
-const RootStack = createStackNavigator();
+//const RootStack = createStackNavigator();
 // export default function App() {
 // // const App = () =>{
 //
@@ -24,24 +24,42 @@ const RootStack = createStackNavigator();
 //
 //   )};
 
-const App = () =>{
-    return(
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+//import {NavigationContainer} from "@react-navigation/native";
+//import {createStackNavigator} from '@react-navigation/stack';
+
+//import SignInScreen from './src/screens/SignInScreen';
+//import forgotPasswordScreen from "./src/screens/forgotPasswordScreen";
+//import SignUpScreen from "./src/screens/SignUpScreen";
+//import MainScreen from "./src/screens/MainScreen";
+
+import NavigationContainer from './src/screens/NavigationBar';
+
+//const RootStack = createStackNavigator();
+// export default function App() {
+// // const App = () =>{
+//
+//   return (
+//
+//       <NavigationContainer>
+//           <SignInScreen></SignInScreen>
+//
+//
+//       </NavigationContainer>
+//
+//   )};
+
+const App = () => {
+    return (
         // <View style = {styles.container}>
         //     <SignInScreen></SignInScreen>
         //     {/*<Text>Welcome to SwapShop</Text>*/}
         // </View>
+        <NavigationContainer></NavigationContainer>
 
-        <NavigationContainer>
-            <RootStack.Navigator>
-                {/*<RootStack.Screen name = "forgotPasswordScreen" component = {forgotPasswordScreen}/>*/}
 
-                <RootStack.Screen name = "SignInScreen" component = {SignInScreen}/>
-                <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
-                <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
-                <RootStack.Screen name = "forgotPasswordScreen" component = {ForgotPasswordScreen}/>
-                <RootStack.Screen name = "addItemScreen" component={AddItemScreen}/>
-            </RootStack.Navigator>
-        </NavigationContainer>
+
     );
 };
 
@@ -63,3 +81,4 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+

@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
+import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, ScrollView} from 'react-native';
 import React, {useState} from 'react';
 import { Registering_User } from '../classes/User_Account';
+import colors from '../config/colors';
 
 // const SignUpScreen = ({navigation}) => {
 const SignUpScreen = ({navigation}) =>{
@@ -12,7 +13,8 @@ const SignUpScreen = ({navigation}) =>{
     const [email, onChangeEmail] = useState('');
 
     return (
-        <View style={styles.container}>
+        <ScrollView>
+            <View style={styles.container}>
             <StatusBar style="auto"/>
 
             <Image
@@ -59,7 +61,7 @@ const SignUpScreen = ({navigation}) =>{
             <View style = {styles.loginBtn}>
                 <Button style = {styles.loginBtn}
                     title="SIGN UP"
-                    color = "#3CB371" onPress={()=> register(fullName, username, password, email, navigation)}
+                    color = "#ffff" onPress={()=> register(fullName, username, password, email, navigation)}
 
                 />
             </View>
@@ -69,12 +71,14 @@ const SignUpScreen = ({navigation}) =>{
             <View style = {styles.signupBtn}>
                 <Button
                     title="LOG IN"
-                    color = "#2E8B57"
+                    color = "#ffff"
                     onPress={() => navigation.navigate('SignInScreen')}
                 />
             </View>
 
         </View>
+        </ScrollView>
+        
     );
 }
 
@@ -86,24 +90,25 @@ function register(fullName, username, password, email, navigation) {
     if (success) {
         navigation.navigate('SignInScreen');
     } else {
-        console.log("new accoutn was not successfully registered");
+        console.log("new account was not successfully registered");
     }
  }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: '#8E8259',
-        backgroundColor : "white",
+        backgroundColor: colors.extraColor,
+       // backgroundColor : "white",
         alignItems: 'center',
         justifyContent: 'center',
+       // marginTop: 75,
     },
 
     //styling the logo
     image:{
         height:250,
         width:250,
-        marginTop:-50,
+    //    marginTop:-0,
         marginBottom: 30,
 
     },

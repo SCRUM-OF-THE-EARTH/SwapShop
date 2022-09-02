@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Aler
 import React, {useState} from 'react';
 import SignUpScreen from './SignUpScreen';
 import { Login_user } from '../classes/User_Account.js'
+import colors from '../config/colors';
 // import {StackNavigator, DrawerNavigator, TabNavigator} from 'react-navigation';
 
 // export default function SignInScreen() {
@@ -53,7 +54,7 @@ const SignInScreen = ({navigation}) => {
       <View style={styles.loginBtn} >
         <Button
                 title="LOG IN"
-                color="#2E8B57"
+               color="#ffffff"
                 // onPress={() => Login(username, password, navigation)}
                 onPress = {() => navigation.navigate('MainScreen')}
         />
@@ -63,10 +64,11 @@ const SignInScreen = ({navigation}) => {
 
       <View style = {styles.signupBtn}>
         <Button
-            title="SIGN UP"
-            color = "#3CB371"
             onPress = {() => navigation.navigate('SignUpScreen')}
-        />
+            title="SIGN UP"
+            color = "#ffffff"
+            
+          ></Button>
       </View>
       
     </View>
@@ -88,7 +90,7 @@ async function Login(username, password, navigation){
  const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+     backgroundColor: colors.extraColor,
     alignItems: 'center',
     justifyContent: 'center',
 

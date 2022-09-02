@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
 import React, {useState} from 'react';
+import colors from '../config/colors';
 
 
 
@@ -55,7 +56,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:"#F5F5F5",
+       // backgroundColor:"#F5F5F5",
+       backgroundColor : colors.extraColor,
 
     },
     forgot_button:{
