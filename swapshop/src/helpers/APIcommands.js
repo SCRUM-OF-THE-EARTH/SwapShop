@@ -23,5 +23,12 @@ export default APIcommands = [
         command: "fetch-user-accounts",
         file: "fetchUserAccounts.php",
         param_names: []
+    },
+    {
+        command: "add-trade-item",
+        file: "addTradeItem.php",
+        param_names: [
+            "name", "desc", "value","id"
+        ]
     }
 ];

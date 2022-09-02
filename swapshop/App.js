@@ -6,6 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SignInScreen from './src/screens/SignInScreen';
 import forgotPasswordScreen from "./src/screens/forgotPasswordScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
+import AddItemScreen from "./src/screens/addItem.js"
 import MainScreen from "./src/screens/MainScreen";
 
 const RootStack = createStackNavigator();
@@ -38,7 +39,7 @@ const App = () =>{
 
                 <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
                 <RootStack.Screen name = "forgotPasswordScreen" component = {forgotPasswordScreen}/>
-
+                <RootStack.Screen name = "addItemScreen" component={AddItemScreen}/>
             </RootStack.Navigator>
         </NavigationContainer>
     );

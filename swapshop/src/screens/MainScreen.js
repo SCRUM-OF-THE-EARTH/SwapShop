@@ -4,31 +4,41 @@ import React, {useEffect, useState} from 'react';
 import { Item_List } from '../classes/Item_List';
 import { Trade_Item } from '../classes/Trade_Item';
 
-const trade_items_list = new Item_List("fetch-trade-items");
+export const trade_items_list = new Item_List("fetch-trade-items");
+let displayItems = [];
 
 // export default function forgotPasswordScreen() {
 
 const MainScreen = ({navigation}) =>{
 
     const [email, setEmail] = useState('');
+    const [displayItems, setDisplayItems] = useState([]);
 
     useEffect(() => {
         console.log("making use of useEffect")
         trade_items_list.loadItems((item) => {
-            console.log("hey look at you now passing functions as parameters")
             return new Trade_Item(item);
         })
+
+        let items = trade_items_list.getItems();
+        let tempArray = [];
+        items.forEach((item) => {
+            tempArray.push(item.createItemBlock())
+        });
+
+        setDisplayItems(tempArray);
     }, [])
 
-    return(
+    let screen = (<View style={styles.container}>
+        <Text>This is the main page</Text>
+        {displayItems}
+        <Button title='post a new item' onPress={() => navigation.navigate('addItemScreen')}/>
+        </View>);
 
-        <View style={styles.container}>
-            <Text>This is the main page</Text>
-        </View>
-
-
-    );
+    console.log(screen)
+    return screen;
 }
+
 
 const styles = StyleSheet.create({
     container: {

@@ -10,17 +10,34 @@ export class Item_List {
         console.log("item list has been created");
     }
 
+    getItems() {
+        return this.items;
+    }
+
     async fetchItems(command) {
         this.json_items = await communicator.makeRequestByCommand(command);
     }
 
     loadItems(contructorFunc) {
         console.log(this.json_items)
+        this.constructorFunc = contructorFunc;
         this.json_items.forEach(item => {
             console.log(item);
-            this.items.push(contructorFunc(item));
+            this.items.push(this.constructorFunc(item));
         });
 
         this.items
+    }
+
+    async addItem(command, param_values) {
+        let jsonRes = await communicator.makeRequestByCommand(command, param_values);
+        this.items.push(this.constructorFunc(jsonRes));
+
+    }
+
+    logItems() {
+        this.items.forEach(item => {
+            item.logItem();
+        })
     }
 }

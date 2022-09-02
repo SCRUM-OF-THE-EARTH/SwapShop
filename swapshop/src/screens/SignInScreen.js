@@ -6,6 +6,9 @@ import { Login_user } from '../classes/User_Account.js'
 // import {StackNavigator, DrawerNavigator, TabNavigator} from 'react-navigation';
 
 // export default function SignInScreen() {
+
+export const login_user = new Login_user();
+
 const SignInScreen = ({navigation}) => {
 
     const [username, onChangeUsername] = useState('');
@@ -76,7 +79,7 @@ const SignInScreen = ({navigation}) => {
 
 async function Login(username, password, navigation){
   console.log(username, password);
-  let login_user = new Login_user(username);
+  login_user.setUsername(username)
   let success = await login_user.Login(password);
   console.log(success);
 

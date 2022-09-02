@@ -1,15 +1,15 @@
 import { Communicator } from "./Communicator";
-
+import {View, Text} from 'react-native';
 
 export class Trade_Item {
     constructor(item) {
         console.log("new trade item has been created with:")
         console.log(item)
-        this.item_name;
-        this.item_value;
-        this.owner;
-        this.item_description;
-        this.id;
+        this.item_name = item['item_name'];
+        this.item_value = item['item_value'];
+        this.owner_id = item['owner_id']
+        this.item_description = item['description'];
+        this.id = item['id'];
 
         return this;
     }
@@ -32,13 +32,13 @@ export class Trade_Item {
         return this.item_value;
     }
 
-    setOwner(owner) {
-        this.owner = owner;
+    setOwnerID(owner) {
+        this.owner_id = owner;
         return this;
     }
 
-    getOwner() {
-        return this.owner;
+    getOwnerID() {
+        return this.owner_id;
     }
 
     setDescription(desc) {
@@ -50,13 +50,24 @@ export class Trade_Item {
         return this.item_description;
     }
 
+    createItemBlock() {
+        return (
+            <View>
+                <Text>{this.item_name}</Text>
+                <Text>{this.item_description}</Text>
+                <Text>Estimated value: {this.item_value}</Text>
+            </View>
+        );
+    }
+
     logItem() {
         console.group(`item ${this.id}`);
         console.log(`item Name: ${this.item_name}`);
         console.log(`Item estimated value: ${this.item_value}`);
         console.log(`item Owner:`)
-        this.owner.logUser();
+        console.log(`owner id: ${this.owner_id}`);
         console.log(`Item description: ${this.item_description}`);
+        console.groupEnd();
     }
 
 
