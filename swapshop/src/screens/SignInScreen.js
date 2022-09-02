@@ -6,6 +6,9 @@ import { Login_user } from '../classes/User_Account.js'
 // import {StackNavigator, DrawerNavigator, TabNavigator} from 'react-navigation';
 
 // export default function SignInScreen() {
+
+export const login_user = new Login_user();
+
 const SignInScreen = ({navigation}) => {
 
     const [username, onChangeUsername] = useState('');
@@ -34,6 +37,7 @@ const SignInScreen = ({navigation}) => {
         <TextInput style = {styles.TextInput}
                    placeholder="Password"
                    placeholderTextColor="#3CB371"
+                   secureTextEntry={true}
                    onChangeText={(password) => onChangePassword(password)}/>
       </View>
 
@@ -51,7 +55,7 @@ const SignInScreen = ({navigation}) => {
                 title="LOG IN"
                 color="#2E8B57"
                 // onPress={() => Login(username, password, navigation)}
-                onPress = {() => navigation.navigate('MainScreen')}
+                onPress = {() => Login(username, password, navigation)}
         />
       </View>
 
@@ -71,7 +75,7 @@ const SignInScreen = ({navigation}) => {
 
 async function Login(username, password, navigation){
   console.log(username, password);
-  let login_user = new Login_user(username);
+  login_user.setUsername(username)
   let success = await login_user.Login(password);
   console.log(success);
 
@@ -106,7 +110,6 @@ async function Login(username, password, navigation){
     height: 45,
     marginBottom: 20,
     alignItems: "center",
-    borderColor:"red",
 
 
   },
@@ -117,7 +120,7 @@ async function Login(username, password, navigation){
     flex:1,
     padding: 10,
     marginLeft:150,
-    color:"red",
+    color:"gray",
 
 
   },

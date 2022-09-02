@@ -2,12 +2,10 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity,Dimensions} f
 import React, {useState} from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from '@react-navigation/stack';
-
-
-
 import SignInScreen from './src/screens/SignInScreen';
 import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
+import AddItemScreen from "./src/screens/addItem.js"
 import MainScreen from "./src/screens/MainScreen";
 
 const {height, width} = Dimensions.get('window');
@@ -40,10 +38,8 @@ const App = () =>{
                 <RootStack.Screen name = "SignInScreen" component = {SignInScreen}/>
                 <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
                 <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
-
-
-                <RootStack.Screen name = "ForgotPasswordScreen" component = {ForgotPasswordScreen}/>
-
+                <RootStack.Screen name = "forgotPasswordScreen" component = {ForgotPasswordScreen}/>
+                <RootStack.Screen name = "addItemScreen" component={AddItemScreen}/>
             </RootStack.Navigator>
         </NavigationContainer>
     );

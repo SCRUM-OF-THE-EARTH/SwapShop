@@ -9,18 +9,18 @@ export class Communicator {
 
     }
 
-    addCalls(commandName, filename, param_names) {
-        let call = {
-            command: commandName,
-            file: filename,
-            param_name: param_names
-        }
+    // addCalls(commandName, filename, param_names) {
+    //     let call = {
+    //         command: commandName,
+    //         file: filename,
+    //         param_name: param_names
+    //     }
 
-        this.calls.push(call);
-    }
+    //     this.calls.push(call);
+    // }
 
     getCallByCommand(command) {
-        let results;
+        let results = false;
 
         this.calls.forEach(item => {
             if (item.command == command){
@@ -28,6 +28,10 @@ export class Communicator {
                 return;
             }
         })
+
+        if (!results) {
+            return false;
+        }
 
         return results;
     }
@@ -52,9 +56,15 @@ export class Communicator {
         let APIurl = this.constructURL(commandName, param_values);        
 
         let response = await fetch(APIurl).catch(e=>console.error(e))
-        let json = response.json();
-        
-        return json;
+        let json = await response.json();
 
+        console.log(json)
+
+        if (json['success'] == 1) {
+            console.log("successfully fetched json from API")
+            return json["results"];   
+        }
+
+        return false;
     }
 }

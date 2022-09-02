@@ -25,6 +25,7 @@
     "@react-navigation/native-stack": "^6.8.0",
     "@react-navigation/stack": "^6.2.3",
     "expo": "~46.0.8",
+    "expo-cli": "^6.0.5",
     "expo-status-bar": "~1.4.0",
     "jest-coverage-badges": "^1.1.2",
     "make-coverage-badge": "^1.2.0",
