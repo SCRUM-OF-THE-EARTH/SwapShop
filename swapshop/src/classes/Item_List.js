@@ -1,3 +1,4 @@
+import { TouchableNativeFeedbackBase } from "react-native";
 import { Communicator } from "./Communicator";
 
 const communicator = new Communicator();
@@ -25,8 +26,6 @@ export class Item_List {
             console.log(item);
             this.items.push(this.constructorFunc(item));
         });
-
-        this.items
     }
 
     async addItem(command, param_values) {
@@ -39,5 +38,16 @@ export class Item_List {
         this.items.forEach(item => {
             item.logItem();
         })
+    }
+
+    searchItems(searchterm) {
+        let searchResults = [];
+        this.items.forEach((item) => {
+            if (item.compareTerm(searchterm)) {
+                searchResults.push(item);
+            }
+        });
+
+        return searchResults;
     }
 }

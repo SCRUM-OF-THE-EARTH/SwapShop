@@ -64,6 +64,14 @@ export class Trade_Item {
         );
     }
 
+    compareTerm(term) {
+        if (this.item_name.includes(term)) {
+            return true;
+        }
+
+        return false;
+    }
+
     logItem() {
         console.group(`item ${this.id}`);
         console.log(`item Name: ${this.item_name}`);
