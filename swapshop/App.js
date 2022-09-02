@@ -38,7 +38,7 @@ const App = () =>{
                 <RootStack.Screen name = "SignInScreen" component = {SignInScreen}/>
                 <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
                 <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
-                <RootStack.Screen name = "forgotPasswordScreen" component = {ForgotPasswordScreen}/>
+                <RootStack.Screen name = "ForgotPasswordScreen" component = {ForgotPasswordScreen}/>
                 <RootStack.Screen name = "addItemScreen" component={AddItemScreen}/>
             </RootStack.Navigator>
         </NavigationContainer>
