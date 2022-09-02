@@ -1,5 +1,5 @@
 import { Communicator } from "./Communicator";
-import {View, Text} from 'react-native';
+import {View, Text, Image} from 'react-native';
 
 export class Trade_Item {
     constructor(item) {
@@ -52,12 +52,24 @@ export class Trade_Item {
 
     createItemBlock() {
         return (
-            <View>
+            <View style={{borderColor:'#000000', borderWidth:1}}>
                 <Text>Item Name: {this.item_name}</Text>
+                <Image
+                style={{width:100, height: 100, borderRadius:10}}
+                    source={require("../../assets/filler_image.jpg")}   
+                />
                 <Text>Item Description: {this.item_description}</Text>
                 <Text>Estimated value: {this.item_value}</Text>
             </View>
         );
+    }
+
+    compareTerm(term) {
+        if (this.item_name.includes(term)) {
+            return true;
+        }
+
+        return false;
     }
 
     logItem() {

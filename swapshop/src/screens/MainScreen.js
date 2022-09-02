@@ -3,6 +3,8 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from
 import React, {useEffect, useState} from 'react';
 import { Item_List } from '../classes/Item_List';
 import { Trade_Item } from '../classes/Trade_Item';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SearchBar } from 'react-native-screens';
 
 export const trade_items_list = new Item_List("fetch-trade-items");
 let displayItems = [];
@@ -12,7 +14,7 @@ let displayItems = [];
 const MainScreen = ({navigation}) =>{
 
     const [email, setEmail] = useState('');
-    const [displayItems, setDisplayItems] = useState([]);
+    const [displayItems, setDisplayItems] = useState('');
 
     useEffect(() => {
         console.log("making use of useEffect")
@@ -20,23 +22,29 @@ const MainScreen = ({navigation}) =>{
             return new Trade_Item(item);
         })
 
-        let items = trade_items_list.getItems();
-        let tempArray = [];
-        items.forEach((item) => {
-            tempArray.push(item.createItemBlock())
-        });
+        setDisplayItems(LoadBlocks(''));
 
-        setDisplayItems(tempArray);
     }, [])
 
     let screen = (<View style={styles.container}>
         <Text>This is the main page</Text>
-        {displayItems}
+        <TextInput placeholder="serach" onChangeText={(searchTerm) => setDisplayItems(LoadBlocks(searchTerm))}/>
+        <ScrollView>{displayItems}</ScrollView>
         <Button title='post a new item' onPress={() => navigation.navigate('addItemScreen')}/>
         </View>);
 
-    console.log(screen)
     return screen;
+}
+
+function LoadBlocks(searchTerm) {
+    console.log(searchTerm);
+    let Items = trade_items_list.searchItems(searchTerm);
+    let tempArray = [];
+    Items.forEach((item) => {
+        tempArray.push(item.createItemBlock());
+    });
+    console.log(tempArray);
+    return tempArray;
 }
 
 
