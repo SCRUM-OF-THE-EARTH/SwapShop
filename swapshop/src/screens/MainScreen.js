@@ -5,6 +5,7 @@ import { Item_List } from '../classes/Item_List';
 import { Trade_Item } from '../classes/Trade_Item';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SearchBar } from 'react-native-screens';
+import { useIsFocused } from "@react-navigation/native";
 
 export const trade_items_list = new Item_List("fetch-trade-items");
 let displayItems = [];
@@ -12,7 +13,7 @@ let displayItems = [];
 // export default function forgotPasswordScreen() {
 
 const MainScreen = ({navigation}) =>{
-
+    const isFocused = useIsFocused();
     const [email, setEmail] = useState('');
     const [displayItems, setDisplayItems] = useState('');
 
@@ -20,11 +21,12 @@ const MainScreen = ({navigation}) =>{
         console.log("making use of useEffect")
         trade_items_list.loadItems((item) => {
             return new Trade_Item(item);
-        })
-
-        setDisplayItems(LoadBlocks(''));
-
+        });
     }, [])
+
+    useEffect(() => {
+        setDisplayItems(LoadBlocks(''));
+    }, [isFocused])
 
     let screen = (<View style={styles.container}>
         <Text>This is the main page</Text>
