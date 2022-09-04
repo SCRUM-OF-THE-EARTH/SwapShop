@@ -1,13 +1,22 @@
 import APIcommands from "../helpers/APIcommands.js";
 
-export class Communicator {
-    constructor() {
-        this.url = "https://sudocode.co.za/SwapShop/backend/";
-        this.APIfile = "";
-        this.calls = APIcommands;
+// the Communicator class is used to handle and requests that happen between the app and the api layer and the database layer
+// it has 2 basic parameters:
+//  | url - the base url to the api layer
+//  | calls - the commands conatining the api file names. parameters names and command names. This is found in '../helpers/APIcommands.js' file
 
+class Communicator {
+
+    // the constructor class takes in the url that would direct the communicator to the API files
+    constructor(url) {
+        this.url = url;
+        this.calls = APIcommands;
     }
 
+    // getCallCommand is used to search through the list of API commands and find the command object with the correct command name
+    // it takes in a command name 
+    // and return the json object if it finds a matching entry
+    // but returns false if it can not find the correct command
     getCallByCommand(command) {
         let results = false;
 
@@ -20,6 +29,12 @@ export class Communicator {
 
         return results;
     }
+
+    // constructURL is used to to build the full url that would direct the system to the correct api with the associated parameter names and values 
+    // in place
+    //
+    // it takes in a call which id found using getCallByCommand and an array of parameter values in the correct order
+    // it returns the fully constructed URL to the command made by the user
 
     constructURL(call, param_values) {
         let APIurl = this.url + call.file+"?";
@@ -34,6 +49,13 @@ export class Communicator {
         return APIurl;
     }
 
+    // makeRequestByCommand takes in a command name as a string and an array of parameter values in the correct order (check APICommands for order of parameters)
+    // and it makes a call to the api layer using the constructed URL and the call that is found by the command name
+    //
+    // it is asynchronous since js fetch requests are themselves asynchronous
+    // this mehtod will retrieve data from an api and then check the "success" parameter of the json object
+    // if ut was a success then it will return the results from the api command
+    // if not then it will return false
     async makeRequestByCommand(commandName, param_values) {
         let call = this.getCallByCommand(commandName);
 
@@ -49,3 +71,6 @@ export class Communicator {
         return false;
     }
 }
+
+// exporting a static instance of the communicator
+export default Communicator = new Communicator("https://sudocode.co.za/SwapShop/backend/");
