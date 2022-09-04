@@ -39,6 +39,11 @@ export class User_Account {
 
     setFullName(fullName) {
         let names = fullName.split(" ");
+        if (names.length != 2 || (names[0] == "" || names[1] == "")){
+            throw Error(`0 can not set the full name of a user with ${names.length}, method requires 2 names (first and last)`);
+        }
+
+        console.log(names[0], names[1])
         this.fname = names[0];
         this.lname = names[1];
 
@@ -58,6 +63,10 @@ export class User_Account {
     }
 
     setUsername(user) {
+        console.log(user);
+        if (user.includes(' ')){
+            throw Error("1 username can not contain spaces");
+        }
         this.username = user;
         return this;
     }
@@ -81,9 +90,8 @@ export class User_Account {
 }
 
 export class Login_user extends User_Account {
-    constructor(username) {
+    constructor() {
         super();
-        this.setUsername(username);
     }
 
     async Login(password) {

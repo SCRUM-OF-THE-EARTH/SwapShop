@@ -13,6 +13,7 @@ const SignInScreen = ({navigation}) => {
 
     const [username, onChangeUsername] = useState('');
     const [password, onChangePassword] = useState('');
+    const [errorMessage, onChangeError] = useState('');
 
     return(
     
@@ -25,8 +26,9 @@ const SignInScreen = ({navigation}) => {
 
       {/*<Button title="Go to signUp page" onPress={() => navigation.navigate('SignUpScreen')}/>*/}
 
-
+      <Text style={styles.error_message}>{errorMessage}</Text>
       <View style = {styles.inputView}>
+        
         <TextInput style = {styles.TextInput}
                    placeholder="Username"
                    placeholderTextColor="#3CB371"
@@ -55,7 +57,7 @@ const SignInScreen = ({navigation}) => {
                 title="LOG IN"
                 color="#2E8B57"
                 // onPress={() => Login(username, password, navigation)}
-                onPress = {() => Login(username, password, navigation)}
+                onPress = {() => Login(username, password, navigation, onChangeError)}
         />
       </View>
 
@@ -73,19 +75,24 @@ const SignInScreen = ({navigation}) => {
     );  
  }
 
-async function Login(username, password, navigation){
+async function Login(username, password, navigation, onChangeError){
   console.log(username, password);
-  login_user.setUsername(username)
+  login_user.setUsername(username);
   let success = await login_user.Login(password);
   console.log(success);
 
   if (success) {
     navigation.navigate('MainScreen');
+  } else {
+    onChangeError("Sorry. Those details don't seem to match");
   }
 
  }
 
  const styles = StyleSheet.create({
+  error_message: {
+    color: "red",
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',

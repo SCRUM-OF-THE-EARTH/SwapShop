@@ -4,7 +4,12 @@ require('jest-fetch-mock').enableMocks()
 fetchMock.dontMock();
 
 function generateString(length){
-    return results = Math.random().toString(36).substring(2,length);
+    let results = Math.random().toString(36).substring(2,length);
+    if (results.includes(' ')) {
+        results = generateString(7);
+    }
+
+    return results;
 }
 
 let fname = generateString(7);
@@ -14,7 +19,8 @@ let password = generateString(7);
 let email = generateString(7);
 
 const test_Reguser = new Registering_User(fname+" "+lname, username, email);
-const test_LogUser = new Login_user(username);
+const test_LogUser = new Login_user();
+test_LogUser.setUsername(username)
 
 describe("testing the login, register and user account system", () => {
     test("as a registering user when I input my details they will be saved into the system", () => {
@@ -74,6 +80,24 @@ describe("testing the login, register and user account system", () => {
 
         expect(user_account.setID(1)).toBe(user_account);
         expect(user_account.getID()).toBe(1);
+
+        try {
+            user_account.setFullName("test");
+        } catch (err) {
+            expect(err.message).toBe("0 can not set the full name of a user with 1, method requires 2 names (first and last)")
+        }
+
+        try {
+            user_account.setFullName("test test test");
+        } catch (err) {
+            expect(err.message).toBe("0 can not set the full name of a user with 3, method requires 2 names (first and last)")
+        }
+
+        try {
+            user_account.setUsername("test with spaces");
+        } catch (err) {
+            expect(err.message).toBe("1 username can not contain spaces")
+        }
 
         expect(user_account.setFisrtName("test")).toBe(user_account);
         expect(user_account.getFirstName()).toBe("test");
