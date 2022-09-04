@@ -20,7 +20,7 @@ const ForgotPasswordScreen = ({navigation}) =>{
            TO RETRIEVE YOUR PASSWORD</Text>
 
            <Image
-               source={require("../../assets/img.png")}
+               source={require("../../assets/img_1.png")}
                style={styles.image}
            />
 
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:"#F5F5F5",
+        backgroundColor:"white",
 
     },
     forgot_button:{
@@ -66,12 +66,12 @@ const styles = StyleSheet.create({
     image:{
         height:250,
         width:250,
-        marginTop:-330,
-        marginBottom: 30,
+        marginTop:-300,
+        marginBottom: 20,
 
     },
     inputView :{
-        backgroundColor:"white",
+        backgroundColor:"#F5F5F5",
         borderRadius:30,
         width:"70%",
         height: 45,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         flex:1,
         padding: 10,
         marginLeft:150,
-        color:"white",
+        color:"#3CB371",
 
 
     },
