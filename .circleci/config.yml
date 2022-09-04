@@ -45,7 +45,7 @@ jobs:
 
       - run:
           name: "pushing to branch"
-          command: "git push"
+          command: "git push --set-upstream origin ${CIRCLE_BRANCH}"
 
 
 # Invoke jobs via workflows
