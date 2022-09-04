@@ -73,4 +73,5 @@ class Communicator {
 }
 
 // exporting a static instance of the communicator
-export default Communicator = new Communicator("https://sudocode.co.za/SwapShop/backend/");
+const communicator = new Communicator("https://sudocode.co.za/SwapShop/backend/");
+export { communicator,Communicator }

@@ -1,14 +1,10 @@
-import { Communicator } from '../classes/Communicator.js';
+import { communicator } from '../classes/Communicator.js';
 import APIcommands from '../helpers/APIcommands.js';
-
-let communicator;
 
 describe("testing the communicator system", () => {
 
     test("testing the creation of a new communiator", () => {
-        communicator = new Communicator();
         expect(communicator.url).toBe("https://sudocode.co.za/SwapShop/backend/");
-        expect(communicator.APIfile).toBe("");
         expect(communicator.calls).toBe(APIcommands);
     });
 

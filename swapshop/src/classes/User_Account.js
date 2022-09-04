@@ -1,6 +1,4 @@
-import { Communicator } from './Communicator.js';
-
-const communicator = new Communicator();
+import { communicator } from "../classes/Communicator.js"
 
 
 export class User_Account {
@@ -119,7 +117,6 @@ export class Registering_User extends User_Account {
         this.setFullName(fullName)
         .setUsername(username)
         .setEmail(email);
-        this.communicator = new Communicator();
 
     }
 
