@@ -1,5 +1,7 @@
 import { communicator } from '../classes/Communicator.js';
 import APIcommands from '../helpers/APIcommands.js';
+require('jest-fetch-mock').enableMocks()
+fetchMock.dontMock();
 
 describe("testing the communicator system", () => {
 
