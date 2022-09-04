@@ -1,4 +1,3 @@
-import { TouchableNativeFeedbackBase } from "react-native";
 import { Communicator } from "./Communicator";
 
 const communicator = new Communicator();

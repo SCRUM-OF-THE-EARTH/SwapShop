@@ -1,4 +1,4 @@
-export default APIcommands = [
+const APIcommands = [
     {
         command: "register_account",
         file: "registerAccount.php",
@@ -32,3 +32,4 @@ export default APIcommands = [
         ]
     }
 ];
+export default APIcommands;

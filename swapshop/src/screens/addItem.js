@@ -4,7 +4,6 @@ import {login_user} from './SignInScreen.js';
 import { trade_items_list } from "./MainScreen.js";
 
 
-
 const AddItem = ({navigation}) => {
 
     const [name, onNameChange] = useState('');

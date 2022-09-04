@@ -10,6 +10,7 @@ const SignUpScreen = ({navigation}) =>{
     const [username, onChangeUsername] = useState('');
     const [password, onChangePassword] = useState('');
     const [email, onChangeEmail] = useState('');
+    const [errorMessage, onChangeError] = useState('');
 
     return (
         <View style={styles.container}>
@@ -19,6 +20,8 @@ const SignUpScreen = ({navigation}) =>{
                 source={require("../../assets/appLogo.png")}
                 style={styles.image}
             />
+
+            <Text style={styles.error_message}>{errorMessage}</Text>
 
             <View style = {styles.inputView}>
                 <TextInput style = {styles.TextInput}
@@ -59,7 +62,7 @@ const SignUpScreen = ({navigation}) =>{
             <View style = {styles.loginBtn}>
                 <Button style = {styles.loginBtn}
                     title="SIGN UP"
-                    color = "#3CB371" onPress={()=> register(fullName, username, password, email, navigation)}
+                    color = "#3CB371" onPress={()=> register(fullName, username, password, email, navigation, onChangeError)}
 
                 />
             </View>
@@ -78,19 +81,58 @@ const SignUpScreen = ({navigation}) =>{
     );
 }
 
-function register(fullName, username, password, email, navigation) {
+function register(fullName, username, password, email, navigation, onChangeError) {
+    console.log("register button has been pressed")
 
-    let new_user = new Registering_User(fullName, username, email);
+    if (fullName == "") {
+        onChangeError("please enter a first and last name")
+        return
+    }
+
+    if (username == "") {
+        onChangeError("Username can not be empty");
+        return
+    }
+
+    if (password == "") {
+        onChangeError("Password can not be blank");
+        return;
+    }
+
+    let new_user;
+    try {
+        new_user = new Registering_User(fullName, username, email);
+    } catch (err) {
+        let errorCode = err.message.charAt(0)
+        console.log(err)
+        console.log(errorCode)
+        if (errorCode == "0") {
+            onChangeError("Please enter a valid first and last name")
+        }
+
+        if (errorCode == "1") {
+            onChangeError("username can not contain spaces")
+        }
+
+        return 
+    }
+
+    console.log("user class has been created withou errors")
+
     let success = new_user.register_Account(password);
     
+
     if (success) {
         navigation.navigate('SignInScreen');
     } else {
-        console.log("new accoutn was not successfully registered");
+        onChangeError("sorry. Something went wrong")
     }
  }
 
 const styles = StyleSheet.create({
+    error_message: {
+        color: "red",
+    },
     container: {
         flex: 1,
         // backgroundColor: '#8E8259',

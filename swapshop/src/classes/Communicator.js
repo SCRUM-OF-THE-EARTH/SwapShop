@@ -4,20 +4,9 @@ export class Communicator {
     constructor() {
         this.url = "https://sudocode.co.za/SwapShop/backend/";
         this.APIfile = "";
-        this.params = [];
         this.calls = APIcommands;
 
     }
-
-    // addCalls(commandName, filename, param_names) {
-    //     let call = {
-    //         command: commandName,
-    //         file: filename,
-    //         param_name: param_names
-    //     }
-
-    //     this.calls.push(call);
-    // }
 
     getCallByCommand(command) {
         let results = false;
@@ -27,19 +16,12 @@ export class Communicator {
                 results = item;
                 return;
             }
-        })
-
-        if (!results) {
-            return false;
-        }
+        });
 
         return results;
     }
 
-    constructURL(commandName, param_values) {
-
-        let call = this.getCallByCommand(commandName);
-
+    constructURL(call, param_values) {
         let APIurl = this.url + call.file+"?";
 
         call.param_names.forEach((param, i) => {
@@ -53,15 +35,14 @@ export class Communicator {
     }
 
     async makeRequestByCommand(commandName, param_values) {
-        let APIurl = this.constructURL(commandName, param_values);        
+        let call = this.getCallByCommand(commandName);
+
+        let APIurl = this.constructURL(call, param_values);        
 
         let response = await fetch(APIurl).catch(e=>console.error(e))
         let json = await response.json();
 
-        console.log(json)
-
         if (json['success'] == 1) {
-            console.log("successfully fetched json from API")
             return json["results"];   
         }
 
