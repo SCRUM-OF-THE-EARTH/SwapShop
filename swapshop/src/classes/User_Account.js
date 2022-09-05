@@ -95,6 +95,7 @@ export class Login_user extends User_Account {
     async Login(password) {
         let response = await communicator.makeRequestByCommand("login_account", [this.username, password]);
 
+        console.log(response);
         if (!response) {
             return false;
         }

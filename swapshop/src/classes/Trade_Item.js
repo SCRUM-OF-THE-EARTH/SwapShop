@@ -1,4 +1,3 @@
-import { Communicator } from "./Communicator";
 import {View, Text, Image} from 'react-native';
 import React from "react";
 

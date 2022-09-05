@@ -1,5 +1,5 @@
 
-import communicator from "./Communicator"
+import { communicator } from "./Communicator"
 
 // the item list class is used a data structure to contain and manage:
 // - all the posted trade item from users
