@@ -19,10 +19,6 @@ const ForgotPasswordScreen = ({navigation}) =>{
        <Text style={styles.textHeader}>ENTER YOUR EMAIL ADDRESS
            TO RETRIEVE YOUR PASSWORD</Text>
 
-           <Image
-               source={require("../../assets/img.png")}
-               style={styles.image}
-           />
 
            <View style = {styles.inputView}>
                <TextInput style = {styles.TextInput}
