@@ -11,8 +11,8 @@ export const login_user = new Login_user();
 
 const SignInScreen = ({navigation}) => {
 
-    const [username, onChangeUsername] = useState('');
-    const [password, onChangePassword] = useState('');
+    const [username, onChangeUsername] = useState('Ollie_otter');
+    const [password, onChangePassword] = useState('Tigerman6');
     const [errorMessage, onChangeError] = useState('');
 
     return(
@@ -168,8 +168,6 @@ async function Login(username, password, navigation, onChangeError){
     // fontFamily: "bold"
 
   },
-
-
 
 
 });

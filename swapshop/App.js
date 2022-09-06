@@ -32,7 +32,7 @@ const App = () =>{
         // </View>
 
         <NavigationContainer>
-            <RootStack.Navigator>
+            <RootStack.Navigator screenOptions={{headerShown:false}}>
                 {/*<RootStack.Screen name = "forgotPasswordScreen" component = {forgotPasswordScreen}/>*/}
 
                 <RootStack.Screen name = "SignInScreen" component = {SignInScreen}/>

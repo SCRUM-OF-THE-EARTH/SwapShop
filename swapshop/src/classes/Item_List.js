@@ -18,6 +18,7 @@ export class Item_List {
         this.json_items;
         this.fetchItems(command);
         this.items = [];
+        this.loaded = false;
     }
 
     // getItems is simply used to return the array of objects stored in the item list
@@ -46,6 +47,7 @@ export class Item_List {
             console.log(item);
             this.items.push(this.constructorFunc(item));
         });
+        this.loaded = true;
     }
 
     // addItem is used to create a new object usign the call back constructor function and both add it to the json items and items array
@@ -76,5 +78,17 @@ export class Item_List {
         });
 
         return searchResults;
+    }
+
+    findByID(id) {
+        let resultItem = false;
+        this.items.forEach((item) => {
+            if (item.getID() == id) {
+                resultItem = item;
+                return;
+            }
+        });
+
+        return resultItem;
     }
 }
