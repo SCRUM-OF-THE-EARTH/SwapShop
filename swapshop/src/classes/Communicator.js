@@ -40,12 +40,13 @@ class Communicator {
         let APIurl = this.url + call.file+"?";
 
         call.param_names.forEach((param, i) => {
+            param_values[i] = param_values[i].replaceAll('\n', '%0A')
             APIurl += param+"="+param_values[i];
             if (i != call.param_names.length-1){
                 APIurl += "&&";
             }
         })
-
+        console.log(APIurl)
         return APIurl;
     }
 

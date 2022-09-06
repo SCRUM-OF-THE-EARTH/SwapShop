@@ -38,7 +38,6 @@ function AddNewItem(name, description, value, setError, navigation) {
     console.log(name, description, value, owner_id);
     trade_items_list.addItem('add-trade-item', [name,description, value, owner_id]).then(res => {
         console.log(res);
-        trade_items_list.logItems();
         navigation.navigate('MainScreen')
     })
     

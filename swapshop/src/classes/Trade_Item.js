@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         padding: 5,
         backgroundColor: "#F5F5F5",
+        marginVertical: 5,
         // shadowColor: "#171717",
         // shadowOffset: {width: -2, height: 4},
         // shadowOpacity: 0.2,
