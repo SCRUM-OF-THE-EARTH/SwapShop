@@ -30,6 +30,6 @@ const APIcommands = [
         param_names: [
             "name", "desc", "value","id"
         ]
-    }
+    },
 ];
 export default APIcommands;

@@ -29,6 +29,7 @@
   "dependencies": {
     "@react-navigation/native": "^6.0.12",
     "@react-navigation/stack": "^6.2.3",
+    "@rneui/themed": "^4.0.0-rc.6",
     "coverage-badge-creator": "^1.0.13",
     "expo": "^46.0.10",
     "expo-status-bar": "^1.4.0",

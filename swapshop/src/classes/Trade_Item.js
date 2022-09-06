@@ -1,4 +1,4 @@
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, StyleSheet} from 'react-native';
 import React from "react";
 
 export class Trade_Item {
@@ -7,7 +7,7 @@ export class Trade_Item {
         console.log(item)
         this.item_name = item['item_name'];
         this.item_value = item['item_value'];
-        this.owner_id = item['owner_id']
+        this.owner = false;
         this.item_description = item['description'];
         this.id = item['id'];
 
@@ -40,13 +40,13 @@ export class Trade_Item {
         return this.id;
     }
 
-    setOwnerID(owner) {
-        this.owner_id = owner;
+    setOwner(owner) {
+        this.owner = owner;
         return this;
     }
 
-    getOwnerID() {
-        return this.owner_id;
+    getOwner() {
+        return this.owner;
     }
 
     setDescription(desc) {
@@ -59,21 +59,28 @@ export class Trade_Item {
     }
 
     createItemBlock() {
+        console.log(this.owner);
         return (
-            <View style={{borderColor:'#000000', borderWidth:1}}>
-                <Text>Item Name: {this.item_name}</Text>
+            <View style={styles.container}>
+                <Text style={styles.header}>{this.item_name}</Text>
+            <View style={styles.innerContainer}>
                 <Image
-                style={{width:100, height: 100, borderRadius:10}}
+                style={{width:150, height: 150, borderRadius:10}}
                     source={require("../../assets/filler_image.jpg")}   
                 />
-                <Text>Item Description: {this.item_description}</Text>
-                <Text>Estimated value: {this.item_value}</Text>
+                <View style={{flexDirection:"column", flex:1,alignSelf: 'center'}}>
+                    <Text style={[styles.wrappedText, {paddingVertical: 10, color: 'gray'}]}>{this.item_description}</Text>
+                    <Text style={styles.wrappedText}>Estimated value: R{this.item_value}</Text>
+                    <Text style={[styles.wrappedText, styles.green]}>{this.owner.getFullName()}</Text>
+                </View>
+            </View>
             </View>
         );
     }
 
     compareTerm(term) {
-        if (this.item_name.includes(term)) {
+        term = term.toLowerCase();
+        if (this.item_name.toLowerCase().includes(term)) {
             return true;
         }
 
@@ -92,3 +99,40 @@ export class Trade_Item {
 
 
 }
+
+const styles = StyleSheet.create({
+    container: {
+        borderRadius: 10,
+        width: "100%",
+        display: 'flex',
+        padding: 5,
+        backgroundColor: "#F5F5F5",
+        // shadowColor: "#171717",
+        // shadowOffset: {width: -2, height: 4},
+        // shadowOpacity: 0.2,
+        // shadowRadius: 3
+    },
+    header: {
+        fontSize: 25,
+        fontWeight: '300',
+        // fontWeight: 500,
+        color: "#3CB371",
+        paddingRight: 20,
+        paddingLeft: 20,
+    },
+    innerContainer: {
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'row',
+        
+    },
+    wrappedText: {
+        flexShrink: 1,
+        flexWrap: 'wrap',
+        marginLeft: 10,
+        marginRight: 10
+    },
+    green: {
+        color: "#3CB371",
+    }
+})
