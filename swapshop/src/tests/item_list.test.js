@@ -1,0 +1,94 @@
+import { Item_List } from '../classes/Item_List.js';
+import { Trade_Item } from '../classes/Trade_Item.js'
+require('jest-fetch-mock').enableMocks()
+fetchMock.dontMock();
+
+const test_item_list = new Item_List('fetch-trade-items');
+waitFetch();
+let test_json_items;
+
+function waitFetch() {
+    if(test_item_list.getItems() == false) {
+        setTimeout(waitFetch, 200);
+    } 
+    return;
+}
+describe("testing the item_list and its methods", () => {
+    test("testing the creation of a new item list", () => {
+        return test_item_list.fetchItems('fetch-trade-items').then(() => {
+            test_json_items = test_item_list.getJsonItems();
+            let loaded = false;
+            if (test_json_items != false) {
+                loaded = true;
+            }
+            expect(loaded).toBe(true);
+
+            let count = 0;
+            for (let key in test_json_items[0]){
+                count++;
+            }
+
+            expect(count).toBe(5);
+        });
+    });
+
+    test("testing the item lists load items method", () => {
+        test_item_list.loadItems((item) => {
+            let trade_Item = new Trade_Item(item);
+            return trade_Item;
+        });
+
+        let Test_loaded_item = new Trade_Item(test_json_items[0]);
+        
+        let comparator = test_item_list.getItems()[0]
+        console.log("comparator: ", comparator)
+
+        expect(test_item_list.loaded).toBe(true);
+        expect(comparator.getName()).toBe(Test_loaded_item.getName());
+        expect(comparator.getID()).toBe(Test_loaded_item.getID());
+        expect(comparator.getDescription()).toBe(Test_loaded_item.getDescription());
+        expect(comparator.getValue()).toBe(Test_loaded_item.getValue());
+    })
+
+    test("testing find by ID", () => {
+        let items = test_item_list.getItems();
+
+        items.forEach((item) => {
+            let searchId = item.getID();
+            let returnItem = test_item_list.findByID(searchId);
+            expect(returnItem.getID()).toBe(searchId);
+        })
+    });
+
+    test("testing adding an item", () => {
+        let name = "testItem";
+        let desc = "test description"
+        let value = '1.1';
+        let id = '0';
+
+        let params = [name, desc, value, id];
+        return test_item_list.addItem('add-trade-item', params).then(() =>{
+            let test_new_item = test_item_list.getJsonItems();
+            test_new_item = test_new_item[test_new_item.length-1];
+            expect(test_new_item['item_name']).toBe(name);
+            expect(test_new_item['item_value']).toBe(value);
+            expect(test_new_item['description']).toBe(desc);
+        })
+    })
+
+    test("testing search", () => {
+        let items = test_item_list.getItems();
+        console.log(items);
+
+        expect(test_item_list.searchItems("").length).toBe(items.length);
+        items.forEach((item) => {
+            let searchterm = item.getName();
+            
+            let searchres = test_item_list.searchItems(searchterm);
+            console.log(searchterm, searchres)
+            searchres.forEach((item) => {
+                expect(item.getName().toLowerCase().includes(searchterm.toLowerCase())).toBe(true);
+            })
+        })
+    });
+})

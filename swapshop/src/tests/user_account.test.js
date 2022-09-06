@@ -19,7 +19,7 @@ let username = generateString(7);
 let password = generateString(7);
 let email = generateString(7);
 
-const test_Reguser = new Registering_User(fname+" "+lname, username, email);
+export const test_Reguser = new Registering_User(fname+" "+lname, username, email);
 const test_LogUser = new Login_user();
 test_LogUser.setUsername(username)
 

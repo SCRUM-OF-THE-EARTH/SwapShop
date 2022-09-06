@@ -15,7 +15,7 @@ import { communicator } from "./Communicator"
 
 export class Item_List {
     constructor(command) {
-        this.json_items;
+        this.json_items = false;
         this.fetchItems(command);
         this.items = [];
         this.loaded = false;
@@ -26,6 +26,9 @@ export class Item_List {
         return this.items;
     }
 
+    getJsonItems(){
+        return this.json_items;
+    }
     // fetchItems is used to get the json_array from the communicator 
     // it takes in a command name (command) which it passes on to the communicator 
     // it sets the json_item to the results of the communicators request
@@ -56,15 +59,16 @@ export class Item_List {
         let jsonRes = await communicator.makeRequestByCommand(command, param_values);
         this.json_items.push(jsonRes);
         this.items.push(this.constructorFunc(jsonRes));
+        return this;
     }
 
     // logItem is used to console log each of the items in the list
 
-    logItems() {
-        this.items.forEach(item => {
-            item.logItem();
-        })
-    }
+    // logItems() {
+    //     this.items.forEach(item => {
+    //         item.logItem();
+    //     })
+    // }
 
     // search items is used to refine the list of items presented by a search term
     // it takes in a string search Term and will compare each object to it

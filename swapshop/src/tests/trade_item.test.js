@@ -2,7 +2,8 @@ import React from "react";
 import { Trade_Item } from "../classes/Trade_Item";
 import { User_Account } from "../classes/User_Account";
 import 'react-native';
-import renderer from "react-test-renderer"
+import renderer from "react-test-renderer";
+import { test_Reguser } from './user_account.test.js';
 
 function generateString(length){
     let results = Math.random().toString(36).substring(2,length);
@@ -16,21 +17,23 @@ function generateString(length){
 const test_item_obj = {
     item_name: "test_item",
     item_value: Math.random(),
-    owner_id: 0,
+    owner: test_Reguser,
     description: "description of the test Item",
     id: 1
 }
 
-let test_item;
+export let test_item;
 
 describe("testing the trade item class", () => {
 
     test("testing contruction of new trade item", () => {
         test_item = new Trade_Item(test_item_obj);
+        test_item.setOwner(test_Reguser);
         expect(test_item.getName()).toBe(test_item_obj["item_name"]);
         expect(test_item.getValue()).toBe(test_item_obj["item_value"]);
         expect(test_item.getDescription()).toBe(test_item_obj["description"]);
         expect(test_item.getID()).toBe(test_item_obj["id"]);
+        expect(test_item.getOwner()).toBe(test_Reguser);
     });
 
     test("testing the comapring terms function relating to the search system", () => {
@@ -82,10 +85,9 @@ describe("testing the trade item class", () => {
         
     });
 
-    // test("testing the return of the item generator", () => {
-    //     const tree = renderer.create(test_item.createItemBlock()).toJSON();
-    //     expect(tree.children.length).toBe(4);
-    //     console.log(tree);
-    // })
+    test("testing the return of the item generator", () => {
+        const tree = renderer.create(test_item.createItemBlock()).toJSON();
+        expect(tree.children.length).toBe(2);
+    })
 
 })
