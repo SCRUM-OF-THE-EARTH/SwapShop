@@ -11,30 +11,12 @@ import MainScreen from "./src/screens/MainScreen";
 const {height, width} = Dimensions.get('window');
 
 const RootStack = createStackNavigator();
-// export default function App() {
-// // const App = () =>{
-//
-//   return (
-//
-//       <NavigationContainer>
-//           <SignInScreen></SignInScreen>
-//
-//
-//       </NavigationContainer>
-//
-//   )};
 
 const App = () =>{
     return(
-        // <View style = {styles.container}>
-        //     <SignInScreen></SignInScreen>
-        //     {/*<Text>Welcome to SwapShop</Text>*/}
-        // </View>
 
         <NavigationContainer>
             <RootStack.Navigator screenOptions={{headerShown:false}}>
-                {/*<RootStack.Screen name = "forgotPasswordScreen" component = {forgotPasswordScreen}/>*/}
-
                 <RootStack.Screen name = "SignInScreen" component = {SignInScreen}/>
                 <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
                 <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
