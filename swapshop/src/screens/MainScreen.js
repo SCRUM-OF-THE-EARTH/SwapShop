@@ -13,13 +13,17 @@ export const trade_items_list = new Item_List("fetch-trade-items");
 export const user_accounts_item_list = new Item_List("fetch-user-accounts");
 let displayItems = [];
 
-// export default function forgotPasswordScreen() {
+// this is the main page
+// this is the page the user is taken to after logging in
+// the search bar and displayed items are handled here
 
 const MainScreen = ({navigation}) =>{
-    const isFocused = useIsFocused();
-    const [email, setEmail] = useState('');
-    const [displayItems, setDisplayItems] = useState('');
+    const isFocused = useIsFocused(); // check if the main screen is active on screen
+    const [displayItems, setDisplayItems] = useState(''); // the list of trade item's GUI components
 
+    // this function is run when a tracked value is changed
+    // specifivally it is used to fetch and reload the list 
+    // when the page is loaded
     useEffect(() => {
         if (!user_accounts_item_list.loaded){
             user_accounts_item_list.loadItems((item) => {
@@ -37,7 +41,7 @@ const MainScreen = ({navigation}) =>{
             console.log("making use of useEffect")
             trade_items_list.loadItems((item) => {
                 let Owner = user_accounts_item_list.findByID(item["owner_id"]);
-                console.log(Owner)
+                console.log("the found owner is: ", Owner, item)
                 let trade_Item = new Trade_Item(item);
                 if (Owner != false) {
                     trade_Item.setOwner(Owner);
@@ -47,11 +51,14 @@ const MainScreen = ({navigation}) =>{
         }
     }, [])
 
+    // this is used to refresh the list of items on the main screen when the
+    // changes between this screen adn another screen or vice versa
     useEffect(() => {
         setDisplayItems('')
         setDisplayItems(LoadBlocks(''));
     }, [isFocused])
 
+    // this is the main page GUI component
     let screen = (<View style={styles.container}>
         <View style={styles.search_Bar}>
             <TextInput 
@@ -70,6 +77,10 @@ const MainScreen = ({navigation}) =>{
     return screen;
 }
 
+// th LoadBlocks function is used to filter thr list of items by the search term and load them into the GUI componen
+// it takes in a search term (string)
+// and sets the value of displayItems
+// and returns the list of filtered rendered GUI items
 function LoadBlocks(searchTerm) {
     console.log(searchTerm);
     let Items = trade_items_list.searchItems(searchTerm);
@@ -82,6 +93,7 @@ function LoadBlocks(searchTerm) {
 }
 
 
+// the styles of the home page
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -125,14 +137,6 @@ const styles = StyleSheet.create({
         borderRadius:50,
         width:"90%",
       },
-
-    //   inputView :{
-    
-    //     padding: 10,
-        
-    
-    //   },
-
 });
 
 export default MainScreen;

@@ -1,6 +1,13 @@
 import {View, Text, Image, StyleSheet} from 'react-native';
 import React from "react";
 
+// Trade item is used to create and store items fetched from the database of trading items
+// it has 5 parameters:
+//  | item_name - the name of the item (string)
+//  | item_value - the estimated value of the item (float)
+//  | owner - the user account that posted the item (User_Account)
+//  | item_description - the desiption provided to the trade item (string)
+//  | id - the id of the trade item (integer)
 export class Trade_Item {
     constructor(item) {
         console.log("new trade item has been created with:")
@@ -13,51 +20,76 @@ export class Trade_Item {
 
     }
 
+
+    // setName is used to set the item_name value 
+    // it takes in a string 
+    // and returns this 
     setName(name) {
         this.item_name = name;
         return this;
     }
 
+    // getName is used to get the name of an item
     getName() {
         return this.item_name;
     }
 
+    // setValue is used to set the value of the item
+    // it takes in a float
+    // and returns this
     setValue(value) {
         this.item_value = value;
         return this;
     }
 
+    // getValue is used to get the flaot value of the item
     getValue() {
         return this.item_value;
     }
 
+    // set id is used to set the id of the item
+    // it takes in an integer
+    // and returns this
     setID(id) {
         this.id = id;
         return this;
     }
 
+    // getID is used to get the value of the ID (integer) for the item
     getID() {
         return this.id;
     }
 
+    // setOwner is used to set the value of the items
+    // it takes in a User_Account item
+    // and returns this
     setOwner(owner) {
         this.owner = owner;
         return this;
     }
 
+    // getOwner is used to get the value of the owner
     getOwner() {
         return this.owner;
     }
 
+    // setDescription is used to set the value of the item's description
+    // it takes in a string 
+    // and returns this
     setDescription(desc) {
         this.item_description = desc;
         return this;
     }
 
+    //getDescription is used to get the value of the description of the item
     getDescription() {
         return this.item_description;
     }
 
+    // createItemBlock is used to generate the react GUI elements that make up the 
+    // trade item components on the home screen
+    // it takes in nothing
+    // and returns a react GUI element containing all the information of the item
     createItemBlock() {
         console.log(this.owner);
         return (
@@ -78,6 +110,10 @@ export class Trade_Item {
         );
     }
 
+    // compareTerm is used to comapre the item's name to some searchTerm 
+    // it takes in a string
+    // and returns true if the item contains thn the serachterm 
+    // and false if the item does not contain the searchterm
     compareTerm(term) {
         term = term.toLowerCase();
         if (this.item_name.toLowerCase().includes(term)) {
@@ -87,19 +123,9 @@ export class Trade_Item {
         return false;
     }
 
-    // logItem() {
-    //     console.group(`item ${this.id}`);
-    //     console.log(`item Name: ${this.item_name}`);
-    //     console.log(`Item estimated value: ${this.item_value}`);
-    //     console.log(`item Owner:`)
-    //     console.log(`owner id: ${this.owner_id}`);
-    //     console.log(`Item description: ${this.item_description}`);
-    //     console.groupEnd();
-    // }
-
-
 }
 
+// this contains the styles for the generated react native GUI item  
 const styles = StyleSheet.create({
     container: {
         borderRadius: 10,
@@ -108,15 +134,10 @@ const styles = StyleSheet.create({
         padding: 5,
         backgroundColor: "#F5F5F5",
         marginVertical: 5,
-        // shadowColor: "#171717",
-        // shadowOffset: {width: -2, height: 4},
-        // shadowOpacity: 0.2,
-        // shadowRadius: 3
     },
     header: {
         fontSize: 25,
         fontWeight: '300',
-        // fontWeight: 500,
         color: "#3CB371",
         paddingRight: 20,
         paddingLeft: 20,

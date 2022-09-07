@@ -1,3 +1,6 @@
+// This is a list of commands adn associated php API files
+// it is used by the communicator to find and construct an API cal using a command
+
 const APIcommands = [
     {
         command: "register_account",

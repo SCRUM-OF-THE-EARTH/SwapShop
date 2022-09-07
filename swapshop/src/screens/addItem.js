@@ -4,14 +4,16 @@ import {login_user} from './SignInScreen.js';
 import { trade_items_list } from "./MainScreen.js";
 import { sin } from "react-native-reanimated";
 
-
+// This is the screen for creating a new trade item 
 const AddItem = ({navigation}) => {
 
-    const [name, onNameChange] = useState('');
-    const [description, onDescChange] = useState('');
-    const [value, onValueChange] = useState('');
-    const [errorMessage, onChangeError] = useState('');
+    const [name, onNameChange] = useState(''); // the name of the new item
+    const [description, onDescChange] = useState(''); // the description of the new item
+    const [value, onValueChange] = useState(''); // the flaot value of the new item
+    const [errorMessage, onChangeError] = useState(''); // the error message displayed
 
+
+    // the React GUI component
     return(
 
         <View style={styles.container}>
@@ -28,6 +30,10 @@ const AddItem = ({navigation}) => {
     )
 }
 
+// addNewItem is used to pass the name, description and value to the the trade item class
+// to create a new trade item which is then added to the list of trade items
+// if the item is successfully created the app will return to the home page
+// if not it will display an error
 function AddNewItem(name, description, value, setError, navigation) {
     if (name == "" || description == "" || value == "") {
         setError("Please fill in all the fields");
@@ -42,6 +48,8 @@ function AddNewItem(name, description, value, setError, navigation) {
     })
     
 }
+
+// the styles for the add items screen
 const styles = StyleSheet.create({
     container :{
         margin:20,

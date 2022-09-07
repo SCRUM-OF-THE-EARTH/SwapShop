@@ -26,13 +26,14 @@ export class Item_List {
         return this.items;
     }
 
+    // getJsonItems simply returns the array of json items 
     getJsonItems(){
         return this.json_items;
     }
+
     // fetchItems is used to get the json_array from the communicator 
     // it takes in a command name (command) which it passes on to the communicator 
     // it sets the json_item to the results of the communicators request
-
     async fetchItems(command) {
         this.json_items = await communicator.makeRequestByCommand(command);
     }
@@ -84,6 +85,10 @@ export class Item_List {
         return searchResults;
     }
 
+    // findByID is used to find an item in the list of items with a specific ID
+    // it takes in a integer for id 
+    // and returns the resulting item if an item with the correct ID is found
+    // if no item is found it returns false
     findByID(id) {
         let resultItem = false;
         this.items.forEach((item) => {

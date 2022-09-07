@@ -3,7 +3,10 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from
 import React, {useState} from 'react';
 import { Registering_User } from '../classes/User_Account';
 
-// const SignUpScreen = ({navigation}) => {
+// this is the the dign up creen for the app 
+// th user will enter a usename, full name, passwor dnad email
+// and he app will the create a new registering account and saved the details
+// to the database through the communicator
 const SignUpScreen = ({navigation}) =>{
     
     const [fullName, onChangeName] = useState('');

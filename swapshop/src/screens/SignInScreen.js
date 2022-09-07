@@ -3,18 +3,21 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Aler
 import React, {useState} from 'react';
 import SignUpScreen from './SignUpScreen';
 import { Login_user } from '../classes/User_Account.js'
-// import {StackNavigator, DrawerNavigator, TabNavigator} from 'react-navigation';
 
-// export default function SignInScreen() {
-
+// defining a new login user for the sign in screen
 export const login_user = new Login_user();
 
+// this is the sign in screen for the app
+// users will enter a username and a password
+// and will either be taken to the mia page if theri details are correct
+// or an error will be displayed if something goes wrong
 const SignInScreen = ({navigation}) => {
 
-    const [username, onChangeUsername] = useState('');
-    const [password, onChangePassword] = useState('');
-    const [errorMessage, onChangeError] = useState('');
+    const [username, onChangeUsername] = useState(''); // the username of the user
+    const [password, onChangePassword] = useState(''); // the password of the user
+    const [errorMessage, onChangeError] = useState(''); // the error message that is displayed
 
+    // this is the GUI component for the sign in screen
     return(
     
       <View style={styles.container}>
@@ -23,9 +26,6 @@ const SignInScreen = ({navigation}) => {
           source={require("../../assets/appLogo.png")}
           style={styles.image}
       />
-
-      {/*<Button title="Go to signUp page" onPress={() => navigation.navigate('SignUpScreen')}/>*/}
-
       <Text style={styles.error_message}>{errorMessage}</Text>
       <View style = {styles.inputView}>
         
@@ -56,7 +56,6 @@ const SignInScreen = ({navigation}) => {
         <Button
                 title="LOG IN"
                 color="#2E8B57"
-                // onPress={() => Login(username, password, navigation)}
                 onPress = {() => Login(username, password, navigation, onChangeError)}
         />
       </View>
@@ -75,6 +74,10 @@ const SignInScreen = ({navigation}) => {
     );  
  }
 
+ // the Login function is used to pass the username and password to a new user acount
+ // and test the user's details against the database through the communicator
+ // if the login was a succes thsi will change the pagea to the main screen 
+ // if not then it will display an error to the user
 async function Login(username, password, navigation, onChangeError){
   console.log(username, password);
   login_user.setUsername(username);
@@ -89,6 +92,7 @@ async function Login(username, password, navigation, onChangeError){
 
  }
 
+ // the styles for the sign in screen
  const styles = StyleSheet.create({
   error_message: {
     color: "red",

@@ -39,7 +39,10 @@
     "merge-markdown": "^0.2.3",
     "metro": "^0.72.2",
     "react-native-reanimated": "^2.10.0",
-    "react-test-renderer": "^18.2.0"
+    "react-test-renderer": "^18.2.0",
+    "react-native-web": "~0.18.7",
+    "react-dom": "18.0.0",
+    "@expo/webpack-config": "^0.17.0"
   },
   "devDependencies": {
     "react-native": "^0.70.0"
