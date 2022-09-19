@@ -6,6 +6,7 @@ fetchMock.dontMock();
 const test_item_list = new Item_List('fetch-trade-items');
 waitFetch();
 let test_json_items;
+let testItemId;
 
 function waitFetch() {
     if(test_item_list.getItems() == false) {
@@ -70,9 +71,18 @@ describe("testing the item_list and its methods", () => {
         return test_item_list.addItem('add-trade-item', params).then(() =>{
             let test_new_item = test_item_list.getJsonItems();
             test_new_item = test_new_item[test_new_item.length-1];
+            testItemId = test_new_item['id'];
             expect(test_new_item['item_name']).toBe(name);
             expect(test_new_item['item_value']).toBe(value);
             expect(test_new_item['description']).toBe(desc);
+        })
+    });
+
+    test("testing deleting an item", () => {
+        console.log("the test ID is",testItemId);
+        return test_item_list.deleteItem('delete-trade-item', testItemId).then(res => {
+            expect(res).toBe(true);
+            expect(test_item_list.findByID(testItemId)).toBe(false);
         })
     })
 

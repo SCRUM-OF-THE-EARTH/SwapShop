@@ -36,6 +36,11 @@ export class User_Account {
         return this;
     }
 
+    // getEmail is used to get the value of the ID 
+    getID() {
+        return this.id;
+    }
+
     // setFirstName is used to set the value of the first name
     // it takes in a string
     // and returns this
@@ -112,10 +117,7 @@ export class User_Account {
         return this.email;
     }
 
-    // getEmail is used to get the value of the ID 
-    getID() {
-        return this.id;
-    }
+    
 }
 
 // the Login_user is a sub class of User_Account that is used to validate a user's input in order to try and
@@ -146,12 +148,18 @@ export class Login_user extends User_Account {
 
         return true;
     }
+
+    async deleteAccount() {
+        console.log("deleting the account with ID:",this.getID());
+        params = [this.getID()];
+        return await communicator.makeRequestByCommand("delete-account", params);
+    }
         
 }
 
 // the Register User is a sub class of User_account responsible for creating and 
 // posting new user accounts
-export class Registering_User extends User_Account {
+export class Registering_User extends Login_user {
     constructor(fullName, username, email) {
         super();
         this.setFullName(fullName)
@@ -171,9 +179,7 @@ export class Registering_User extends User_Account {
             return false;
         }
         this.setID(response["id"]);
-        return true;
- 
-        
+        return true;       
     }
 
 }

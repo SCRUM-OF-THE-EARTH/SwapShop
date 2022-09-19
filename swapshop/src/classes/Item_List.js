@@ -58,9 +58,29 @@ export class Item_List {
     // as well as make an api call to insert into a database
     async addItem(command, param_values) {
         let jsonRes = await communicator.makeRequestByCommand(command, param_values);
-        this.json_items.push(jsonRes);
-        this.items.push(this.constructorFunc(jsonRes));
-        return this;
+        if (jsonRes != false) {
+            this.json_items.push(jsonRes);
+            this.items.push(this.constructorFunc(jsonRes));
+            return true;
+        }
+        
+        return false;   
+    }
+
+    // deleteItem is used to delete to delete an Item from the list of json items and the database
+    async deleteItem(command, id) {
+        returnValue = false;
+        let jsonRes = await communicator.makeRequestByCommand(command, [id]).then(() => {
+            if (jsonRes != false) {
+                returnValue = true;
+            }
+        })
+        
+        if (returnValue) {
+            this.removeItemByID(id);
+        }
+
+        return returnValue;
     }
 
     // logItem is used to console log each of the items in the list
@@ -99,5 +119,34 @@ export class Item_List {
         });
 
         return resultItem;
+    }
+
+    // removeItemById is used to delete a trade item from the json_item list and the items list by passing it an id
+    removeItemByID(id) {
+        let pos = false;
+        this.json_items.forEach((item, i) => {
+            if (item['id'] == id){
+                pos = i;
+                console.log("json item found at position: ", pos);
+                return;
+            }
+        });
+
+        if (pos != false) {
+            this.json_items.splice(pos, 1);
+            console.log("json_Items are:",this.json_items);
+        }
+
+        pos = false;
+        this.items.forEach((item,i) => {
+            if (item.getID() == id) {
+                pos = i;
+                return;
+            }
+        });
+
+        if (pos != false) {
+            this.items.splice(pos, 1);
+        }
     }
 }
