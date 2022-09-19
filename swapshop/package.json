@@ -27,6 +27,7 @@
   },
   "private": true,
   "dependencies": {
+    "@expo/webpack-config": "^0.17.0",
     "@react-navigation/native": "^6.0.12",
     "@react-navigation/stack": "^6.2.3",
     "@rneui/themed": "^4.0.0-rc.6",
@@ -38,11 +39,13 @@
     "jest-fetch-mock": "^3.0.3",
     "merge-markdown": "^0.2.3",
     "metro": "^0.72.2",
-    "react-native-reanimated": "^2.10.0",
-    "react-test-renderer": "^18.2.0",
-    "react-native-web": "~0.18.7",
     "react-dom": "18.0.0",
-    "@expo/webpack-config": "^0.17.0"
+    "react-image-scroller": "^0.3.0",
+    "react-native-image-slider-box": "^2.0.6",
+    "react-native-image-slider-show": "^1.0.3",
+    "react-native-reanimated": "^2.10.0",
+    "react-native-web": "^0.18.9",
+    "react-test-renderer": "^18.2.0"
   },
   "devDependencies": {
     "react-native": "^0.70.0"

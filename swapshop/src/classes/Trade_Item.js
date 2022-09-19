@@ -1,4 +1,4 @@
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from "react";
 
 // Trade item is used to create and store items fetched from the database of trading items
@@ -9,7 +9,7 @@ import React from "react";
 //  | item_description - the desiption provided to the trade item (string)
 //  | id - the id of the trade item (integer)
 export class Trade_Item {
-    constructor(item) {
+    constructor(item, navigation) {
         console.log("new trade item has been created with:")
         console.log(item)
         this.item_name = item['item_name'];
@@ -17,6 +17,15 @@ export class Trade_Item {
         this.owner = false;
         this.item_description = item['description'];
         this.id = item['id'];
+        this.navigation = navigation;
+        this.exchangeItem = "";
+        this.images = [
+            "https://sudocode.co.za/SwapShop/filler_image.jpg",
+            "https://sudocode.co.za/SwapShop/filler_image.jpg",
+            "https://sudocode.co.za/SwapShop/filler_image.jpg",
+            "https://sudocode.co.za/SwapShop/filler_image.jpg",
+            "https://sudocode.co.za/SwapShop/filler_image.jpg"
+        ]
 
     }
 
@@ -86,6 +95,19 @@ export class Trade_Item {
         return this.item_description;
     }
 
+    // setExchangeItem is used to set the item that the user wants in exchange
+    // it takes in a string
+    // and returns this
+    setExchangeItem(item) {
+        this.exchangeItem = item;
+        return this;
+    }
+
+    // getExchageItem is used to get the item that the user wants in exchange for the item
+    getExchangeItem() {
+        return this.exchangeItem;
+    }
+
     // createItemBlock is used to generate the react GUI elements that make up the 
     // trade item components on the home screen
     // it takes in nothing
@@ -93,12 +115,12 @@ export class Trade_Item {
     createItemBlock() {
         console.log(this.owner);
         return (
-            <View style={styles.container}>
+            <TouchableOpacity style={styles.container} onPress={() => this.navigation.navigate("detailed_item", {item: this})}>
                 <Text style={styles.header}>{this.item_name}</Text>
             <View style={styles.innerContainer}>
                 <Image
                 style={{width:150, height: 150, borderRadius:10}}
-                    source={require("../../assets/filler_image.jpg")}   
+                    source={{uri:this.images[0]}}   
                 />
                 <View style={{flexDirection:"column", flex:1,alignSelf: 'center'}}>
                     <Text style={[styles.wrappedText, {paddingVertical: 10, color: 'gray'}]}>{this.item_description}</Text>
@@ -106,7 +128,7 @@ export class Trade_Item {
                     <Text style={[styles.wrappedText, styles.green]}>{this.owner.getFullName()}</Text>
                 </View>
             </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 
@@ -134,6 +156,8 @@ const styles = StyleSheet.create({
         padding: 5,
         backgroundColor: "#F5F5F5",
         marginVertical: 5,
+        borderColor: 'red',
+        borderWidth: 1      
     },
     header: {
         fontSize: 25,
