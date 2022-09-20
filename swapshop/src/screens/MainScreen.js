@@ -95,21 +95,25 @@ const MainScreen = ({navigation}) =>{
     // this is the main page GUI component
     let screen = (<View style={styles.container}>
         <View style={styles.search_Bar}>
-            <TextInput 
-                style={styles.TextInput} 
-                placeholderTextColor="#3CB371" 
-                placeholder="search" 
-                onChangeText={(searchTerm) => setDisplayItems(LoadBlocks(searchTerm))}
-            />
-            <DropDownPicker
-                open={sortMenuOpen}
-                value={sortValue}
-                items={sortItems}
-                setOpen={setSortMenuOpen}
-                setValue={setSortValue}
-                setItems={setSortItems}
-            />
-
+            <View style={{flexDirection: 'row',}}>
+                <TextInput 
+                    style={styles.TextInput} 
+                    placeholderTextColor="#3CB371" 
+                    placeholder="search" 
+                    onChangeText={(searchTerm) => setDisplayItems(LoadBlocks(searchTerm))}
+                />
+                <DropDownPicker
+                    open={sortMenuOpen}
+                    value={sortValue}
+                    items={sortItems}
+                    setOpen={setSortMenuOpen}
+                    setValue={setSortValue}
+                    setItems={setSortItems}
+                    placeholder="Sort"
+                    style={styles.sortMenu}
+                />
+            </View>
+{/* 
             <DropDownPicker
                 open={tagMenuOpen}
                 multiple={true}
@@ -120,7 +124,7 @@ const MainScreen = ({navigation}) =>{
                 setOpen={setTagMenuOpen}
                 setValue={setTagValues}
                 setItems={setTags}
-            />
+            /> */}
         </View>
         <ScrollView style={styles.center}>{displayItems}</ScrollView>
         <View style={styles.addItemBtn}>
@@ -155,6 +159,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: 'white'
     },
+    sortMenu: {
+        borderColor: 'red',
+        width: "30%",
+    },
     center: {
         width:'90%',
         shadowColor: '#000',
@@ -184,12 +192,13 @@ const styles = StyleSheet.create({
 
       TextInput:{
         padding: 5,
+        paddingHorizontal:20,
         color:"gray",
-        textAlign:'center',
         alignSelf:'center',
         backgroundColor:"#F5F5F5",
         borderRadius:50,
-        width:"90%",
+        width: '65%',
+        marginHorizontal: 10,
       },
 });
 
