@@ -23,7 +23,7 @@ const App = () =>{
                 <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
                 <RootStack.Screen name = "ForgotPasswordScreen" component = {ForgotPasswordScreen}/>
 
-                <RootStack.Screen name = "addItem" component={AddItemScreen}/>
+                {/*<RootStack.Screen name = "addItem" component={AddItemScreen}/>*/}
 
 
                 <RootStack.Screen name = "addItemScreen" component={AddItemScreen}/>

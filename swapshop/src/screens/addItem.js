@@ -115,13 +115,13 @@ const AddItem = ({navigation}) => {
                     title="upload image"
                     onPress={pickImage}
 
-                    color="green"/>
+                    color="#3CB371"/>
             </View>
             {/*{image && <Image source={{uri: image}} style={{width: 300, height: 200, marginLeft:30,marginTop: 400, marginBottom: 10}}/>}*/}
 
 
             <View style={styles.addItemBtn}>
-                <Button title="Post" color='#2E8B57'
+                <Button title="Post" color='#3CB371'
                         onPress={() => AddNewItem(name, description, value, onChangeError, navigation)}/>
                 {/*//also add that image here*/}
             </View>
@@ -129,12 +129,6 @@ const AddItem = ({navigation}) => {
             <View>
                 {image && <Image source={{uri: image}} style={{width: 300, height: 200, marginLeft:30,marginTop: -400}}/>}
             </View>
-
-
-
-
-
-
 
 
         </View>
@@ -217,7 +211,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginTop: 700,
         // marginBottom: -500,
-        backgroundColor: "#2E8B57",
+        backgroundColor: "#3CB371",
         margin: 2,
     },
 
