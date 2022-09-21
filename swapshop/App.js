@@ -22,7 +22,13 @@ const App = () =>{
                 <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
                 <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
                 <RootStack.Screen name = "ForgotPasswordScreen" component = {ForgotPasswordScreen}/>
+
                 <RootStack.Screen name = "addItem" component={AddItemScreen}/>
+
+
+                <RootStack.Screen name = "addItemScreen" component={AddItemScreen}/>
+                {/*<RootStack.Screen name = "mainImages" component={mainImages}/>*/}
+                {/*<RootStack.Screen name = "Test" component={Test}/>*/}
 
             </RootStack.Navigator>
         </NavigationContainer>
