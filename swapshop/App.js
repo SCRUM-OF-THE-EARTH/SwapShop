@@ -7,8 +7,7 @@ import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import AddItemScreen from "./src/screens/addItem.js"
 import MainScreen from "./src/screens/MainScreen";
-import mainImages from "./src/screens/MainImages";
-import Test from "./src/screens/Test";
+
 
 const {height, width} = Dimensions.get('window');
 
@@ -23,9 +22,8 @@ const App = () =>{
                 <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
                 <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
                 <RootStack.Screen name = "ForgotPasswordScreen" component = {ForgotPasswordScreen}/>
-                <RootStack.Screen name = "addItemScreen" component={AddItemScreen}/>
-                <RootStack.Screen name = "mainImages" component={mainImages}/>
-                <RootStack.Screen name = "Test" component={Test}/>
+                <RootStack.Screen name = "addItem" component={AddItemScreen}/>
+
             </RootStack.Navigator>
         </NavigationContainer>
     );
