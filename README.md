@@ -9,4 +9,4 @@ This the repository for the software design group SCRUM OF THE EARTH for the swa
 
 | statements  |  branches |  functions |  lines  |
 |---|---|---|---|
-| ![](https://img.shields.io/badge/Coverage-96%25-83A603.svg?style=flat&logo=kotlin&logoColor=white&color=blue&prefix=$statements$)  | ![](https://img.shields.io/badge/Coverage-86%25-83A603.svg?style=social&logo=ktor&logoColor=black&color=red&prefix=$branches$)  | ![](https://img.shields.io/badge/Coverage-93%25-83A603.svg?prefix=$functions$) | ![](https://img.shields.io/badge/Coverage-97%25-83A603.svg?prefix=$lines$) |
+| ![](https://img.shields.io/badge/Coverage-96%25-83A603.svg?prefix=$statements$)  | ![](https://img.shields.io/badge/Coverage-86%25-83A603.svg?prefix=$branches$)  | ![](https://img.shields.io/badge/Coverage-93%25-83A603.svg?prefix=$functions$) | ![](https://img.shields.io/badge/Coverage-97%25-83A603.svg?prefix=$lines$) |
