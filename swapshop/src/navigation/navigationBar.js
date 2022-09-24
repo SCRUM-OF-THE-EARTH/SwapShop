@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { NavigationContainer, StackActions } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import colors from "../config/colors";
+import colors from "../../config/colors";
 
 import MessagesScreen from "../screens/MessagesScreen";
 import MainScreen from "../screens/MainScreen";
@@ -19,13 +19,12 @@ const Tab = createBottomTabNavigator();
 export default function NavigationBar() {
     return (
         <NavigationContainer>
-            <Tab.Navigator
-                initialRouteName={Message}
+            <Tab.Navigator 
+                initialRouteName={Main}
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
                         let iconName;
                         let rn = route.name;
-
                         if (rn === Main) {
                             iconName = focused ? "home" : "home-outline";
                         }
@@ -36,12 +35,11 @@ export default function NavigationBar() {
                         return <Ionicons name={iconName} size={size} color={color} />;
                     },
                     headerStyle: { backgroundColor: colors.white },
-                    // headerShown: false,
+                    headerShown: false,
                     tabBarStyle: { backgroundColor: colors.white },
                     tabBarActiveTintColor: colors.seaGreen,
                     tabBarInactiveTintColor: colors.mediumSeaGreen,
                 })}
-
             >
                 <Tab.Screen name={Main} component={StackNavigation} />
                 <Tab.Screen name={Message} component={MessagesScreen} />

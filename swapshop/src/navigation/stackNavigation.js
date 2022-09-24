@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from "react";
 import { StyleSheet } from 'react-native';
-import colors from '../config/colors';
+import colors from '../../config/colors';
 
 import ChatScreen from '../screens/ChatScreen';
 import MessagesScreen from '../screens/MessagesScreen';

@@ -1,18 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
-import colors from '../config/colors';
-//import {
-  //Container,
-  //Card,
-  //UserInfo,
-  //UserImgWrapper,
-  //UserImg,
-  //UserInfoText,
-  //UserName,
-  //PostTime,
-  ///MessageText,
-  //TextSection,
-//} from './MessageStyles'
+import colors from '../../config/colors';
 
 import ChatScreen from './ChatScreen';
 
@@ -20,7 +8,7 @@ const Messages = [
   {
     id: '1',
     userName: 'Jane',
-    userImg: require('../assets/profile.jpg'),
+    userImg: require('../../assets/profile.jpg'),
     messageTime: '4 mins ago',
     messageText:
       'Hey there!',
@@ -28,7 +16,7 @@ const Messages = [
   {
     id: '2',
     userName: 'John',
-    userImg: require('../assets/profile.jpg'),
+    userImg: require('../../assets/profile.jpg'),
     messageTime: '1 hour ago',
     messageText:
       'This is a test!',
@@ -36,7 +24,7 @@ const Messages = [
   {
     id: '3',
     userName: 'Val',
-    userImg: require('../assets/profile.jpg'),
+    userImg: require('../../assets/profile.jpg'),
     messageTime: '2 hours ago',
     messageText:
       'I repeat, this is a test!',
@@ -50,7 +38,7 @@ const MessagesScreen = ({navigation}) => {
           data={Messages}
           keyExtractor={item=>item.id}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.Card} onPress={() => navigation.navigate('Chat', {screen: 'ChatScreen', userName: item.userName})}>
+            <TouchableOpacity style={styles.Card} onPress={() => navigation.navigate('Chat', {screen: 'ChatScreen'})}>
               <View style={styles.UserInfo}>
                 <View style={styles.UserImgWrapper}>
                   <Image style={styles.UserImg} source={item.userImg} />
@@ -75,6 +63,7 @@ export default MessagesScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 50,
     paddingLeft: 20,
     paddingRight: 20,
     alignItems: "center",

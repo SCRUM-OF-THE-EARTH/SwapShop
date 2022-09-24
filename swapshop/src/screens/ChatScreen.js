@@ -4,7 +4,7 @@ import {View, ScrollView, Text, Button, StyleSheet} from 'react-native';
 import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import colors from "../config/colors";
+import colors from "../../config/colors";
 
 const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
@@ -18,7 +18,7 @@ const ChatScreen = () => {
         user: {
           _id: 2,
           name: "Test",
-          avatar: require("../assets/profile.jpg"),
+          avatar: require("../../assets/profile.jpg"),
         },
       },
       {
@@ -28,7 +28,7 @@ const ChatScreen = () => {
         user: {
           _id: 1,
           name: "Test",
-          avatar: require("../assets/profile.jpg"),
+          avatar: require("../../assets/profile.jpg"),
         },
       },
     ]);
