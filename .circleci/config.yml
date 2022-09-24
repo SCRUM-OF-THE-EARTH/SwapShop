@@ -28,9 +28,13 @@ jobs:
           command: "cd swapshop; npm test"
 
       - run:
-          name: "creating coverage badges"
+          name: "creating README file"
           command: "cat ./swapshop/readme-config/main.md ./swapshop/readme-config/coverage.md > README.md"
 
+      - run:
+          name: "loading cover badges"
+          command: "cd swapshop; npm run badges"
+          
       - run:
           name: "configuring git"
           command: "git config user.email 'ciaranjotter@gmail.com'; git config user.name 'circle ci'"      

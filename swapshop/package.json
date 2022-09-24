@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --coverage",
-    "badges": "merge-markdown -m ./readme-config/readme.json && jest-coverage-badges && coverage-badge-creator"
+    "badges": "jest-coverage-badges && coverage-badge-creator"
   },
   "jest": {
     "automock": false,
