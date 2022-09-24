@@ -1,14 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import { Item_List } from '../classes/Item_List';
 import { Trade_Item } from '../classes/Trade_Item';
 import { ScrollView } from 'react-native-gesture-handler';
-import { SearchBar } from 'react-native-screens';
 import { useIsFocused } from "@react-navigation/native";
 import { User_Account } from '../classes/User_Account';
-import { set } from 'react-native-reanimated';
-import DropDownPicker from 'react-native-dropdown-picker';
+import SortBar from '../components/SortBar';
 
 export const trade_items_list = new Item_List("fetch-trade-items");
 export const user_accounts_item_list = new Item_List("fetch-user-accounts");
@@ -22,16 +19,7 @@ const MainScreen = ({navigation}) =>{
     const isFocused = useIsFocused(); // check if the main screen is active on screen
     const [displayItems, setDisplayItems] = useState(''); // the list of trade item's GUI components
     
-    // declare and initialise state variables for the sorting drop down menu
-    const [sortMenuOpen, setSortMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
-    const [sortValue, setSortValue] = useState(null);
-    const [sortItems, setSortItems] = useState([ // set the items in the sorting drop down menu
-        {label: "Latest post", value: 0},
-        {label: "Price: High to Low", value: 1},
-        {label: "Price: Low to High", value: 2},
-        {label: "Name: A to Z", value: 3},
-        {label: "Name: Z to A", value: 4},
-    ]); 
+    
 
     const [tagMenuOpen, setTagMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
     const [tagValues, setTagValues] = useState([]);
@@ -75,23 +63,23 @@ const MainScreen = ({navigation}) =>{
         setDisplayItems(LoadBlocks(''));
     }, [isFocused])
 
-    // this is called when the sorting menu's open status is changed
-    // if the sorting menu has been opened then it makes sure that the other menus on the page
-    // are closed to prevent overlap
-    useEffect(() => {
-        if (sortMenuOpen == true) {
-            setTagMenuOpen(false);
-        }
-    }, [sortMenuOpen]);
+    // // this is called when the sorting menu's open status is changed
+    // // if the sorting menu has been opened then it makes sure that the other menus on the page
+    // // are closed to prevent overlap
+    // useEffect(() => {
+    //     if (sortMenuOpen == true) {
+    //         setTagMenuOpen(false);
+    //     }
+    // }, [sortMenuOpen]);
 
-    // this is called when the tag menu's open status is changed
-    // if the tags menu has been opened then it makes sure that the other menus on the page
-    // are closed to prevent overlap
-    useEffect(() => {
-        if (tagMenuOpen == true) {
-            setSortMenuOpen(false);
-        }
-    }, [tagMenuOpen]);
+    // // this is called when the tag menu's open status is changed
+    // // if the tags menu has been opened then it makes sure that the other menus on the page
+    // // are closed to prevent overlap
+    // useEffect(() => {
+    //     if (tagMenuOpen == true) {
+    //         setSortMenuOpen(false);
+    //     }
+    // }, [tagMenuOpen]);
     // this is the main page GUI component
     let screen = (<View style={styles.container}>
         <View style={styles.search_Bar}>
@@ -102,16 +90,7 @@ const MainScreen = ({navigation}) =>{
                     placeholder="search" 
                     onChangeText={(searchTerm) => setDisplayItems(LoadBlocks(searchTerm))}
                 />
-                <DropDownPicker
-                    open={sortMenuOpen}
-                    value={sortValue}
-                    items={sortItems}
-                    setOpen={setSortMenuOpen}
-                    setValue={setSortValue}
-                    setItems={setSortItems}
-                    placeholder="Sort"
-                    style={styles.sortMenu}
-                />
+                <SortBar />
             </View>
 {/* 
             <DropDownPicker
@@ -158,10 +137,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white'
-    },
-    sortMenu: {
-        borderColor: 'red',
-        width: "30%",
     },
     center: {
         width:'90%',
