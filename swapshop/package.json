@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --coverage",
-    "badges": "jest-coverage-badges && coverage-badge-creator"
+    "badges": "jest-coverage-badges"
   },
   "jest": {
     "automock": false,
@@ -22,7 +22,8 @@
     "coverageReporters": [
       "json-summary",
       "text",
-      "lcov"
+      "lcov",
+      "html"
     ]
   },
   "private": true,

@@ -5,8 +5,8 @@ This the repository for the software design group SCRUM OF THE EARTH for the swa
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/SCRUM-OF-THE-EARTH/SwapShop/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/SCRUM-OF-THE-EARTH/SwapShop/tree/main)
 
 ## coverage
-$coverage$
+![](https://img.shields.io/badge/Coverage-93%25-83A603.svg?prefix=$coverage$)
 
 | statements  |  branches |  functions |  lines  |
 |---|---|---|---|
-| $statements$  | $branches$  | $functions$ | $lines$ |
+| ![](https://img.shields.io/badge/Coverage-96%25-83A603.svg?style=flat&logo=kotlin&logoColor=white&color=blue&prefix=$statements$)  | ![](https://img.shields.io/badge/Coverage-86%25-83A603.svg?style=social&logo=ktor&logoColor=black&color=red&prefix=$branches$)  | ![](https://img.shields.io/badge/Coverage-93%25-83A603.svg?prefix=$functions$) | ![](https://img.shields.io/badge/Coverage-97%25-83A603.svg?prefix=$lines$) |
