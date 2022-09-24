@@ -47,7 +47,7 @@ const MainScreen = ({navigation}) =>{
             trade_items_list.loadItems((item) => {
                 let Owner = user_accounts_item_list.findByID(item["owner_id"]);
                 console.log("the found owner is: ", Owner, item)
-                let trade_Item = new Trade_Item(item);
+                let trade_Item = new Trade_Item(item, navigation);
                 if (Owner != false) {
                     trade_Item.setOwner(Owner);
                 }
