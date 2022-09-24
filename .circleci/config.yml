@@ -32,9 +32,12 @@ jobs:
           command: "cat ./swapshop/readme-config/main.md ./swapshop/readme-config/coverage.md > README.md"
 
       - run:
-          name: "loading cover badges"
+          name: "create cover badges"
           command: "cd swapshop; npm run badges"
-          
+
+      - run:
+          name: "load cover badges"
+          command: "npm run load-badges"
       - run:
           name: "configuring git"
           command: "git config user.email 'ciaranjotter@gmail.com'; git config user.name 'circle ci'"      
