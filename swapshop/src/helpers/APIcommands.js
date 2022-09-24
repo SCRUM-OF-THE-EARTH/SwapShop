@@ -18,6 +18,11 @@ const APIcommands = [
         ], 
     },
     {
+        command: "delete-account",
+        file: "deleteAccount.php",
+        param_names: ["id"],
+    },
+    {
         command: "fetch-trade-items",
         file: "fetchtradeItems.php",
         param_names: []
@@ -33,6 +38,11 @@ const APIcommands = [
         param_names: [
             "name", "desc", "value","id"
         ]
+    },
+    {
+        command: "delete-trade-item",
+        file: "deleteTradeItem.php",
+        param_names: ["id"]
     },
 ];
 export default APIcommands;

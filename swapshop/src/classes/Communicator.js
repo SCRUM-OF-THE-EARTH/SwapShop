@@ -41,6 +41,8 @@ class Communicator {
 
         call.param_names.forEach((param, i) => {
             param_values[i] = param_values[i].replaceAll('\n', '%0A')
+            param_values[i] = param_values[i].replaceAll(' ', '%20');
+            param_values[i] = param_values[i].replaceAll("'", "\'");
             APIurl += param+"="+param_values[i];
             if (i != call.param_names.length-1){
                 APIurl += "&&";

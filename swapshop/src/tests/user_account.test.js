@@ -115,4 +115,10 @@ describe("testing the login, register and user account system", () => {
         expect(user_account.getEmail()).toBe("test");
     });
 
+    test("testing the user accounts ability to delete an account", ()=> {
+        return test_LogUser.deleteAccount().then((res) => {
+            expect(res).toBe(0);
+        })
+    });
+
 })

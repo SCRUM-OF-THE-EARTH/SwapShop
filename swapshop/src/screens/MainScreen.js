@@ -8,6 +8,7 @@ import { SearchBar } from 'react-native-screens';
 import { useIsFocused } from "@react-navigation/native";
 import { User_Account } from '../classes/User_Account';
 import { set } from 'react-native-reanimated';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export const trade_items_list = new Item_List("fetch-trade-items");
 export const user_accounts_item_list = new Item_List("fetch-user-accounts");
@@ -20,6 +21,22 @@ let displayItems = [];
 const MainScreen = ({navigation}) =>{
     const isFocused = useIsFocused(); // check if the main screen is active on screen
     const [displayItems, setDisplayItems] = useState(''); // the list of trade item's GUI components
+    
+    // declare and initialise state variables for the sorting drop down menu
+    const [sortMenuOpen, setSortMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
+    const [sortValue, setSortValue] = useState(null);
+    const [sortItems, setSortItems] = useState([ // set the items in the sorting drop down menu
+        {label: "Latest post", value: 0},
+        {label: "Price: High to Low", value: 1},
+        {label: "Price: Low to High", value: 2},
+        {label: "Name: A to Z", value: 3},
+        {label: "Name: Z to A", value: 4},
+    ]); 
+
+    const [tagMenuOpen, setTagMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
+    const [tagValues, setTagValues] = useState([]);
+    const [tags, setTags] = useState([]);
+
 
     // this function is run when a tracked value is changed
     // specifivally it is used to fetch and reload the list 
@@ -58,15 +75,56 @@ const MainScreen = ({navigation}) =>{
         setDisplayItems(LoadBlocks(''));
     }, [isFocused])
 
+    // this is called when the sorting menu's open status is changed
+    // if the sorting menu has been opened then it makes sure that the other menus on the page
+    // are closed to prevent overlap
+    useEffect(() => {
+        if (sortMenuOpen == true) {
+            setTagMenuOpen(false);
+        }
+    }, [sortMenuOpen]);
+
+    // this is called when the tag menu's open status is changed
+    // if the tags menu has been opened then it makes sure that the other menus on the page
+    // are closed to prevent overlap
+    useEffect(() => {
+        if (tagMenuOpen == true) {
+            setSortMenuOpen(false);
+        }
+    }, [tagMenuOpen]);
     // this is the main page GUI component
     let screen = (<View style={styles.container}>
         <View style={styles.search_Bar}>
-            <TextInput 
-                style={styles.TextInput} 
-                placeholderTextColor="#3CB371" 
-                placeholder="search" 
-                onChangeText={(searchTerm) => setDisplayItems(LoadBlocks(searchTerm))}
-            />
+            <View style={{flexDirection: 'row',}}>
+                <TextInput 
+                    style={styles.TextInput} 
+                    placeholderTextColor="#3CB371" 
+                    placeholder="search" 
+                    onChangeText={(searchTerm) => setDisplayItems(LoadBlocks(searchTerm))}
+                />
+                <DropDownPicker
+                    open={sortMenuOpen}
+                    value={sortValue}
+                    items={sortItems}
+                    setOpen={setSortMenuOpen}
+                    setValue={setSortValue}
+                    setItems={setSortItems}
+                    placeholder="Sort"
+                    style={styles.sortMenu}
+                />
+            </View>
+{/* 
+            <DropDownPicker
+                open={tagMenuOpen}
+                multiple={true}
+                min={0}
+                max={5}
+                value={tagValues}
+                items={tags}
+                setOpen={setTagMenuOpen}
+                setValue={setTagValues}
+                setItems={setTags}
+            /> */}
         </View>
         <ScrollView style={styles.center}>{displayItems}</ScrollView>
         <View style={styles.addItemBtn}>
@@ -101,6 +159,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: 'white'
     },
+    sortMenu: {
+        borderColor: 'red',
+        width: "30%",
+    },
     center: {
         width:'90%',
         shadowColor: '#000',
@@ -130,12 +192,13 @@ const styles = StyleSheet.create({
 
       TextInput:{
         padding: 5,
+        paddingHorizontal:20,
         color:"gray",
-        textAlign:'center',
         alignSelf:'center',
         backgroundColor:"#F5F5F5",
         borderRadius:50,
-        width:"90%",
+        width: '65%',
+        marginHorizontal: 10,
       },
 });
 

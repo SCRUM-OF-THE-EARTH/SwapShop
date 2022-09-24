@@ -9,6 +9,7 @@ import AddItemScreen from "./src/screens/addItem.js";
 import Detailed_Trade_item from './src/screens/detailed_trade_item';
 import MainScreen from "./src/screens/MainScreen";
 
+
 const {height, width} = Dimensions.get('window');
 
 const RootStack = createStackNavigator();
