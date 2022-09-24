@@ -53,6 +53,7 @@ export class Item_List {
             this.items.push(this.constructorFunc(item));
         });
 
+        this.loaded = true;
         this.filteredResults = this.items;
     }
 
@@ -106,9 +107,7 @@ export class Item_List {
                     temp.push(item);
                 }
             });
-        
-
-        this.loaded = true;
+            
         this.filteredResults = temp;
         return this.filteredResults;
     }
