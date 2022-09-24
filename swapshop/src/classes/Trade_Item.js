@@ -17,6 +17,7 @@ export class Trade_Item {
         this.owner = false;
         this.item_description = item['description'];
         this.id = item['id'];
+        this.date_created = item['date_created'];
 
     }
 
@@ -84,6 +85,10 @@ export class Trade_Item {
     //getDescription is used to get the value of the description of the item
     getDescription() {
         return this.item_description;
+    }
+
+    getDateCreated() {
+        return this.date_created;
     }
 
     // createItemBlock is used to generate the react GUI elements that make up the 

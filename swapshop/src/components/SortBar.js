@@ -2,7 +2,7 @@ import {useState} from 'react';
 import { View, StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-const SortBar = () => {
+const SortBar = ({data, setItemsFunc, load}) => {
     // declare and initialise state variables for the sorting drop down menu
     const [sortMenuOpen, setSortMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
     const [sortValue, setSortValue] = useState(null);
@@ -25,15 +25,26 @@ const SortBar = () => {
                     setItems={setSortItems}
                     placeholder="Sort"
                     style={styles.sortMenu}
+                    dropDownContainerStyle={styles.dropMenu}
+                    onChangeValue={(value) => doSort(value, data, load, setItemsFunc)}
                 />
         </View>
     )
 }
 
+function doSort(value, obj, load, setItemFunc) {
+    setItemFunc(load(obj.Sort(value)));
+    
+}
+
 const styles = StyleSheet.create({
-    sortMenu: {
-        borderColor: 'red',
-        width: "30%",
-    },
+    dropMenu: {
+        zIndex: 10,
+        borderWidth: 0,
+        borderBottomWidth: 1,
+   },
+   sortMenu: {
+    borderWidth: 0,
+   }
 });
 export default SortBar;
