@@ -21,7 +21,7 @@ jobs:
 
       - run:
           name: "change directories and install node modules"
-          command: "cd swapshop; npm install --force"
+          command: "npm install; cd swapshop; npm install --force"
 
       - run:
           name: "running tests"
