@@ -1,11 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import SignInScreen from './classes/SignInScreen';
+import MainScreen from './screens/MainScreen';
+import MessagesScreen from './screens/MessagesScreen';
+import ChatScreen from './screens/ChatScreen';
 
-export default function App() {
-  return <SignInScreen></SignInScreen> 
-}
+const RootStack = createStackNavigator();
+
+const App = () => {
+  return(
+
+    <NavigationContainer>
+      <RootStack.Navigator screenOptions={{headerShown:false}}>
+          <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
+          <RootStack.Screen name = "MessagesScreen" component = {MessagesScreen}/>
+          <RootStack.Screen name = "ChatScreen" component = {ChatScreen}/>
+      </RootStack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -15,3 +30,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App;

@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default class ChatScreen extends Component {
+export default class MainScreen extends Component {
 
     render () {
         return (
