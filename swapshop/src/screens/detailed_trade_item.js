@@ -7,12 +7,7 @@ const Detailed_Trade_item = ({route, navigation}) => {
     // retrieve the item passed through the navigation
     const { item } = route.params;
 
-<<<<<<< HEAD
-    console.log(item);
-
-=======
     // render the item 
->>>>>>> main
     return (
         <View>
             <View style={styles.container}>
