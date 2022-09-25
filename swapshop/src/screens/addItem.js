@@ -41,7 +41,7 @@ import {login_user} from './SignInScreen.js';
 import { trade_items_list } from "./MainScreen.js";
 import { sin } from "react-native-reanimated";
 import * as ImagePicker from 'expo-image-picker';
-import image from "react-native-web/src/exports/Image";
+//import image from "react-native-web/src/exports/Image";
 import addItem from "./addItem";
 
 // This is the screen for creating a new trade item

@@ -2,7 +2,8 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from
 import React, {useEffect, useState} from 'react';
 import { Item_List } from '../classes/Item_List';
 import { Trade_Item } from '../classes/Trade_Item';
-import { ScrollView } from 'react-native-gesture-handler';
+//import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native';
 import { useIsFocused } from "@react-navigation/native";
 import { User_Account } from '../classes/User_Account';
 import SortBar from '../components/SortBar';
