@@ -39,8 +39,12 @@ const Detailed_Trade_item = ({route, navigation}) => {
                     <Text style={{color: "#3CB371", fontSize: 18, fontWeight:'100'}}>Posted by: </Text>
                     <Text style={styles.description}>{item.getOwner().getFullName()}</Text>
                 </View>
-
-                <Button color="#2E8B57" title={"contact"}/>
+                
+                <Button 
+                    color="#2E8B57" 
+                    title={"contact"}
+                    onPress = {() => navigation.navigate('ChatScreen')}
+                />
             </View>
 
 
