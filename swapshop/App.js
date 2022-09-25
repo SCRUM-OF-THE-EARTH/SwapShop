@@ -8,6 +8,7 @@ import SignUpScreen from "./src/screens/SignUpScreen";
 import AddItemScreen from "./src/screens/addItem.js";
 import Detailed_Trade_item from './src/screens/detailed_trade_item';
 import MainScreen from "./src/screens/MainScreen";
+import ChatScreen from './src/screens/ChatScreen';
 
 
 const {height, width} = Dimensions.get('window');
@@ -25,6 +26,7 @@ const App = () =>{
                 <RootStack.Screen name = "ForgotPasswordScreen" component = {ForgotPasswordScreen}/>
                 <RootStack.Screen name = "addItemScreen" component={AddItemScreen}/>
                 <RootStack.Screen name = "detailed_item" component={Detailed_Trade_item} options={{headerShown:true, title:"", headerStyle:{backgroundColor:"#3CB371"}}}/>
+                <RootStack.Screen name = "ChatScreen" component={ChatScreen} options={{headerShown:true, title:"Chat", headerStyle:{backgroundColor:"#3CB371"}}}/>
             </RootStack.Navigator>
         </NavigationContainer>
     );
