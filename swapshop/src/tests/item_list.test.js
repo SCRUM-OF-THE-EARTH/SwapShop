@@ -29,7 +29,7 @@ describe("testing the item_list and its methods", () => {
                 count++;
             }
 
-            expect(count).toBe(5);
+            expect(count).toBe(7);
         });
     });
 
