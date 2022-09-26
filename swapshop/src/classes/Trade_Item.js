@@ -26,6 +26,7 @@ export class Trade_Item {
             "https://sudocode.co.za/SwapShop/filler_image.jpg",
             "https://sudocode.co.za/SwapShop/filler_image.jpg"
         ]
+        this.date_created = item['date_created'];
 
     }
 
@@ -106,6 +107,10 @@ export class Trade_Item {
     // getExchageItem is used to get the item that the user wants in exchange for the item
     getExchangeItem() {
         return this.exchangeItem;
+    }
+    
+    getDateCreated() {
+        return this.date_created;
     }
 
     // createItemBlock is used to generate the react GUI elements that make up the 
