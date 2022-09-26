@@ -1,15 +1,17 @@
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import { Item_List } from '../classes/Item_List';
-import { Trade_item_list  } from '../classes/Item_List';
+import { Item_List, Tag_list, Trade_item_list  } from '../classes/Item_List';
 import { Trade_Item } from '../classes/Trade_Item';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useIsFocused } from "@react-navigation/native";
 import { User_Account } from '../classes/User_Account';
+import { Tag } from '../classes/Tag';
 import SortBar from '../components/SortBar';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export const trade_items_list = new Trade_item_list();
 export const user_accounts_item_list = new Item_List("fetch-user-accounts");
+export const tags_list = new Tag_list();
 let displayItems = [];
 
 // this is the main page
@@ -43,18 +45,38 @@ const MainScreen = ({navigation}) =>{
             });
         }
 
+        if (!tags_list.loaded) {
+            console.log("loading tags");
+            tags_list.loadItems((item) => {
+                console.log("item or tag is: ", item);
+                let tag = new Tag(item);
+                return tag;
+            })
+        }
+        setTags(tags_list.getTags());
+        console.log(tags_list);
+        console.log(tags);
+
         if (!trade_items_list.loaded){
             console.log("making use of useEffect")
             trade_items_list.loadItems((item) => {
                 let Owner = user_accounts_item_list.findByID(item["owner_id"]);
-                console.log("the found owner is: ", Owner, item)
+                console.log("the found owner is: ", Owner, item);
+
                 let trade_Item = new Trade_Item(item, navigation);
+
+                item["tags"].forEach((id) => {
+                    let tag = tags_list.findByID(id);
+                    trade_Item.addTag(tag);   
+                })
+
                 if (Owner != false) {
                     trade_Item.setOwner(Owner);
                 }
                 return trade_Item;
             });
         }
+                
     }, [])
 
     // this is used to refresh the list of items on the main screen when the
@@ -99,18 +121,22 @@ const MainScreen = ({navigation}) =>{
                      />
                 </View>
             </View>
-{/* 
+
             <DropDownPicker
                 open={tagMenuOpen}
+                searchable={true}
+                // addCustomItem={true}r
                 multiple={true}
                 min={0}
                 max={5}
+                mode="BADGE"
                 value={tagValues}
                 items={tags}
                 setOpen={setTagMenuOpen}
                 setValue={setTagValues}
                 setItems={setTags}
-            /> */}
+                onChangeValue={(value) => setDisplayItems(filterByTag(value))}
+            />
         </View>
 
         <ScrollView style={styles.center}>{displayItems}</ScrollView>
@@ -141,6 +167,12 @@ function loadSorted(items) {
     return tempArray;
 }
 
+function filterByTag(tags) {
+    console.log("tags and items are: ", tags);
+
+    trade_items_list.filterByTags(tags);
+    return loadSorted(trade_items_list.filteredResults);
+}
 
 // the styles of the home page
 const styles = StyleSheet.create({

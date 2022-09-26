@@ -28,6 +28,8 @@ export class Trade_Item {
         ]
         this.date_created = item['date_created'];
 
+        this.tags = [];
+
     }
 
 
@@ -148,6 +150,11 @@ export class Trade_Item {
         }
 
         return false;
+    }
+
+    addTag(tag) {
+        this.tags.push(tag);
+        return this;
     }
 
 }

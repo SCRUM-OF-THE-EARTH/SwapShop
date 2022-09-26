@@ -107,7 +107,7 @@ export class Item_List {
                     temp.push(item);
                 }
             });
-            
+
         this.filteredResults = temp;
         return this.filteredResults;
     }
@@ -162,6 +162,7 @@ export class Trade_item_list extends Item_List {
     constructor() {;
         super("fetch-trade-items");
         this.index = 0;
+        this.tagsActive = false;
     }
 
     Sort(index) {
@@ -194,7 +195,67 @@ export class Trade_item_list extends Item_List {
     }
 
     searchItems(searchterm) {
-        super.searchItems(searchterm);
-        return this.Sort();
+        if (!this.tagsActive) {
+            super.searchItems(searchterm);
+            return this.Sort();
+        }
+        
+        let temp = [];
+
+            this.filteredResults.forEach((item) => {
+                console.log(item);
+                if (item.compareTerm(searchterm)) {
+                    console.log("added an item");
+                    temp.push(item);
+                }
+            });
+
+        this.filteredResults = temp;
+        return this.filteredResults;
+    }
+
+    filterByTags(tags) {
+        console.log(tags.length);
+        if (tags.length == 0) {
+            this.tagActive = false;
+            this.searchItems("");
+            return;
+        }
+        this.tagsActive = true;
+        console.log("performing filter");
+        for (let i =this.filteredResults.length -1; i >= 0 ; i--) {
+            isTagged = false;
+
+            for (let j =0; j < tags.length; j++) {
+                if(this.filteredResults[i].tags.find(t => t.getID() == tags[j].getID())) {
+                    isTagged = true;
+                    break;
+                }
+            }
+
+            if (!isTagged) {
+                this.filteredResults.splice(i,1);
+            }
+        }
+
+        console.log("after filter by tags:", this.filteredResults);
+    }
+}
+
+export class Tag_list extends Item_List {
+    constructor() {
+        super("fetch-tags");
+    }
+
+    getTags() {
+        let names = [];
+
+        this.items.forEach((item) => {
+            let tempTagItem = {label: "", value: 0};
+            tempTagItem['label'] = item.getName();
+            tempTagItem['value'] = item;
+            names.push(tempTagItem);
+        });
+        return names;
     }
 }

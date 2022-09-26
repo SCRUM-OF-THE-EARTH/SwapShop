@@ -8,8 +8,6 @@
 
     if ($results = $conn->query($query)) {
         $output['success'] = 1;
-        $resArray = array();
-
         while ($row = $results->fetch_assoc()) {
             $resArray[] = $row;
         }

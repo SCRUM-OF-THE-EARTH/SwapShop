@@ -17,7 +17,25 @@
     // check if the query was successful or not 
     if ($results = $conn->query($query)) {
         while ($row = $results->fetch_assoc()) {
-            $tradeItems[] = $row;
+            $item_id = $row['id'];
+            $tags = array();
+            $trade_item = array("id"=>0, "item_name"=>"name", "owner_id"=>0, "description"=>"desc", "item_value"=>0, "date_created"=>0, "tags"=>0);
+
+            if ($sub_results = $conn->query("select * from item_tags WHERE item = $item_id;")) {
+                while ($tag_row = $sub_results->fetch_assoc()) {
+                    $tags[] = $tag_row['tag'];
+                }
+            }
+
+            $tradeItem['id'] = $item_id;
+            $tradeItem['item_name'] = $row['item_name'];
+            $tradeItem['owner_id'] = $row['owner_id'];
+            $tradeItem['description'] = $row['description'];
+            $tradeItem['item_value'] = $row['item_value'];
+            $tradeItem['date_created'] = $row['date_created'];
+            $tradeItem['tags'] = $tags;
+
+            $tradeItems[] = $tradeItem;
         }
         $output['success'] = 1;
         $output['results'] = $tradeItems;

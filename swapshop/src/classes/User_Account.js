@@ -138,11 +138,12 @@ export class Login_user extends User_Account {
         if (!response) {
             return false;
         }
-                this.setID(response["id"])
-                .setUsername(response["username"])
-                .setFisrtName(response["fname"])
-                .setLastName(response["lname"])
-                .setEmail(response["email"]);
+        
+        this.setID(response["id"])
+        .setUsername(response["username"])
+        .setFisrtName(response["fname"])
+        .setLastName(response["lname"])
+        .setEmail(response["email"]);
 
             
 
