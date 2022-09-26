@@ -23,7 +23,7 @@
     $id =$_REQUEST['id'];
 
     // construct an insert query
-    $query = "INSERT INTO trade_items (item_name, description, item_value, owner_id) VALUE ('$name', '$description',$value, $id);";
+    $query = "INSERT INTO trade_items (item_name, description, item_value, owner_id, date_created) VALUE ('$name', '$description',$value, $id, CURDATE());";
     
     // initialise the array that is going to be outputed
     $output = array("success"=>0, "results"=>0);

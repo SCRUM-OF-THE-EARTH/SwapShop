@@ -19,6 +19,7 @@ export class Item_List {
         this.fetchItems(command);
         this.items = [];
         this.loaded = false;
+        this.filteredResults =[];
     }
 
     // getItems is simply used to return the array of objects stored in the item list
@@ -51,7 +52,9 @@ export class Item_List {
             console.log(item);
             this.items.push(this.constructorFunc(item));
         });
+
         this.loaded = true;
+        this.filteredResults = this.items;
     }
 
     // addItem is used to create a new object usign the call back constructor function and both add it to the json items and items array
@@ -95,14 +98,18 @@ export class Item_List {
     // it takes in a string search Term and will compare each object to it
     // it will return the new list of items after it has been filtered by the search term
     searchItems(searchterm) {
-        let searchResults = [];
-        this.items.forEach((item) => {
-            if (item.compareTerm(searchterm)) {
-                searchResults.push(item);
-            }
-        });
+        let temp = [];
 
-        return searchResults;
+            this.items.forEach((item) => {
+                console.log(item);
+                if (item.compareTerm(searchterm)) {
+                    console.log("added an item");
+                    temp.push(item);
+                }
+            });
+            
+        this.filteredResults = temp;
+        return this.filteredResults;
     }
 
     // findByID is used to find an item in the list of items with a specific ID
@@ -148,5 +155,46 @@ export class Item_List {
         if (pos != false) {
             this.items.splice(pos, 1);
         }
+    }
+};
+
+export class Trade_item_list extends Item_List {
+    constructor() {;
+        super("fetch-trade-items");
+        this.index = 0;
+    }
+
+    Sort(index) {
+        if (index != null) {
+            this.index = index;
+        }
+
+        console.log("sorting index is ", this.index);
+        if (this.index == 0) {
+            this.filteredResults.sort((a,b) => Date(b.date_created) > Date(a.date_created) ? 1:-1);
+        }
+        if (this.index == 1 ){
+            this.filteredResults.sort((a,b) => parseFloat(b.item_value) > parseFloat(a.item_value) ? 1:-1);
+        }
+
+        if (this.index == 2) {
+            this.filteredResults.sort((a,b) => parseFloat(a.item_value) > parseFloat(b.item_value) ? 1:-1);
+        }
+
+        if (this.index == 3) {
+            this.filteredResults.sort((a,b) => a.item_name > b.item_name ? 1:-1);
+        }
+
+        if (this.index == 4) {
+            this.filteredResults.sort((a,b) => b.item_name > a.item_name ? 1: -1);
+        }
+        
+        console.log(this.filteredResults);
+        return this.filteredResults;
+    }
+
+    searchItems(searchterm) {
+        super.searchItems(searchterm);
+        return this.Sort();
     }
 }

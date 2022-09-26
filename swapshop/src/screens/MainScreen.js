@@ -1,13 +1,14 @@
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import { Item_List } from '../classes/Item_List';
+import { Trade_item_list  } from '../classes/Item_List';
 import { Trade_Item } from '../classes/Trade_Item';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useIsFocused } from "@react-navigation/native";
 import { User_Account } from '../classes/User_Account';
 import SortBar from '../components/SortBar';
 
-export const trade_items_list = new Item_List("fetch-trade-items");
+export const trade_items_list = new Trade_item_list();
 export const user_accounts_item_list = new Item_List("fetch-user-accounts");
 let displayItems = [];
 
@@ -83,14 +84,20 @@ const MainScreen = ({navigation}) =>{
     // this is the main page GUI component
     let screen = (<View style={styles.container}>
         <View style={styles.search_Bar}>
-            <View style={{flexDirection: 'row',}}>
+            <View style={{flexDirection: 'row'}}>
                 <TextInput 
                     style={styles.TextInput} 
                     placeholderTextColor="#3CB371" 
                     placeholder="search" 
                     onChangeText={(searchTerm) => setDisplayItems(LoadBlocks(searchTerm))}
                 />
-                <SortBar />
+                <View style={styles.sortMenu}>
+                    <SortBar
+                        data={trade_items_list}
+                        setItemsFunc={setDisplayItems}
+                        load={loadSorted}
+                     />
+                </View>
             </View>
 {/* 
             <DropDownPicker
@@ -105,6 +112,7 @@ const MainScreen = ({navigation}) =>{
                 setItems={setTags}
             /> */}
         </View>
+
         <ScrollView style={styles.center}>{displayItems}</ScrollView>
         <View style={styles.addItemBtn}>
             <Button color="#2E8B57" title='post a new item' onPress={() => navigation.navigate('addItemScreen')}/>
@@ -121,11 +129,15 @@ const MainScreen = ({navigation}) =>{
 function LoadBlocks(searchTerm) {
     console.log(searchTerm);
     let Items = trade_items_list.searchItems(searchTerm);
+    return loadSorted(Items);
+}
+
+function loadSorted(items) {
     let tempArray = [];
-    Items.forEach((item) => {
+    items.forEach((item) => {
         tempArray.push(item.createItemBlock());
     });
-    console.log(tempArray);
+
     return tempArray;
 }
 
@@ -145,7 +157,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,  
         elevation: 5,
-        marginVertical:10
+        marginVertical:10,
+        marginTop: 0,
+        zIndex: -5,
     },
     addItemBtn:{
         width: "70%",
@@ -175,6 +189,11 @@ const styles = StyleSheet.create({
         width: '65%',
         marginHorizontal: 10,
       },
+      sortMenu: {
+        borderColor: 'red',
+        width: "30%",
+        zIndex: 10
+    },
 });
 
 export default MainScreen;

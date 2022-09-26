@@ -17,6 +17,7 @@ export class Trade_Item {
         this.owner = false;
         this.item_description = item['description'];
         this.id = item['id'];
+<<<<<<< HEAD
         this.navigation = navigation;
         this.exchangeItem = "";
         this.images = [
@@ -26,6 +27,9 @@ export class Trade_Item {
             "https://sudocode.co.za/SwapShop/filler_image.jpg",
             "https://sudocode.co.za/SwapShop/filler_image.jpg"
         ]
+=======
+        this.date_created = item['date_created'];
+>>>>>>> 15a92d2a331315501430ba6ed2ea08c3890304cd
 
     }
 
@@ -95,6 +99,7 @@ export class Trade_Item {
         return this.item_description;
     }
 
+<<<<<<< HEAD
     // setExchangeItem is used to set the item that the user wants in exchange
     // it takes in a string
     // and returns this
@@ -106,6 +111,10 @@ export class Trade_Item {
     // getExchageItem is used to get the item that the user wants in exchange for the item
     getExchangeItem() {
         return this.exchangeItem;
+=======
+    getDateCreated() {
+        return this.date_created;
+>>>>>>> 15a92d2a331315501430ba6ed2ea08c3890304cd
     }
 
     // createItemBlock is used to generate the react GUI elements that make up the 
