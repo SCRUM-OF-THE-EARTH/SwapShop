@@ -29,7 +29,11 @@ describe("testing the item_list and its methods", () => {
                 count++;
             }
 
+<<<<<<< HEAD
             expect(count).toBe(8);
+=======
+            expect(count).toBe(7);
+>>>>>>> e27cb53b (bug fix to testing)
         });
     });
 
