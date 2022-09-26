@@ -253,8 +253,8 @@ FNDA:11,(anonymous_1)
 FNDA:34,(anonymous_2)
 FNDA:12,(anonymous_3)
 FNDA:15,(anonymous_4)
-FNDA:15,(anonymous_5)
-FNDA:79,(anonymous_6)
+FNDA:14,(anonymous_5)
+FNDA:78,(anonymous_6)
 FNDA:1,(anonymous_7)
 FNDA:1,(anonymous_8)
 FNDA:12,(anonymous_9)
@@ -282,9 +282,9 @@ DA:44,34
 DA:51,12
 DA:52,12
 DA:57,15
-DA:64,15
-DA:65,15
-DA:70,79
+DA:64,14
+DA:65,14
+DA:70,78
 DA:77,1
 DA:78,1
 DA:83,1
