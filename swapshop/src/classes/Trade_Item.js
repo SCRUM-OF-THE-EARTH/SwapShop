@@ -26,6 +26,9 @@ export class Trade_Item {
             "https://sudocode.co.za/SwapShop/filler_image.jpg",
             "https://sudocode.co.za/SwapShop/filler_image.jpg"
         ]
+        this.date_created = item['date_created'];
+
+        this.tags = [];
 
     }
 
@@ -107,6 +110,10 @@ export class Trade_Item {
     getExchangeItem() {
         return this.exchangeItem;
     }
+    
+    getDateCreated() {
+        return this.date_created;
+    }
 
     // createItemBlock is used to generate the react GUI elements that make up the 
     // trade item components on the home screen
@@ -143,6 +150,11 @@ export class Trade_Item {
         }
 
         return false;
+    }
+
+    addTag(tag) {
+        this.tags.push(tag);
+        return this;
     }
 
 }

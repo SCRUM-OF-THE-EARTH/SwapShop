@@ -17,6 +17,8 @@ const SignInScreen = ({navigation}) => {
     const [password, onChangePassword] = useState(''); // the password of the user
     const [errorMessage, onChangeError] = useState(''); // the error message that is displayed
 
+    console.log("This is a test");
+
     // this is the GUI component for the sign in screen
     return(
     
@@ -86,6 +88,7 @@ async function Login(username, password, navigation, onChangeError){
 
   if (success) {
     navigation.navigate('MainScreen');
+    return;
   } else {
     onChangeError("Sorry. Those details don't seem to match");
   }

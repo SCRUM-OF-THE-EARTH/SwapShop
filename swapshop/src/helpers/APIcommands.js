@@ -44,5 +44,10 @@ const APIcommands = [
         file: "deleteTradeItem.php",
         param_names: ["id"]
     },
+    {
+       command:  "fetch-tags",
+       file: "fetchtags.php",
+       param_names: [],
+    }
 ];
 export default APIcommands;
