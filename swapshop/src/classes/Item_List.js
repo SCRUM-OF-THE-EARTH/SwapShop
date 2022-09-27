@@ -172,7 +172,7 @@ export class Trade_item_list extends Item_List {
         }
 
         if (this.index == 0) {
-            this.filteredResults.sort((a,b) => Date(b.date_created) > Date(a.date_created) ? 1:-1);
+            this.filteredResults.sort((a,b) => Date(b.date_created) < Date(a.date_created) ? 1:-1);
         }
         if (this.index == 1 ){
             this.filteredResults.sort((a,b) => parseFloat(b.item_value) > parseFloat(a.item_value) ? 1:-1);

@@ -124,7 +124,7 @@ describe("testing the item_list and its methods", () => {
         let sorted = true;
         sort_list.forEach((item, i) => {
             if (i != 0) {
-                if (previous.getDateCreated() > item.getDateCreated()) {
+                if (Date(previous.getDateCreated()) > Date(item.getDateCreated())) {
                     sorted = false;
                 } 
             }
