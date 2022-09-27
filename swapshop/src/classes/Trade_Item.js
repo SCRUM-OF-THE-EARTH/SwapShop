@@ -27,6 +27,7 @@ export class Trade_Item {
             "https://sudocode.co.za/SwapShop/filler_image.jpg"
         ]
         this.date_created = item['date_created'];
+        this.exchange = item['exchange_item'];
 
         this.tags = [];
 
@@ -102,13 +103,13 @@ export class Trade_Item {
     // it takes in a string
     // and returns this
     setExchangeItem(item) {
-        this.exchangeItem = item;
+        this.exchange = item;
         return this;
     }
 
     // getExchageItem is used to get the item that the user wants in exchange for the item
     getExchangeItem() {
-        return this.exchangeItem;
+        return this.exchange;
     }
     
     getDateCreated() {
@@ -121,6 +122,7 @@ export class Trade_Item {
     // and returns a react GUI element containing all the information of the item
     createItemBlock() {
         console.log(this.owner);
+
         return (
             <TouchableOpacity style={styles.container} onPress={() => this.navigation.navigate("detailed_item", {item: this})}>
                 <Text style={styles.header}>{this.item_name}</Text>
@@ -132,6 +134,7 @@ export class Trade_Item {
                 <View style={{flexDirection:"column", flex:1,alignSelf: 'center'}}>
                     <Text style={[styles.wrappedText, {paddingVertical: 10, color: 'gray'}]}>{this.item_description}</Text>
                     <Text style={styles.wrappedText}>Estimated value: R{this.item_value}</Text>
+                    <Text style={styles.wrappedText}>Item wanted: {this.exchange}</Text>
                     <Text style={[styles.wrappedText, styles.green]}>{this.owner.getFullName()}</Text>
                 </View>
             </View>
@@ -167,9 +170,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         padding: 5,
         backgroundColor: "#F5F5F5",
-        marginVertical: 5,
-        borderColor: 'red',
-        borderWidth: 1      
+        marginVertical: 5,    
     },
     header: {
         fontSize: 25,

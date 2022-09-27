@@ -20,6 +20,7 @@ export class Item_List {
         this.items = [];
         this.loaded = false;
         this.filteredResults =[];
+        this.searchTerm;
     }
 
     // getItems is simply used to return the array of objects stored in the item list
@@ -46,10 +47,8 @@ export class Item_List {
     // it will go through each json object and create an Object for it and push it to the items array
 
     loadItems(contructorFunc) {
-        console.log(this.json_items)
         this.constructorFunc = contructorFunc;
         this.json_items.forEach(item => {
-            console.log(item);
             this.items.push(this.constructorFunc(item));
         });
 
@@ -86,30 +85,20 @@ export class Item_List {
         return returnValue;
     }
 
-    // logItem is used to console log each of the items in the list
-
-    // logItems() {
-    //     this.items.forEach(item => {
-    //         item.logItem();
-    //     })
-    // }
-
     // search items is used to refine the list of items presented by a search term
     // it takes in a string search Term and will compare each object to it
     // it will return the new list of items after it has been filtered by the search term
     searchItems(searchterm) {
         let temp = [];
+        this.searchTerm = searchterm;
 
             this.items.forEach((item) => {
-                console.log(item);
                 if (item.compareTerm(searchterm)) {
-                    console.log("added an item");
                     temp.push(item);
                 }
             });
 
         this.filteredResults = temp;
-        return this.filteredResults;
     }
 
     // findByID is used to find an item in the list of items with a specific ID
@@ -134,14 +123,12 @@ export class Item_List {
         this.json_items.forEach((item, i) => {
             if (item['id'] == id){
                 pos = i;
-                console.log("json item found at position: ", pos);
                 return;
             }
         });
 
         if (pos != false) {
             this.json_items.splice(pos, 1);
-            console.log("json_Items are:",this.json_items);
         }
 
         pos = false;
@@ -163,6 +150,7 @@ export class Trade_item_list extends Item_List {
         super("fetch-trade-items");
         this.index = 0;
         this.tagsActive = false;
+        this.ActiveTags = [];
     }
 
     Sort(index) {
@@ -170,7 +158,6 @@ export class Trade_item_list extends Item_List {
             this.index = index;
         }
 
-        console.log("sorting index is ", this.index);
         if (this.index == 0) {
             this.filteredResults.sort((a,b) => Date(b.date_created) > Date(a.date_created) ? 1:-1);
         }
@@ -189,46 +176,34 @@ export class Trade_item_list extends Item_List {
         if (this.index == 4) {
             this.filteredResults.sort((a,b) => b.item_name > a.item_name ? 1: -1);
         }
-        
-        console.log(this.filteredResults);
         return this.filteredResults;
     }
 
     searchItems(searchterm) {
-        if (!this.tagsActive) {
-            super.searchItems(searchterm);
-            return this.Sort();
-        }
+        this.tagActive = true;
+        this.searchTerm = searchterm;
+        super.searchItems(searchterm);
+        this.Sort();
+        this.filterByTags(this.ActiveTags);
         
-        let temp = [];
-
-            this.filteredResults.forEach((item) => {
-                console.log(item);
-                if (item.compareTerm(searchterm)) {
-                    console.log("added an item");
-                    temp.push(item);
-                }
-            });
-
-        this.filteredResults = temp;
-        return this.filteredResults;
     }
 
     filterByTags(tags) {
-        console.log(tags.length);
+        this.ActiveTags = tags;
+
+        super.searchItems(this.searchTerm);
+
         if (tags.length == 0) {
-            this.tagActive = false;
-            this.searchItems("");
             return;
         }
-        this.tagsActive = true;
-        console.log("performing filter");
+
+        let isTagged;
         for (let i =this.filteredResults.length -1; i >= 0 ; i--) {
-            isTagged = false;
+            isTagged = true;
 
             for (let j =0; j < tags.length; j++) {
-                if(this.filteredResults[i].tags.find(t => t.getID() == tags[j].getID())) {
-                    isTagged = true;
+                if(!this.filteredResults[i].tags.find(t => t.getID() == tags[j].getID())) {
+                    isTagged = false;
                     break;
                 }
             }
@@ -237,8 +212,7 @@ export class Trade_item_list extends Item_List {
                 this.filteredResults.splice(i,1);
             }
         }
-
-        console.log("after filter by tags:", this.filteredResults);
+        this.Sort();
     }
 }
 

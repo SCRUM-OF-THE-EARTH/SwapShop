@@ -10,6 +10,7 @@ class Communicator {
     // the constructor class takes in the url that would direct the communicator to the API files
     constructor(url) {
         this.url = url;
+        this.postUrl = "https:/sudocode.co.za/SwapShop/assets"
         this.calls = APIcommands;
     }
 
@@ -40,7 +41,7 @@ class Communicator {
         let APIurl = this.url + call.file+"?";
 
         call.param_names.forEach((param, i) => {
-            console.log(param_values[i]);
+            console.log("param vaule: ",param_values[i]);
             param_values[i] = param_values[i].replace('/\n/g', '%0A');
             param_values[i] = param_values[i].replace('/ /g', '%20');
             param_values[i] = param_values[i].replace("/'/g", "\'");
@@ -73,6 +74,19 @@ class Communicator {
         }
 
         return false;
+    }
+
+    makePostRequestForImage(image) {
+        console.log(image);
+        let options = {
+            method: 'POST',
+            body: image
+        }
+        console.log(image);
+
+        fetch(this.postUrl, options).then(res => {
+            console.log("Photo has been posted");
+        })
     }
 }
 
