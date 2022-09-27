@@ -86,24 +86,6 @@ const MainScreen = ({navigation}) =>{
         setDisplayItems(LoadBlocks(''));
     }, [isFocused])
 
-    // // this is called when the sorting menu's open status is changed
-    // // if the sorting menu has been opened then it makes sure that the other menus on the page
-    // // are closed to prevent overlap
-    // useEffect(() => {
-    //     if (sortMenuOpen == true) {
-    //         setTagMenuOpen(false);
-    //     }
-    // }, [sortMenuOpen]);
-
-    // // this is called when the tag menu's open status is changed
-    // // if the tags menu has been opened then it makes sure that the other menus on the page
-    // // are closed to prevent overlap
-    // useEffect(() => {
-    //     if (tagMenuOpen == true) {
-    //         setSortMenuOpen(false);
-    //     }
-    // }, [tagMenuOpen]);
-    // this is the main page GUI component
     let screen = (<View style={styles.container}>
         <View style={styles.search_Bar}>
             <View style={{flexDirection: 'row'}}>
@@ -123,9 +105,10 @@ const MainScreen = ({navigation}) =>{
             </View>
 
             <DropDownPicker
+                style={styles.tagMenu}
                 open={tagMenuOpen}
                 searchable={true}
-                // addCustomItem={true}r
+                placeholder="filter by tag"
                 multiple={true}
                 min={0}
                 max={5}
@@ -154,8 +137,8 @@ const MainScreen = ({navigation}) =>{
 // and returns the list of filtered rendered GUI items
 function LoadBlocks(searchTerm) {
     console.log(searchTerm);
-    let Items = trade_items_list.searchItems(searchTerm);
-    return loadSorted(Items);
+    trade_items_list.searchItems(searchTerm);
+    return loadSorted(trade_items_list.filteredResults);
 }
 
 function loadSorted(items) {
@@ -226,6 +209,10 @@ const styles = StyleSheet.create({
         width: "30%",
         zIndex: 10
     },
+    tagMenu: {
+        zIndex: 9,
+        marginVertical: 5
+    }
 });
 
 export default MainScreen;

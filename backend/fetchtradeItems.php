@@ -19,7 +19,7 @@
         while ($row = $results->fetch_assoc()) {
             $item_id = $row['id'];
             $tags = array();
-            $trade_item = array("id"=>0, "item_name"=>"name", "owner_id"=>0, "description"=>"desc", "item_value"=>0, "date_created"=>0, "tags"=>0);
+            $trade_item = array("id"=>0, "item_name"=>"name", "owner_id"=>0, "description"=>"desc", "item_value"=>0, "date_created"=>0, "tags"=>0, "exchange_item"=>0);
 
             if ($sub_results = $conn->query("select * from item_tags WHERE item = $item_id;")) {
                 while ($tag_row = $sub_results->fetch_assoc()) {
@@ -34,6 +34,7 @@
             $tradeItem['item_value'] = $row['item_value'];
             $tradeItem['date_created'] = $row['date_created'];
             $tradeItem['tags'] = $tags;
+            $tradeItem['exchange_item'] = $row['exchange_item'];
 
             $tradeItems[] = $tradeItem;
         }

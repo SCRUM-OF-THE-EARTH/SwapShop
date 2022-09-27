@@ -1,9 +1,9 @@
-import { Item_List } from '../classes/Item_List.js';
+import { Item_List, Trade_item_list } from '../classes/Item_List.js';
 import { Trade_Item } from '../classes/Trade_Item.js'
 require('jest-fetch-mock').enableMocks()
 fetchMock.dontMock();
 
-const test_item_list = new Item_List('fetch-trade-items');
+const test_item_list = new Trade_item_list('fetch-trade-items');
 waitFetch();
 let test_json_items;
 let testItemId;
@@ -29,7 +29,7 @@ describe("testing the item_list and its methods", () => {
                 count++;
             }
 
-            expect(count).toBe(7);
+            expect(count).toBe(8);
         });
     });
 
@@ -66,8 +66,9 @@ describe("testing the item_list and its methods", () => {
         let desc = "test description"
         let value = '1.1';
         let id = '0';
+        let exchange = 'exchange';
 
-        let params = [name, desc, value, id];
+        let params = [name, desc, value, id, exchange];
         return test_item_list.addItem('add-trade-item', params).then(() =>{
             let test_new_item = test_item_list.getJsonItems();
             test_new_item = test_new_item[test_new_item.length-1];
@@ -75,6 +76,7 @@ describe("testing the item_list and its methods", () => {
             expect(test_new_item['item_name']).toBe(name);
             expect(test_new_item['item_value']).toBe(value);
             expect(test_new_item['description']).toBe(desc);
+            expect(test_new_item['exchange_item']).toBe(exchange);
         })
     });
 
@@ -88,14 +90,15 @@ describe("testing the item_list and its methods", () => {
 
     test("testing search", () => {
         let items = test_item_list.getItems();
-        console.log(items);
 
-        expect(test_item_list.searchItems("").length).toBe(items.length);
+        test_item_list.searchItems("");
+        expect(test_item_list.filteredResults.length).toBe(items.length);
         items.forEach((item) => {
             let searchterm = item.getName();
-            
-            let searchres = test_item_list.searchItems(searchterm);
-            console.log(searchterm, searchres)
+             
+            test_item_list.searchItems(searchterm);
+            let searchres = test_item_list.filteredResults;
+
             searchres.forEach((item) => {
                 expect(item.getName().toLowerCase().includes(searchterm.toLowerCase())).toBe(true);
             })
