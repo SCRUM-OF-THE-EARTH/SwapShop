@@ -111,7 +111,18 @@ export class Trade_Item {
     getExchangeItem() {
         return this.exchange;
     }
-    
+
+    // setDateCreated is used to set the created date of the trade item
+    // it takes in a string date
+    // and returns this
+    setDateCreated(date) {
+        this.date_created = date;
+        return this;
+    }
+
+    // getDateCreated method is used to retrieve the date of when the item was created
+    // it takes in no parameters
+    // and returns a string representing a date
     getDateCreated() {
         return this.date_created;
     }
@@ -121,8 +132,6 @@ export class Trade_Item {
     // it takes in nothing
     // and returns a react GUI element containing all the information of the item
     createItemBlock() {
-        console.log(this.owner);
-
         return (
             <TouchableOpacity style={styles.container} onPress={() => this.navigation.navigate("detailed_item", {item: this})}>
                 <Text style={styles.header}>{this.item_name}</Text>
@@ -155,9 +164,19 @@ export class Trade_Item {
         return false;
     }
 
+    // addTag is used to add a tag to the list of tags acting on the trade item
+    // it tkaes in a tag object 
+    // and returns this
     addTag(tag) {
         this.tags.push(tag);
         return this;
+    }
+
+    //getTag is used to retrieve the list of tags
+    // it takes in no parameter
+    // and returns a list of tags
+    getTags() {
+        return this.tags;
     }
 
 }

@@ -19,7 +19,8 @@ const test_item_obj = {
     item_value: Math.random(),
     owner: test_Reguser,
     description: "description of the test Item",
-    id: 1
+    id: 1,
+    exchange_item: "test exchange"
 }
 
 export let test_item;
@@ -29,11 +30,15 @@ describe("testing the trade item class", () => {
     test("testing contruction of new trade item", () => {
         test_item = new Trade_Item(test_item_obj);
         test_item.setOwner(test_Reguser);
+        let date = new Date();
+        expect(test_item.setDateCreated(date)).toBe(test_item);
         expect(test_item.getName()).toBe(test_item_obj["item_name"]);
         expect(test_item.getValue()).toBe(test_item_obj["item_value"]);
         expect(test_item.getDescription()).toBe(test_item_obj["description"]);
         expect(test_item.getID()).toBe(test_item_obj["id"]);
         expect(test_item.getOwner()).toBe(test_Reguser);
+        expect(test_item.getExchangeItem()).toBe("test exchange");
+        expect(test_item.getDateCreated()).toBe(date);
     });
 
     test("testing the comapring terms function relating to the search system", () => {
@@ -82,6 +87,27 @@ describe("testing the trade item class", () => {
             expect(test_item.setDescription(Description)).toBe(test_item);
             expect(test_item.getDescription(Description)).toBe(Description)
         }
+
+        let date;
+        for (let i =0; i < Math.floor((Math.random()+1)*10); i++) {
+            date = new Date();
+            expect(test_item.setDateCreated(date)).toBe(test_item);
+            expect(test_item.getDateCreated()).toBe(date);
+        }
+
+        let Exchange;
+        for (let i =0; i < Math.floor((Math.random()+1)*10); i++) {
+            Exchange = generateString(Math.floor(Math.random()*50));
+            expect(test_item.setExchangeItem(Exchange)).toBe(test_item);
+            expect(test_item.getExchangeItem()).toBe(Exchange);
+        }
+
+        let Test_Tag = {id: 0, name: 'tags_name', item: 88}
+        let Test_Tag_2 = {id: 1, name: 'tag2_name', item: 85};
+        expect(test_item.addTag(Test_Tag)).toBe(test_item);
+        expect(test_item.getTags()).toStrictEqual([Test_Tag]);
+        expect(test_item.addTag(Test_Tag_2)).toBe(test_item);
+        expect(test_item.getTags()).toStrictEqual([Test_Tag, Test_Tag_2]);
         
     });
 

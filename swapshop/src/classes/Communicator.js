@@ -76,18 +76,20 @@ class Communicator {
         return false;
     }
 
-    makePostRequestForImage(image) {
-        console.log(image);
-        let options = {
-            method: 'POST',
-            body: image
-        }
-        console.log(image);
 
-        fetch(this.postUrl, options).then(res => {
-            console.log("Photo has been posted");
-        })
-    }
+
+    // makePostRequestForImage(image) {
+    //     console.log(image);
+    //     let options = {
+    //         method: 'POST',
+    //         body: image
+    //     }
+    //     console.log(image);
+
+    //     fetch(this.postUrl, options).then(res => {
+    //         console.log("Photo has been posted");
+    //     })
+    // }
 }
 
 // exporting a static instance of the communicator
