@@ -26,7 +26,7 @@ const App = () =>{
                 <RootStack.Screen name = "ForgotPasswordScreen" component = {ForgotPasswordScreen}/>
                 <RootStack.Screen name = "addItemScreen" component={AddItemScreen}/>
                 <RootStack.Screen name = "detailed_item" component={Detailed_Trade_item} options={{headerShown:true, title:"", headerStyle:{backgroundColor:"#3CB371"}}}/>
-                <RootStack.Screen name = "ChatScreen" component={ChatScreen} options={{headerShown:true, title:"Chat", headerStyle:{backgroundColor:"#3CB371"}}}/>
+                <RootStack.Screen name = "ChatScreen" component={ChatScreen} options={({ route  }) => ({headerShown:true, title: route.params.owner.getFullName() , headerStyle:{backgroundColor:"#3CB371"}})}/>
             </RootStack.Navigator>
         </NavigationContainer>
     );

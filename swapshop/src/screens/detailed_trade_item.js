@@ -43,7 +43,7 @@ const Detailed_Trade_item = ({route, navigation}) => {
                 <Button 
                     color="#2E8B57" 
                     title={"contact"}
-                    onPress = {() => navigation.navigate('ChatScreen')}
+                    onPress = {() => navigation.navigate('ChatScreen',{owner: item.getOwner()})}
                 />
             </View>
 

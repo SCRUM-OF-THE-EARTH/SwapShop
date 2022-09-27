@@ -9,8 +9,9 @@ import colors from "../../config/colors";
 // create a chat screen UI
 // so the user can be redirected to this page when, they choose the option to contact the client.
 // this will make use of React-Native Gifted Chats (a builtin package which handles the components of the chat screen interface)
-const ChatScreen = (navigation) => {
+const ChatScreen = ({route, navigation}) => {
   const [messages, setMessages] = useState([]);
+
 
   useEffect(() => {
     setMessages([

@@ -145,6 +145,15 @@ export class Item_List {
     }
 };
 
+// The trade item list is a sub class of item list that is for trde items speecifically
+// it give methods that allow the Trade Items to be sorted and searched and filtered by tags
+// for construction it takes in no parameters
+//
+// it contains the methods
+//  | Sort whcih taes in 1 or less parameters for sorting index
+//  | searchitem whish takes in a strin gseach term and overwrites the searchTerm super method
+//  | filter by tags which takes in a list of tags filters he list of trade ites by the tags they are associated to
+
 export class Trade_item_list extends Item_List {
     constructor() {;
         super("fetch-trade-items");
@@ -153,13 +162,17 @@ export class Trade_item_list extends Item_List {
         this.ActiveTags = [];
     }
 
+
+    // the Sort method is used to sort the list of trade items by the name, price and date created
+    // it takes in an integer from 0 to 4 or NULL
+    // and returns a sorted list of trade items
     Sort(index) {
         if (index != null) {
             this.index = index;
         }
 
         if (this.index == 0) {
-            this.filteredResults.sort((a,b) => Date(b.date_created) > Date(a.date_created) ? 1:-1);
+            this.filteredResults.sort((a,b) => Date(b.date_created) < Date(a.date_created) ? 1:-1);
         }
         if (this.index == 1 ){
             this.filteredResults.sort((a,b) => parseFloat(b.item_value) > parseFloat(a.item_value) ? 1:-1);
@@ -179,6 +192,7 @@ export class Trade_item_list extends Item_List {
         return this.filteredResults;
     }
 
+    // this searh Term is used to overwrite the super searchItem method
     searchItems(searchterm) {
         this.tagActive = true;
         this.searchTerm = searchterm;
@@ -188,6 +202,9 @@ export class Trade_item_list extends Item_List {
         
     }
 
+    //filterByTags is used to filter the list of items by a list of active tags
+    // it takes in a list of tag objects
+    // and returns void
     filterByTags(tags) {
         this.ActiveTags = tags;
 
@@ -216,11 +233,16 @@ export class Trade_item_list extends Item_List {
     }
 }
 
+// The Tag list class is a sub class of item_list made specifically for lists of Tag objects
+// It contins the ethods
+//  | getTags which retrieves teh list of tag items
 export class Tag_list extends Item_List {
     constructor() {
         super("fetch-tags");
     }
 
+
+    // getTags is used to retriece the list of tags for the dropdown tag menu
     getTags() {
         let names = [];
 

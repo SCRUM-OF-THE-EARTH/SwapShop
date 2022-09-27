@@ -48,7 +48,7 @@ const ForgotPasswordScreen = ({navigation}) =>{
 
                     // onPress={() => navigation.navigate('addItem')}
 
-                    onPress={() => navigation.navigate('addItemScreen')}
+                    // onPress={() => navigation.navigate('addItemScreen')}
 
 
                 />
