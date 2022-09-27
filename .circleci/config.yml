@@ -60,4 +60,4 @@ jobs:
 workflows:
   build:
     jobs:
-      - install-node-modules
+      - build-and-test
