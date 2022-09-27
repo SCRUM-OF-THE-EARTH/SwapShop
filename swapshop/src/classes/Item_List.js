@@ -191,17 +191,12 @@ export class Trade_item_list extends Item_List {
     filterByTags(tags) {
         this.ActiveTags = tags;
 
+        super.searchItems(this.searchTerm);
+
         if (tags.length == 0) {
-            super.searchItems(this.searchTerm);
-            this.Sort();
             return;
         }
 
-        if (!this.tagActive) {
-            
-            this.searchItems(this.searchTerm);
-            this.tagActive = false;
-        }
         let isTagged;
         for (let i =this.filteredResults.length -1; i >= 0 ; i--) {
             isTagged = true;
@@ -217,7 +212,7 @@ export class Trade_item_list extends Item_List {
                 this.filteredResults.splice(i,1);
             }
         }
-
+        this.Sort();
     }
 }
 
