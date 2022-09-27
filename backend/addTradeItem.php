@@ -21,9 +21,10 @@
     $description = $_REQUEST['desc'];
     $value = $_REQUEST['value'];
     $id =$_REQUEST['id'];
+    $exchange = $_REQUEST['exch'];
 
     // construct an insert query
-    $query = "INSERT INTO trade_items (item_name, description, item_value, owner_id, date_created) VALUE ('$name', '$description',$value, $id, CURDATE());";
+    $query = "INSERT INTO trade_items (item_name, description, item_value, owner_id, date_created, exchange_item) VALUE ('$name', '$description',$value, $id, CURDATE(), '$exchange');";
     
     // initialise the array that is going to be outputed
     $output = array("success"=>0, "results"=>0);
@@ -31,9 +32,26 @@
     // check if the query returns a result
     if ($results = $conn->query($query)) {
         if ($results = $conn->query("SELECT * FROM trade_items WHERE id=LAST_INSERT_ID()")) {
-            $output['success'] = 1;
             $row = $results->fetch_assoc();
-            $output['results'] = $row;
+            $temp = array('id'=>0,'item_name'=>0, 'description'=>0, 'item_value'=>0, 'owner_id'=>0, 'date_created'=>0, 'tags'=>0);
+            $item_id = $row['id'];
+            $temp['id'] = $row['id'];
+            $temp['item_name'] = $row['item_name'];
+            $temp['description'] = $row['description'];
+            $temp['item_value'] = $row['item_value'];
+            $temp['owner_id'] = $row['owner_id'];
+            $temp['date_created'] = $row['date_created'];
+            $temp['exchange_item'] = $row['exchange_item'];
+            $tags = array();
+            if ($sub_results = $conn->query("select * from item_tags WHERE item = $item_id;")) {
+                while ($tag_row = $sub_results->fetch_assoc()) {
+                    $tags[] = $tag_row['tag'];
+                }
+            }
+            $temp['tags'] = $tags;
+
+            $output['success'] = 1;
+            $output['results'] = $temp;
         }
     }
 

@@ -36,7 +36,7 @@ const APIcommands = [
         command: "add-trade-item",
         file: "addTradeItem.php",
         param_names: [
-            "name", "desc", "value","id"
+            "name", "desc", "value","id","exch"
         ]
     },
     {

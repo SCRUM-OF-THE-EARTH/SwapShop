@@ -31,6 +31,11 @@ const Detailed_Trade_item = ({route, navigation}) => {
                 </View>
 
                 <View style={styles.descContainer}>
+                    <Text style={{color: "#3CB371", fontSize: 18, fontWeight:'100'}}>Item wanted in exchange: </Text>
+                    <Text style={styles.description}>{item.getExchangeItem()}</Text>
+                </View>
+
+                <View style={styles.descContainer}>
                     <Text style={{color: "#3CB371", fontSize: 18, fontWeight:'100'}}>Posted by: </Text>
                     <Text style={styles.description}>{item.getOwner().getFullName()}</Text>
                 </View>

@@ -1,47 +1,8 @@
-
-
-
-
-
-// export default function MainImage(){
-//     const [image, setImage] = useState(null);
-//     const pickImage = async ({navigation}) => {
-
-
-// const [email, setEmail] = useState(''); // the email address
-
-
-//start
-//     let result = await ImagePicker.launchImageLibraryAsync({
-//         mediaTypes: ImagePicker.MediaTypeOptions.All,
-//         allowsEditing: true,
-//         aspect: [4, 3],
-//         quality: 1,
-//     });//this function allows or gives permission to upload pictures and also be able to edit them
-//     console.log(result); //well get the log if the process in unsuccessful so we know where the error is:)
-//
-//     if (!result.cancelled) {
-//         setImage(result.uri);
-//
-//     }
-// };
-//
-//
-//     // the react native GUI component
-//     return (
-//
-
-
-
-
 import { Button, TextInput, View, StyleSheet, Text, Image } from "react-native"
-import { StatusBar } from 'expo-status-bar';
 import {useState} from 'react'
 import {login_user} from './SignInScreen.js';
 import { trade_items_list } from "./MainScreen.js";
-import { sin } from "react-native-reanimated";
 import * as ImagePicker from 'expo-image-picker';
-import image from "react-native-web/src/exports/Image";
 
 // This is the screen for creating a new trade item
 //  export default function MainImage() {
@@ -54,41 +15,40 @@ const AddItem = ({navigation}) => {
     const [value, onValueChange] = useState(''); // the float value of the new item
     const [errorMessage, onChangeError] = useState(''); // the error message displayed
     const [image, setImage] = useState(null); //the uploaded image.
+    const [exchange, setExchange] = useState(''); // the item the poster wants in exchange
 
-
-
-    //uploaded image contents
-    // let result = await ImagePicker.launchImageLibraryAsync({
-    //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-    //     allowsEditing: true,
-    //     aspect: [4, 3],
-    //     quality: 1,
-    // });//this function allows or gives permission to upload pictures and also be able to edit them
-    // console.log(result); //well get the log if the process in unsuccessful so we know where the error is:)
-    //
-    // if (!result.cancelled) {
-    //     setImage(result.uri);
-    //
-    // }
 
     const pickImage = async ({navigate}) => {
-        // const [image, setImage] = useState(null); //the uploaded image.
+        //the uploaded image.
         //uploaded image contents
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
+            base64: true,
         });//this function allows or gives permission to upload pictures and also be able to edit them
         console.log(result); //well get the log if the process in unsuccessful so we know where the error is:)
 
         if (!result.cancelled) {
-            setImage(result.uri);
-
+            setImage(result);
         }
-        //
-        //
     };
+
+    const takePicture = async () => {
+        // the taken image
+        //upload image contents
+        let results = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+            base64: true,   
+        });
+
+        if (!results.cancelled) {
+            setImage(results);
+        }
+    }
 
 
 
@@ -105,6 +65,8 @@ const AddItem = ({navigation}) => {
             <TextInput style={styles.TextInput} placeholder="estimate for value of item"
                        onChangeText={(value) => onValueChange(value)}/>
 
+            <TextInput style={styles.TextInput} onChangeText={(text) => setExchange(text)} placeholder="wanted in exhange"/>
+
             {/*this is the uploaded image from the user's gallery*/}
             {/*{image && <Image source={{uri: image}} style={{width: 200, height: 200, marginLeft:80,marginTop: 200}}/>}*/}
 
@@ -116,27 +78,25 @@ const AddItem = ({navigation}) => {
 
                     color="#3CB371"/>
             </View>
+            <Text style={{alignSelf:'center'}}>or</Text>
+            <View style={styles.addImageButton}> 
+                <Button 
+                
+                title="take a photo"
+                onPress={takePicture}
+                color="#3CB371"/>
+
+            </View>
             {/*{image && <Image source={{uri: image}} style={{width: 300, height: 200, marginLeft:30,marginTop: 400, marginBottom: 10}}/>}*/}
 
-
-            <View style={styles.addItemBtn}>
-                <Button title="Post" color='#3CB371'
-                        onPress={() => AddNewItem(name, description, value, onChangeError, navigation)}/>
-                {/*//also add that image here*/}
+            <View style={{alignContent:'center', alignSelf:'center'}}>
+                {image && <Image source={{uri: image.uri}} style={{position:'relative', width: 300, height: 200}}/>}
             </View>
 
-            <View>
-                {image && <Image source={{uri: image}} style={{width: 300, height: 200, marginLeft:30,marginTop: -400}}/>}
-            </View>
-
+            <Text style={styles.addItemBtn} onPress={() => AddNewItem(name, description, value, exchange, onChangeError, navigation, image)}>Post</Text>
 
         </View>
     );
-
-
-//testing the image upload functionality
-
-
 
 };
 
@@ -147,17 +107,23 @@ const AddItem = ({navigation}) => {
 // to create a new trade item which is then added to the list of trade items
 // if the item is successfully created the app will return to the home page
 // if not it will display an error
-function AddNewItem(name, description, value, setError, navigation, image) {
-    if (name == "" || description == "" || value == "" || image == " ") {
+function AddNewItem(name, description, value, exchange, setError, navigation, image) {
+    if (name == "" || description == "" || value == "" || image == "") {
         setError("Please fill in all the fields");
         return;
     }
 
+    if (exchange == "") {
+        exchange = "open";
+    }
+
     let owner_id = login_user.getID()
+    console.log("login_user id: ", owner_id);
     console.log(name, description, value, owner_id);
-    trade_items_list.addItem('add-trade-item', [name,description, value,image, owner_id]).then(res => {
+
+    trade_items_list.addItem('add-trade-item', [name,description, value, owner_id, exchange]).then(res => {
         console.log(res);
-        navigation.navigate('MainScreen')
+        navigation.navigate('MainScreen');
     })
 
 
@@ -170,8 +136,10 @@ const styles = StyleSheet.create({
         marginVertical: 50,
         alignSelf: 'center',
         alignContent: 'center',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         width: '100%',
+        position: 'relative',
+        height:'100%',
     },
     header: {
         fontWeight: '400',
@@ -193,25 +161,23 @@ const styles = StyleSheet.create({
 
     //
     addImageButton: {
-        height: 100,
+        // height: 100,
         width: 150,
-        marginBottom: -400,
-        marginTop: 10,
-        marginLeft: 110,
-        // color:"blue",
+        alignSelf:'center',
+        margin:5,
     },
 
     addItemBtn: {
-        width: "70%",
+        width: "80%",
         borderRadius: 25,
-        height: 50,
-        alignItems: "center",
+        padding: 15,
+        color:'white',
+        textAlign:'center',
         alignSelf: 'center',
-        justifyContent: "center",
-        marginTop: 700,
-        // marginBottom: -500,
         backgroundColor: "#3CB371",
         margin: 2,
+        top:'85%',
+        position: 'absolute'
     },
 
 
