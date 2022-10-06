@@ -1,8 +1,9 @@
 {
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.4.0",
     "coverage-badge-creator": "^1.0.13"
   },
   "scripts": {
-      "load-badges": "coverage-badge-creator"
+    "load-badges": "coverage-badge-creator"
   }
 }

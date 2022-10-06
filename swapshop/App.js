@@ -10,6 +10,7 @@ import Detailed_Trade_item from './src/screens/detailed_trade_item';
 import MainScreen from "./src/screens/MainScreen";
 import ChatScreen from './src/screens/ChatScreen';
 
+import AppNavigation from './src/navigation/AppStack';
 
 const {height, width} = Dimensions.get('window');
 
@@ -17,18 +18,7 @@ const RootStack = createStackNavigator();
 
 const App = () =>{
     return(
-
-        <NavigationContainer>
-            <RootStack.Navigator screenOptions={{headerShown:false}}>
-                <RootStack.Screen name = "SignInScreen" component = {SignInScreen}/>
-                <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
-                <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
-                <RootStack.Screen name = "ForgotPasswordScreen" component = {ForgotPasswordScreen}/>
-                <RootStack.Screen name = "addItemScreen" component={AddItemScreen}/>
-                <RootStack.Screen name = "detailed_item" component={Detailed_Trade_item} options={{headerShown:true, title:"", headerStyle:{backgroundColor:"#3CB371"}}}/>
-                <RootStack.Screen name = "ChatScreen" component={ChatScreen} options={({ route  }) => ({headerShown:true, title: route.params.owner.getFullName() , headerStyle:{backgroundColor:"#3CB371"}})}/>
-            </RootStack.Navigator>
-        </NavigationContainer>
+        <AppNavigation></AppNavigation>
     );
 };
 
