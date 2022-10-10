@@ -1,5 +1,6 @@
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from "react";
+import { communicator } from './Communicator';
 
 // Trade item is used to create and store items fetched from the database of trading items
 // it has 5 parameters:
@@ -17,15 +18,10 @@ export class Trade_Item {
         this.owner = false;
         this.item_description = item['description'];
         this.id = item['id'];
+        this.hasImages = false;
         this.navigation = navigation;
         this.exchangeItem = "";
-        this.images = [
-            "https://sudocode.co.za/SwapShop/filler_image.jpg",
-            "https://sudocode.co.za/SwapShop/filler_image.jpg",
-            "https://sudocode.co.za/SwapShop/filler_image.jpg",
-            "https://sudocode.co.za/SwapShop/filler_image.jpg",
-            "https://sudocode.co.za/SwapShop/filler_image.jpg"
-        ]
+        this.images = ['https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg']
         this.date_created = item['date_created'];
         this.exchange = item['exchange_item'];
 
@@ -33,7 +29,22 @@ export class Trade_Item {
 
     }
 
+    async fetchImages() {
+        if (!this.hasImages) {
+            this.images = await communicator.makeRequestByCommand('fetch-trade-images', [this.id]);
+            this.hasImages = true;
+            console.log("images for this trade item: ",this.images)
+        }
+    }
 
+    getImageSlideShow() {
+        let imageSlideShow = [];
+
+        this.images.forEach(image => {
+            imageSlideShow.push({url: image});
+        })
+        return imageSlideShow;
+    }
     // setName is used to set the item_name value 
     // it takes in a string 
     // and returns this 
@@ -133,7 +144,7 @@ export class Trade_Item {
     // and returns a react GUI element containing all the information of the item
     createItemBlock() {
         return (
-            <TouchableOpacity style={styles.container} onPress={() => this.navigation.navigate("detailed_item", {item: this})}>
+            <TouchableOpacity key={this.id} style={styles.container} onPress={() => this.navigation.navigate("detailed_item", {item: this})}>
                 <Text style={styles.header}>{this.item_name}</Text>
             <View style={styles.innerContainer}>
                 <Image

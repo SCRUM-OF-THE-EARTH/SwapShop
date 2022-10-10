@@ -1,8 +1,10 @@
-import { Button, TextInput, View, StyleSheet, Text, Image } from "react-native"
-import {useState} from 'react'
+import { Button, TextInput, View, ScrollView, StyleSheet, Text, Image } from "react-native"
+import {useState} from 'react';
+import Slideshow from 'react-native-image-slider-show';
 import {login_user} from './SignInScreen.js';
 import { trade_items_list } from "./MainScreen.js";
 import * as ImagePicker from 'expo-image-picker';
+import { communicator } from "../classes/Communicator.js";
 
 // This is the screen for creating a new trade item
 //  export default function MainImage() {
@@ -15,24 +17,48 @@ const AddItem = ({navigation}) => {
     const [value, onValueChange] = useState(''); // the float value of the new item
     const [errorMessage, onChangeError] = useState(''); // the error message displayed
     const [image, setImage] = useState(null); //the uploaded image.
+    const [imageList, setImgaeList] = useState('');
     const [exchange, setExchange] = useState(''); // the item the poster wants in exchange
 
 
     const pickImage = async ({navigate}) => {
         //the uploaded image.
         //uploaded image contents
-        let result = await ImagePicker.launchImageLibraryAsync({
+        ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
+            // allowsEditing: true,
+            allowsMultipleSelection: true,
             aspect: [4, 3],
             quality: 1,
             base64: true,
-        });//this function allows or gives permission to upload pictures and also be able to edit them
-        console.log(result); //well get the log if the process in unsuccessful so we know where the error is:)
-
-        if (!result.cancelled) {
-            setImage(result);
+        })
+        .then((result) => {
+            if (!result.selected) {
+                let t = {"cancelled": result.cancelled, "selected" : [result]};
+                result = t;
+            }
+            if (!result.cancelled) {
+            let temp = [];
+            let tempImageList = [];
+            console.log("selected: ", result['selected']);
+            for (let i = 0; i < result.selected.length; i++) {
+                let uri = result.selected[i].uri;
+                // uri = uri.replace('file://', "");
+                console.log(uri);
+                tempImageList.push(result.selected[i]);
+                let item = <Image style={{position:'relative', height: 200, margin: 20}} key={i} source={{
+                    uri: uri
+                }}/>;
+                temp.push(item);
+            }
+            setImage(temp);
+            setImgaeList(tempImageList);
         }
+        }) //well get the log if the process in unsuccessful so we know where the error is:)
+
+        
+
+        
     };
 
     const takePicture = async () => {
@@ -42,12 +68,27 @@ const AddItem = ({navigation}) => {
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
-            base64: true,   
-        });
-
-        if (!results.cancelled) {
-            setImage(results);
+            base64: true,  
+        }).then((result) => {
+            if (!result.selected) {
+                let t = {"cancelled": result.cancelled, "selected" : [result]};
+                result = t;
+            }
+            if (!result.cancelled) {
+            let temp = [];
+            console.log("selected: ", result['selected']);
+            for (let i = 0; i < result.selected.length; i++) {
+                let uri = result.selected[i].uri;
+                // uri = uri.replace('file://', "");
+                console.log(uri);
+                let item = <Image style={{position:'relative', height: 200, margin: 20}} key={i} source={{
+                    uri: uri
+                }}/>;
+                temp.push(item);
+            }
+            setImage(temp);
         }
+        })
     }
 
 
@@ -89,11 +130,12 @@ const AddItem = ({navigation}) => {
             </View>
             {/*{image && <Image source={{uri: image}} style={{width: 300, height: 200, marginLeft:30,marginTop: 400, marginBottom: 10}}/>}*/}
 
-            <View style={{alignContent:'center', alignSelf:'center'}}>
-                {image && <Image source={{uri: image.uri}} style={{position:'relative', width: 300, height: 200}}/>}
-            </View>
+            <ScrollView style={{alignContent:'center', alignSelf:'center', marginBottom: 150, width: '100%'}}>
+                {/* {image && <Image source={{uri: image.uri}} style={{position:'relative', width: 300, height: 200}}/>} */}
+                {image}
+            </ScrollView>
 
-            <Text style={styles.addItemBtn} onPress={() => AddNewItem(name, description, value, exchange, onChangeError, navigation, image)}>Post</Text>
+            <Text style={styles.addItemBtn} onPress={() => AddNewItem(name, description, value, exchange, onChangeError, navigation, imageList)}>Post</Text>
 
         </View>
     );
@@ -108,7 +150,7 @@ const AddItem = ({navigation}) => {
 // if the item is successfully created the app will return to the home page
 // if not it will display an error
 function AddNewItem(name, description, value, exchange, setError, navigation, image) {
-    if (name == "" || description == "" || value == "" || image == "") {
+    if (name == "" || description == "" || value == "") {
         setError("Please fill in all the fields");
         return;
     }
@@ -122,10 +164,26 @@ function AddNewItem(name, description, value, exchange, setError, navigation, im
     console.log(name, description, value, owner_id);
 
     trade_items_list.addItem('add-trade-item', [name,description, value, owner_id, exchange]).then(res => {
+
+        let item_id = trade_items_list.getItems()[trade_items_list.getItems().length -1].getID();
+        console.log("item id is: ", item_id)
+
+        if (image != "") {
+            communicator.makePostRequestForImage(image, item_id);
+        }
+        
         console.log(res);
         navigation.navigate('MainScreen');
-    })
+    });
 
+    
+
+    // console.log("Image is: ", image);
+    // console.log("image name: ");
+    
+    // console.log(type);
+
+    
 
 }
 

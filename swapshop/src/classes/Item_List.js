@@ -231,6 +231,12 @@ export class Trade_item_list extends Item_List {
         }
         this.Sort();
     }
+
+    fetchImages() {
+        this.items.forEach((item) => {
+            item.fetchImages();
+        })
+    }
 }
 
 // The Tag list class is a sub class of item_list made specifically for lists of Tag objects

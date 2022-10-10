@@ -52,6 +52,9 @@
 
             $output['success'] = 1;
             $output['results'] = $temp;
+
+            $query = "INSERT INTO trade_images (trade_id, image_id) VALUES ($item_id, 4)";
+            $conn->query($query);
         }
     }
 

@@ -48,6 +48,11 @@ const APIcommands = [
        command:  "fetch-tags",
        file: "fetchtags.php",
        param_names: [],
+    },
+    {
+        command: "fetch-trade-images",
+        file: "getImages.php",
+        param_names: ['id'],
     }
 ];
 export default APIcommands;

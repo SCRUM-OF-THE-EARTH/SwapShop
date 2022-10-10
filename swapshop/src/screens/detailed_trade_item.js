@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { View, Text,StyleSheet, Button } from 'react-native';
 import Slideshow from 'react-native-image-slider-show';
 import { color } from 'react-native-reanimated';
@@ -6,16 +7,25 @@ const Detailed_Trade_item = ({route, navigation}) => {
 
     // retrieve the item passed through the navigation
     const { item } = route.params;
+    let loaded = false;
+
+    const [images, setImages] = useState([]);
+
+    useEffect(() => {
+        if (!loaded) {
+            setImages(item.getImageSlideShow());
+            loaded = true;
+        }
+    }, [loaded]);
+
+    
 
     // render the item 
     return (
         <View>
             <View style={styles.container}>
             <View style={styles.imageWheel}>
-            <Slideshow style={styles.images} dataSource={[
-                    {url: "https://sudocode.co.za/SwapShop/filler_image.jpg"},
-                    {url: "https://sudocode.co.za/SwapShop/filler_image.jpg"}
-                ]}/>
+            <Slideshow style={styles.images} dataSource={images}/>
             </View>
             
             <View style={styles.detailContainer}>

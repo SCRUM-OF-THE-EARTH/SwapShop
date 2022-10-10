@@ -13,7 +13,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 export const trade_items_list = new Trade_item_list();
 export const user_accounts_item_list = new Item_List("fetch-user-accounts");
 export const tags_list = new Tag_list();
-let displayItems = [];
 
 // this is the main page
 // this is the page the user is taken to after logging in
@@ -65,7 +64,7 @@ const MainScreen = ({navigation}) =>{
                 console.log("the found owner is: ", Owner, item);
 
                 let trade_Item = new Trade_Item(item, navigation);
-
+                trade_Item.fetchImages();
                 item["tags"].forEach((id) => {
                     let tag = tags_list.findByID(id);
                     trade_Item.addTag(tag);   

@@ -10,7 +10,7 @@ class Communicator {
     // the constructor class takes in the url that would direct the communicator to the API files
     constructor(url) {
         this.url = url;
-        this.postUrl = "https:/sudocode.co.za/SwapShop/assets"
+        this.postUrl = "https://sudocode.co.za/SwapShop/assets/images/recievePhoto.php"
         this.calls = APIcommands;
     }
 
@@ -78,19 +78,50 @@ class Communicator {
 
 
 
-    // makePostRequestForImage(image) {
-    //     console.log(image);
-    //     let options = {
-    //         method: 'POST',
-    //         body: image
-    //     }
-    //     console.log(image);
+    makePostRequestForImage(images, item_id) {
+        images.forEach(image => {
+                console.log(image.file);
+                let body = new FormData();
+                let fileName =  image.uri.substring(image.uri.lastIndexOf("/")+1);
+                body.append('image-content', image.base64);
+                body.append('image-file', fileName);
+                body.append('item_id', item_id);
 
-    //     fetch(this.postUrl, options).then(res => {
-    //         console.log("Photo has been posted");
-    //     })
-    // }
+                fetch(this.postUrl, {
+                    method: 'POST',
+                    headers: {  
+                        "content-type": "multipart/form-data",
+                    },
+                    body: body
+                }).then(res => console.log(res));
+        });
+
+        
+        
+        // let options = {
+        //     method: 'POST',
+        //     body: image
+        // }
+        // console.log(image);
+
+        // fetch(this.postUrl, options).then(res => {
+        //     console.log("Photo has been posted");
+        // })
+    }
+
+    // uploadPhoto() {
+    //     return fetch(`${this.postUrl}`,{ 
+    //         method: 'POST',
+    //         headers:{  
+    //             "content-type": "multipart/form-data",
+    //         }, 
+    //         body :body} )
+    //     .then((res) => { console.log("response" +JSON.stringify(res)); })
+    //     .catch((e) => console.log(e));
+    // } 
 }
+
+    
 
 // exporting a static instance of the communicator
 const communicator = new Communicator("https://sudocode.co.za/SwapShop/backend/");
