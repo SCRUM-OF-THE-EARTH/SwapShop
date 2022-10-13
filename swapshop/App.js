@@ -9,12 +9,7 @@ import AddItemScreen from "./src/screens/addItem.js";
 import Detailed_Trade_item from './src/screens/detailed_trade_item';
 import MainScreen from "./src/screens/MainScreen";
 import ChatScreen from './src/screens/ChatScreen';
-<<<<<<< HEAD
-
-import AppNavigation from './src/navigation/AppStack';
-=======
 import ProfileScreen from './src/screens/ProfileScreen';
->>>>>>> image-upload
 
 const {height, width} = Dimensions.get('window');
 
@@ -22,9 +17,6 @@ const RootStack = createStackNavigator();
 
 const App = () =>{
     return(
-<<<<<<< HEAD
-        <AppNavigation></AppNavigation>
-=======
 
         <NavigationContainer>
             <RootStack.Navigator screenOptions={{headerShown:false}}>
@@ -38,7 +30,6 @@ const App = () =>{
                 <RootStack.Screen name = "ProfileScreen" component={ProfileScreen} />
             </RootStack.Navigator>
         </NavigationContainer>
->>>>>>> image-upload
     );
 };
 
