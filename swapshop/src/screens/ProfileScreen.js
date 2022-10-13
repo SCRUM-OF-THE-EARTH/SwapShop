@@ -24,23 +24,15 @@ const ProfileScreen = ({ navigation }) => {
         let tempTags = tags_list.getTags();
         let tempInterests = [];
 
-        console.log(login_user.getInterests());
         login_user.getInterests().forEach(tag_id => {
-            console.log(tag_id);
             let t = tags_list.findByID(tag_id);
             tempTags.forEach((a, index) => {
-                console.log("inactiveTag check:",a);
-                console.log(a.value.id);
                 if (a.value.id == tag_id) {
                     tempTags.splice(index, 1);
                     return;
                 }
             })
             tempInterests.push(t);
-            console.log(t);
-            if (t != null) {
-                console.log(t.getName());
-            }
         });
         
         setTags(tempTags);
@@ -87,13 +79,8 @@ function updateInterest(tag, setTagValues, interests, setTags, tags) {
         return tempInterests;
     }
 
-    console.log(tag);
-    console.log(tags);
     let tagId = tag["id"];
-    console.log(tagId);
     let userId = login_user.getID();
-
-    console.log(tempInterests);
 
     communicator.makeRequestByCommand("add-interest", [userId, tagId]);
 
@@ -103,14 +90,9 @@ function updateInterest(tag, setTagValues, interests, setTags, tags) {
             return;
         }
     });
-
-    console.log("tags post splice: ", tags);
-
     tempInterests.push(tag);
 
-    console.log(tempInterests);
     setTagValues(null);
-    console.log(tags);
     setTags(tags);
 
     return tempInterests;
@@ -134,8 +116,6 @@ function removeInterest(tag, interest, tags, setTags) {
     tags.push(addTag.getTagValue());
 
     setTags(tags);
-
-    console.log(tag, interest);
 
     return interest;
     

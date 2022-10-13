@@ -167,51 +167,13 @@ export class Trade_item_list extends Item_List {
     // it takes in an integer from 0 to 4 or NULL
     // and returns a sorted list of trade items
     Sort(index) {
-        console.log("indes is: ", this.index);
-        console.log(this.filteredResults)
         if (index != null) {
             this.index = index;
         } 
         if (this.index == null) {
-            console.log("this index is null");
-            this.filteredResults.sort((a,b) => {
-                let counta = 0;
-                let countb = 0;
-            
-                login_user.getInterests().forEach(tag_id => {
-                    console.log(tag_id);
-                    a.getTags().forEach((tag) => {
-                        if (tag.getID() == tag_id) {
-                            counta++;
-                        }
-                    });
-            
-                    b.getTags().forEach((tag) => {
-                        if (tag.getID() == tag_id) {
-                            countb++;
-                        }
-                    })
-                });
-            
-                console.log("count a:", counta);
-                console.log(a);
-                console.log("count b:", countb);
-                console.log(b)
-                
-                if (counta < countb) {
-                    console.log("returing 1");
-                    return 1;
-                } 
-                if (counta > countb) {
-                    console.log("retrning -1")
-                    return -1;
-                }
-            
-                return 0;     
-            });
+            this.filteredResults.sort((a,b) => compareInterest(a,b));
         }
 
-        console.log(this.filteredResults)
 
         if (this.index == 0) {
             this.filteredResults.sort((a,b) => Date(b.date_created) < Date(a.date_created) ? 1:-1);
@@ -311,4 +273,32 @@ export class Tag_list extends Item_List {
         this.items.push(newTag);
         return this;
     }
+}
+
+export function compareInterest(a,b) {
+    let counta = 0;
+    let countb = 0;
+
+    login_user.getInterests().forEach(tag_id => {
+        a.getTags().forEach((tag) => {
+            if (tag.getID() == tag_id) {
+                counta++;
+            }
+        });
+
+        b.getTags().forEach((tag) => {
+            if (tag.getID() == tag_id) {
+                countb++;
+            }
+        })
+    });
+    
+    if (counta < countb) {
+        return 1;
+    } 
+    if (counta > countb) {
+        return -1;
+    }
+
+    return 0;     
 }

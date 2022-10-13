@@ -3,6 +3,7 @@ import { Tag } from '../classes/Tag.js';
 import { Trade_Item } from '../classes/Trade_Item.js'
 import { Login_user } from '../classes/User_Account.js';
 import { login_user } from '../screens/SignInScreen';
+import { compareInterest } from '../classes/Item_List';
 require('jest-fetch-mock').enableMocks()
 fetchMock.dontMock();
 
@@ -34,11 +35,13 @@ let testItems =[
 let tempTags = [{name: "taga", date_created:"2022-10-12", id: 1, exchange: 0}, {name: "tagb", date_created:"2022-10-12", id: 2, exchange: 0}]
 
 let interest = []
+let interestId = [];
 tempTags.forEach(t => {
     interest.push(new Tag(t))
+    interestId.push(t['id']);
 })
 
-login_user.setInterests(interest);
+login_user.setInterests(interestId);
 
 test_item_list.items = [];
 
@@ -99,7 +102,6 @@ describe("testing the item_list and its methods", () => {
         let Test_loaded_item = new Trade_Item(test_json_items[0]);
         
         let comparator = test_item_list.getItems()[0]
-        console.log("comparator: ", comparator)
 
         expect(comparator.getName()).toBe(Test_loaded_item.getName());
         expect(comparator.getID()).toBe(Test_loaded_item.getID());
@@ -145,7 +147,6 @@ describe("testing the item_list and its methods", () => {
     });
 
     test("testing deleting an item", () => {
-        console.log("the test ID is",testItemId);
         return test_item_list.deleteItem('delete-trade-item', testItemId).then(res => {
             expect(res).toBe(true);
             expect(test_item_list.findByID(testItemId)).toBe(false);
@@ -176,16 +177,31 @@ describe("testing the item_list and its methods", () => {
         let sort_list;
 
         test_item_list.items = [];
+        console.log(testItems);
         testItems.forEach(a => {
+            console.log("testItem from json: ", a);
             let tempTrade = new Trade_Item(a);
-            a.tags.forEach(t => {
+            console.log("loading tags: ", a['tags']);
+            a['tags'].forEach(t => {
+                console.log("tag :", t);
                 let tempTag = new Tag(t);
+                console.log(tempTag);
                 tempTrade.addTag(tempTag);
             })
+            console.log("temp trade item: ", tempTrade);
             test_item_list.items.push(tempTrade);
         })
+
+        console.log("login user: ", login_user.getInterests());
         sort_list = test_item_list.getItems();
-        console.log("sort testing list:", sort_list)
+
+
+        // expect(compareInterest(sort_list[0],sort_list[1])).toBe(1);
+        console.log("sortlist item:", sort_list[0])
+        expect(compareInterest(sort_list[1],sort_list[0])).toBe(-1);
+
+
+        console.log("sort list: ", sort_list)
         expect(test_item_list.index).toBe(null);
 
         let sorted = true;
@@ -196,14 +212,12 @@ describe("testing the item_list and its methods", () => {
             let count = 0;
             item.getTags().forEach((tag) => {
                 login_user.getInterests().forEach(i => {
-                    if (tag.getID() == i.getID()) {
+                    if (tag.getID() == i) {
                         count++;
                     }
                 })
             });
 
-            console.log(count);
-            console.log(previosCount);
             if (count > previosCount) {
                 sorted = false;
                 return;
@@ -363,6 +377,8 @@ describe("testing the item_list and its methods", () => {
             expect(droptags[iter]['value']['id']).toBe(tempTags[iter]['id']);
         }
     })
+
+    
 
 
 })

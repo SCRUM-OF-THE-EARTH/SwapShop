@@ -40,8 +40,6 @@ const AddItem = ({navigation}) => {
 
 
     useEffect(() => {
-        console.log("using effect");
-        console.log(tags_list.getTags());
         setTags(tags_list.getTags());
 
         setItemTags(tags_list.getTags());
@@ -229,9 +227,7 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
             let newTag = await communicator.makeRequestByCommand("add-Tag", [tag]);
             let addTag = tags_list.addTag(newTag);
             tags.splice(index, 1, addTag);
-        } else {
-            console.log('This tag already exists', tag)
-        }   
+        } 
     })
 
     await tags.forEach(async (tag, index) => {
@@ -241,11 +237,9 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
             let addTag = tags_list.addTag(newTag);
             tags.splice(index, 1, addTag);
         } else {
-            console.log('This tag already exists', tag)
         }
     });
 
-    console.log(tags);
 
     let owner_id = login_user.getID()
 
@@ -259,13 +253,11 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
             trade_item.addTag(tag);   
         })
         tags.forEach(tag => {
-            console.log(item_id, tag.id);
             communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, 'true']);
             trade_item.addExchangeTag(tag);
         })
 
         if (image != "") {
-            console.log(image);
             communicator.makePostRequestForImage(image, item_id);
         }
         navigation.navigate('MainScreen');

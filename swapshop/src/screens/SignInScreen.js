@@ -78,10 +78,8 @@ const SignInScreen = ({navigation}) => {
  // if the login was a succes thsi will change the pagea to the main screen 
  // if not then it will display an error to the user
 async function Login(username, password, navigation, onChangeError){
-  console.log(username, password);
   login_user.setUsername(username);
   let success = await login_user.Login(password);
-  console.log(success);
 
   if (success) {
     navigation.navigate('MainScreen');
