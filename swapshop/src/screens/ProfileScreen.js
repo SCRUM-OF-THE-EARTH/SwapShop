@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { useState, useEffect } from 'react';
 import Tab from '../components/Tab.js';
-import { login_user } from './SignInScreen.js';
+import { login_user } from '../classes/User_Account';
 import { useIsFocused } from "@react-navigation/native";
 import { tags_list, trade_items_list } from "./MainScreen.js";
 import DropDownPicker from 'react-native-dropdown-picker';

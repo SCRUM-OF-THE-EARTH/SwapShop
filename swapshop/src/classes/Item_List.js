@@ -1,7 +1,7 @@
 
 import { communicator } from "./Communicator"
 import { Tag } from "./Tag";
-import { login_user } from "../screens/SignInScreen";
+import { login_user } from "../classes/User_Account";
 
 // the item list class is used a data structure to contain and manage:
 // - all the posted trade item from users

@@ -3,8 +3,9 @@ import React, {useState} from 'react';
 import SignUpScreen from './SignUpScreen';
 import { Login_user } from '../classes/User_Account.js'
 import { User_Account } from '../classes/User_Account.js';
+import { login_user } from '../classes/User_Account.js';
 // defining a new login user for the sign in screen
-export const login_user = new Login_user();
+
 
 // this is the sign in screen for the app
 // users will enter a username and a password
