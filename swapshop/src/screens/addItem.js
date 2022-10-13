@@ -163,7 +163,7 @@ const AddItem = ({navigation}) => {
                 containerStyle={styles.tagMenu}
                 open={tagMenuOpen}
                 searchable={true}
-                placeholder="add tags for items wnated in exchange"
+                placeholder="Add tags for items wanted in exchange"
                 multiple={true}
                 min={0}
                 max={5}

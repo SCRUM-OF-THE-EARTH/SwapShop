@@ -52,9 +52,18 @@ const ProfileScreen = ({ navigation }) => {
         return (
             <View style={styles.container}>
 
-                <Text>{login_user.getFullName()}</Text>
-                <Text>{login_user.getUsername()}</Text>
-                <Text>{login_user.getEmail()}</Text>
+                <Text style={styles.welcome}>
+                    <Text>WELCOME, {login_user.getUsername()}</Text>
+                </Text>
+
+
+                <View style = {styles.details}>
+                    <Text>Full Names: {login_user.getFullName()}</Text>
+                    <Text>UserName: {login_user.getUsername()}</Text>
+                    <Text>Email Address: {login_user.getEmail()}</Text>
+
+                </View>
+
 
                 <DropDownPicker
                     open={tagMenuOpen}
@@ -70,6 +79,8 @@ const ProfileScreen = ({ navigation }) => {
                         setActiveTags(loadInterests(interests, setInterests, loadInterests, setActiveTags, tags, setTags));
                     }}
                 />
+
+
 
                 <View>{activeTags}</View>
 
@@ -157,8 +168,25 @@ function loadInterests(interest, setInterests, loadInterests, setActiveTags, tag
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%'
+        marginTop: 70,
+        height: '90%'
+        // marginTop: 50,
+        // marginBottom: 50,
+    },
+    details:{
+
+        marginBottom: 20,
+    },
+    welcome:{
+        marginBottom: 50,
+        alignItems:"center",
+        fontSize: 20,
+        color: "#3CB371",
+        fontWeight:"bold",
+        textAlign:"center",
+
     }
+
 })
 
 export default ProfileScreen;
