@@ -1,1 +1,1 @@
-This folder contains images for the wiki.
+This folder contains updated images for the wiki.
