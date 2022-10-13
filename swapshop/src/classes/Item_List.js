@@ -17,8 +17,8 @@ import { login_user } from "../screens/SignInScreen";
 
 export class Item_List {
     constructor(command) {
+        this.command = command;
         this.json_items = false;
-        this.fetchItems(command);
         this.items = [];
         this.loaded = false;
         this.filteredResults =[];
@@ -38,8 +38,8 @@ export class Item_List {
     // fetchItems is used to get the json_array from the communicator 
     // it takes in a command name (command) which it passes on to the communicator 
     // it sets the json_item to the results of the communicators request
-    async fetchItems(command) {
-        this.json_items = await communicator.makeRequestByCommand(command);
+    async fetchItems() {
+        return this.json_items = await communicator.makeRequestByCommand(this.command);
     }
 
 
@@ -174,41 +174,7 @@ export class Trade_item_list extends Item_List {
         } 
         if (this.index == null) {
             console.log("this index is null");
-            this.filteredResults.sort(function (a,b) {
-                let counta = 0;
-                let countb = 0;
-
-                login_user.getInterests().forEach(tag_id => {
-                    console.log(tag_id);
-                    a.getTags().forEach((tag) => {
-                        if (tag.getID() == tag_id) {
-                            counta++;
-                        }
-                    });
-
-                    b.getTags().forEach((tag) => {
-                        if (tag.getID() == tag_id) {
-                            countb++;
-                        }
-                    })
-                });
-
-                console.log("count a:", counta);
-                console.log(a);
-                console.log("count b:", countb);
-                console.log(b)
-                
-                if (counta < countb) {
-                    console.log("returing 1");
-                    return 1;
-                } 
-                if (counta > countb) {
-                    console.log("retrning -1")
-                    return -1;
-                }
-
-                return 0;
-            })
+            this.filteredResults.sort((a,b) => comapreInterests(a,b));
         }
 
         console.log(this.filteredResults)
@@ -311,4 +277,40 @@ export class Tag_list extends Item_List {
         this.items.push(newTag);
         return this;
     }
+}
+
+function comapreInterests(a,b) {
+    let counta = 0;
+    let countb = 0;
+
+    login_user.getInterests().forEach(tag_id => {
+        console.log(tag_id);
+        a.getTags().forEach((tag) => {
+            if (tag.getID() == tag_id) {
+                counta++;
+            }
+        });
+
+        b.getTags().forEach((tag) => {
+            if (tag.getID() == tag_id) {
+                countb++;
+            }
+        })
+    });
+
+    console.log("count a:", counta);
+    console.log(a);
+    console.log("count b:", countb);
+    console.log(b)
+    
+    if (counta < countb) {
+        console.log("returing 1");
+        return 1;
+    } 
+    if (counta > countb) {
+        console.log("retrning -1")
+        return -1;
+    }
+
+    return 0;     
 }

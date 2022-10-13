@@ -39,13 +39,10 @@
     "expo": "^46.0.10",
     "expo-image-manipulator": "~10.4.0",
     "expo-image-picker": "~13.3.1",
-<<<<<<< HEAD
-    "expo-status-bar": "^1.4.0",
-    "firebase": "^9.11.0",
-=======
     "expo-permissions": "~13.2.0",
-    "expo-status-bar": "~1.4.0",
->>>>>>> image-upload
+    "expo-status-bar": "^1.4.0",
+    "firebase": "^9.6.11",
+    "idb": "^7.1.0",
     "jest": "^26.6.3",
     "jest-coverage-badges": "^1.1.2",
     "jest-fetch-mock": "^3.0.3",

@@ -10,6 +10,7 @@ import Detailed_Trade_item from './src/screens/detailed_trade_item';
 import MainScreen from "./src/screens/MainScreen";
 import ChatScreen from './src/screens/ChatScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import MessageScreen from './src/screens/MessagesScreen'
 
 const {height, width} = Dimensions.get('window');
 
@@ -28,6 +29,7 @@ const App = () =>{
                 <RootStack.Screen name = "detailed_item" component={Detailed_Trade_item} options={{headerShown:true, title:"", headerStyle:{backgroundColor:"#3CB371"}}}/>
                 <RootStack.Screen name = "ChatScreen" component={ChatScreen} options={({ route  }) => ({headerShown:true, title: route.params.owner.getFullName() , headerStyle:{backgroundColor:"#3CB371"}})}/>
                 <RootStack.Screen name = "ProfileScreen" component={ProfileScreen} />
+                <RootStack.Screen name = "MessageScreen" component={MessageScreen} />
             </RootStack.Navigator>
         </NavigationContainer>
     );

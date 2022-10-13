@@ -14,10 +14,10 @@ const Tab = ({nav, activeTab}) => {
     <View style={styles.container}>
         <View style={styles.back_Bar}></View>
         <TouchableOpacity style={styles.sideTab} ><Icon color={aTab == 'settings' ? "#3CB371" : "#000000"} style={{}} name="settings-outline" size={windowWidth/12} title="" /></TouchableOpacity>
-        <TouchableOpacity style={styles.sideTab}><Icon color={aTab == 'chat' ? "#3CB371" : "#000000"} name="chatbubbles-outline" size={windowWidth/12} title="" /></TouchableOpacity>
+        <TouchableOpacity style={styles.sideTab} onPress={() => navigation.navigate("MessageScreen")}><Icon color={aTab == 'chat' ? "#3CB371" : "#000000"} name="chatbubbles-outline" size={windowWidth/12} title="" /></TouchableOpacity>
         <TouchableOpacity style={styles.mainTab} onPress={() => navigation.navigate("addItemScreen")} ><Icon name="add-outline" color="white" size={windowWidth/12} title="" /></TouchableOpacity>
         <TouchableOpacity style={styles.sideTab} onPress={() => navigation.navigate("MainScreen")}><Icon color={aTab == 'home' ? "#3CB371" : "#000000"} name="home-outline" size={windowWidth/12} title="" /></TouchableOpacity>
-        <TouchableOpacity style={styles.sideTab}><Icon onPress={() => navigation.navigate("ProfileScreen")} color={aTab == 'profile' ? "#3CB371" : "#000000"} name="person-circle-outline" size={windowWidth/12} title="" /></TouchableOpacity>
+        <TouchableOpacity style={styles.sideTab} onPress={() => navigation.navigate("ProfileScreen")} ><Icon color={aTab == 'profile' ? "#3CB371" : "#000000"} name="person-circle-outline" size={windowWidth/12} title="" /></TouchableOpacity>
     </View>
     )
 }

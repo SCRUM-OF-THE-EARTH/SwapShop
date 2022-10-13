@@ -32,7 +32,19 @@ const MainScreen = ({navigation}) =>{
     // specifivally it is used to fetch and reload the list 
     // when the page is loaded
     useEffect(async () => {
-        if (!user_accounts_item_list.loaded){
+        let promises = [];
+        trade_items_list.json_items = false;
+        trade_items_list.items = []
+        user_accounts_item_list.json_items = false;
+        user_accounts_item_list.items = [];
+        tags_list.json_items = false;
+        tags_list.items = [];
+
+        promises.push(trade_items_list.fetchItems());
+        promises.push(user_accounts_item_list.fetchItems())
+        promises.push(tags_list.fetchItems());
+
+        Promise.all(promises).then(async () => {
             user_accounts_item_list.loadItems((item) => {
                 let tempUser = new User_Account();
                 tempUser.setEmail(item["email"])
@@ -43,17 +55,14 @@ const MainScreen = ({navigation}) =>{
                 .setInterests(item["tags"]);
                 return tempUser;
             });
-        }
 
-        if (!tags_list.loaded) {
             tags_list.loadItems((item) => {
                 let tag = new Tag(item);
                 return tag;
             })
-        }
-        setTags(tags_list.getTags());
 
-        if (!trade_items_list.loaded){
+            setTags(tags_list.getTags());
+
             trade_items_list.loadItems((item) => {
                 let Owner = user_accounts_item_list.findByID(item["owner_id"]);
 
@@ -75,11 +84,8 @@ const MainScreen = ({navigation}) =>{
             });
 
             await trade_items_list.fetchImages();
-                setLoaded(true);
-            
-        }
-            
-        
+            setLoaded(true);
+        });
     }, [])
 
     // this is used to refresh the list of items on the main screen when the
