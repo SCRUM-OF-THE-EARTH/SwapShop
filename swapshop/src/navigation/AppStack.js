@@ -1,7 +1,8 @@
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity,Dimensions} from 'react-native';
 import React, {useState} from 'react';
-import {NavigationContainer} from "@react-navigation/native";
+import {NavigationContainer, TabActions} from "@react-navigation/native";
 import {createStackNavigator} from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SignInScreen from '../screens/SignInScreen';
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import SignUpScreen from "../screens/SignUpScreen";
@@ -13,6 +14,7 @@ import ChatScreen from '../screens/ChatScreen';
 const {height, width} = Dimensions.get('window');
 
 const RootStack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const AppNavigation = () =>{
     return(
@@ -27,6 +29,8 @@ const AppNavigation = () =>{
                 <RootStack.Screen name = "detailed_item" component={Detailed_Trade_item} options={{headerShown:true, title:"", headerStyle:{backgroundColor:"#3CB371"}}}/>
                 <RootStack.Screen name = "ChatScreen" component={ChatScreen} options={({ route  }) => ({headerShown:true, title: route.params.owner.getFullName() , headerStyle:{backgroundColor:"#3CB371"}})}/>
             </RootStack.Navigator>
+            
+
         </NavigationContainer>
     );
 };

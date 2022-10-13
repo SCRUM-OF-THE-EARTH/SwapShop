@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Aler
 import React, {useState} from 'react';
 import SignUpScreen from './SignUpScreen';
 import { Login_user } from '../classes/User_Account.js'
-
+import { User_Account } from '../classes/User_Account.js';
 // defining a new login user for the sign in screen
 export const login_user = new Login_user();
 
@@ -16,8 +16,6 @@ const SignInScreen = ({navigation}) => {
     const [username, onChangeUsername] = useState(''); // the username of the user
     const [password, onChangePassword] = useState(''); // the password of the user
     const [errorMessage, onChangeError] = useState(''); // the error message that is displayed
-
-    console.log("This is a test");
 
     // this is the GUI component for the sign in screen
     return(
@@ -92,7 +90,6 @@ async function Login(username, password, navigation, onChangeError){
   } else {
     onChangeError("Sorry. Those details don't seem to match");
   }
-
  }
 
  // the styles for the sign in screen

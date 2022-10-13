@@ -36,7 +36,7 @@ export class User_Account {
         return this;
     }
 
-    // getEmail is used to get the value of the ID 
+    // getID is used to get the value of the ID 
     getID() {
         return this.id;
     }

@@ -2,10 +2,14 @@ import { View, Text,StyleSheet, Button } from 'react-native';
 import Slideshow from 'react-native-image-slider-show';
 import { color } from 'react-native-reanimated';
 
+//export const ownerID = 0;
+
 const Detailed_Trade_item = ({route, navigation}) => {
 
     // retrieve the item passed through the navigation
     const { item } = route.params;
+
+    //ownerID = item.getOwner().getID();
 
     // render the item 
     return (

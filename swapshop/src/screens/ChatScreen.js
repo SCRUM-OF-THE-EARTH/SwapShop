@@ -1,10 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useLayoutEffect} from 'react';
 import {View, ScrollView, Text, Button, StyleSheet} from 'react-native';
 import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import colors from "../../config/colors";
+//import { collection, addDoc, query, orderBy, onSnapshot, QuerySnapshot, doc, getDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig/firebase";
+import { login_user } from "./SignInScreen"; 
 
 // create a chat screen UI
 // so the user can be redirected to this page when, they choose the option to contact the client.
@@ -12,40 +15,58 @@ import colors from "../../config/colors";
 const ChatScreen = ({route, navigation}) => {
   const [messages, setMessages] = useState([]);
 
-
   useEffect(() => {
-    setMessages([
-      {
-        // this is the receivers chat bubble
-        _id: 1,
-        text: "Copy that!",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "Test",
-          avatar: require("../../assets/profile.jpg"),
-        },
-      },
-      
-      //this is the sender's chat bubble;
-      {
-        _id: 2,
-        text: "This is a test!",
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: "Test",
-          avatar: require("../../assets/profile.jpg"),
-        },
-      },
-    ]);
+
+    // the collection of messages (in firestore database) is ordered in descending order by the time the message has been sent
+    // then a listener is set to detect if any changes have occured in the collection
+    // if so it updates the chat screen on both the users end by using react-native-gifted-chat builtin setMessage function
+    const unsub = db.collection("messages").orderBy('createdAt', 'desc').onSnapshot(snapshot => setMessages(
+      snapshot.docs.map(doc=>({
+        _id: doc.data()._id,
+        createdAt: doc.data().createdAt.toDate(),
+        text: doc.data().text,
+        user: doc.data().user,
+      }))
+    ))
+
+    return unsub;
+    
   }, []);
+
+  // useLayoutEffect(() => {
+    
+  //   const unsub = db.collection("messages").orderBy('createdAt', 'desc').onSnapshot(snapshot => setMessages(
+  //     snapshot.docs.map(doc=>({
+  //       _id: doc.data()._id,
+  //       createdAt: doc.data().createdAt.toDate(),
+  //       text: doc.data().text,
+  //       user: doc.data().user,
+  //     }))
+  //   ))
+
+  //   return unsub;
+  // }, [])
 
   // when the user types a message and presses send, the new message will appear, on the screen (under previous one)
   const onSend = useCallback((messages = []) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages),
     );
+    // initialise the constants that will be passed as params to the database and gifted chat
+    const {
+      _id,
+      createdAt,
+      text,
+      user,
+    }=messages[0];
+
+    db.collection('messages').add({
+      _id,
+      createdAt,
+      text,
+      user,
+    })
+
   }, []);
 
   // rendering the send button
@@ -81,9 +102,6 @@ const ChatScreen = ({route, navigation}) => {
           right: {
             color: colors.white,
           },
-          left: {
-            color: colors.black,
-          }
         }}
       />
     );
@@ -97,12 +115,19 @@ const ChatScreen = ({route, navigation}) => {
     );
   }
 
+  // get the current users email and name
+  let currUserID = login_user.getEmail();
+  let currUserName = login_user.getFullName();
+
   return (
     <GiftedChat
       messages={messages}
+      showAvatarForEveryMessage={true}
       onSend={(messages) => onSend(messages)}
+      // pass the user details in the user component
       user={{
-        _id: 1,
+        _id: currUserID,
+        name: currUserName
       }}
       renderBubble={renderBubble}
       alwaysShowSend
