@@ -14,6 +14,7 @@ export class User_Account {
         this.lname = "";
         this.username = "";
         this.email = "";
+        this.tags = [];
         this.id =0;
     }
 
@@ -117,6 +118,14 @@ export class User_Account {
         return this.email;
     }
 
+    setInterests(tags) {
+        this.tags = tags
+        return this; 
+    }
+
+    getInterests() {
+        return this.tags;
+    }
     
 }
 
@@ -143,9 +152,8 @@ export class Login_user extends User_Account {
         .setUsername(response["username"])
         .setFisrtName(response["fname"])
         .setLastName(response["lname"])
-        .setEmail(response["email"]);
-
-            
+        .setEmail(response["email"])
+        .setInterests(response["tags"]);
 
         return true;
     }

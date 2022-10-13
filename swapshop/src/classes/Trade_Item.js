@@ -1,5 +1,6 @@
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from "react";
+import { communicator } from './Communicator';
 
 // Trade item is used to create and store items fetched from the database of trading items
 // it has 5 parameters:
@@ -10,30 +11,40 @@ import React from "react";
 //  | id - the id of the trade item (integer)
 export class Trade_Item {
     constructor(item, navigation) {
-        console.log("new trade item has been created with:")
-        console.log(item)
         this.item_name = item['item_name'];
         this.item_value = item['item_value'];
         this.owner = false;
         this.item_description = item['description'];
         this.id = item['id'];
+        this.hasImages = false;
         this.navigation = navigation;
         this.exchangeItem = "";
-        this.images = [
-            "https://sudocode.co.za/SwapShop/filler_image.jpg",
-            "https://sudocode.co.za/SwapShop/filler_image.jpg",
-            "https://sudocode.co.za/SwapShop/filler_image.jpg",
-            "https://sudocode.co.za/SwapShop/filler_image.jpg",
-            "https://sudocode.co.za/SwapShop/filler_image.jpg"
-        ]
+        this.images = ['https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg'];
         this.date_created = item['date_created'];
-        this.exchange = item['exchange_item'];
+        this.exchange = [];
 
         this.tags = [];
 
     }
 
+    async fetchImages() {
+        if (!this.hasImages) {
+            let temp = await communicator.makeRequestByCommand('fetch-trade-images', [this.id]);
+            if (temp.length > 0) {
+                this.images = temp;
+                this.hasImages = true;
+            }
+        }
+    }
 
+    getImageSlideShow() {
+        let imageSlideShow = [];
+
+        this.images.forEach(image => {
+            imageSlideShow.push({url: image});
+        })
+        return imageSlideShow;
+    }
     // setName is used to set the item_name value 
     // it takes in a string 
     // and returns this 
@@ -99,16 +110,8 @@ export class Trade_Item {
         return this.item_description;
     }
 
-    // setExchangeItem is used to set the item that the user wants in exchange
-    // it takes in a string
-    // and returns this
-    setExchangeItem(item) {
-        this.exchange = item;
-        return this;
-    }
-
     // getExchageItem is used to get the item that the user wants in exchange for the item
-    getExchangeItem() {
+    getExchange() {
         return this.exchange;
     }
 
@@ -132,18 +135,29 @@ export class Trade_Item {
     // it takes in nothing
     // and returns a react GUI element containing all the information of the item
     createItemBlock() {
+
+        let exchangeTags = [];
+
+        this.exchange.forEach(tag => {
+            exchangeTags.push(
+                <Text style={styles.exchange_tag} key={tag.getID()}>{tag.getName()}</Text>
+            )
+        })
         return (
-            <TouchableOpacity style={styles.container} onPress={() => this.navigation.navigate("detailed_item", {item: this})}>
+            <TouchableOpacity key={this.id} style={styles.container} onPress={() => this.navigation.navigate("detailed_item", {item: this})}>
                 <Text style={styles.header}>{this.item_name}</Text>
             <View style={styles.innerContainer}>
+                
                 <Image
                 style={{width:150, height: 150, borderRadius:10}}
                     source={{uri:this.images[0]}}   
                 />
+                
                 <View style={{flexDirection:"column", flex:1,alignSelf: 'center'}}>
                     <Text style={[styles.wrappedText, {paddingVertical: 10, color: 'gray'}]}>{this.item_description}</Text>
                     <Text style={styles.wrappedText}>Estimated value: R{this.item_value}</Text>
-                    <Text style={styles.wrappedText}>Item wanted: {this.exchange}</Text>
+                    <Text style={styles.wrappedText}>Item wanted:</Text>
+                    <View style={styles.exchange_tag_container}>{exchangeTags}</View>
                     <Text style={[styles.wrappedText, styles.green]}>{this.owner.getFullName()}</Text>
                 </View>
             </View>
@@ -179,6 +193,10 @@ export class Trade_Item {
         return this.tags;
     }
 
+    addExchangeTag(tag) {
+        this.exchange.push(tag);
+        return this;
+    }
 }
 
 // this contains the styles for the generated react native GUI item  
@@ -212,5 +230,20 @@ const styles = StyleSheet.create({
     },
     green: {
         color: "#3CB371",
+    },
+    exchange_tag_container: {
+        display: 'flex',
+        flexWrap: "wrap",
+        flexDirection: "row",
+        marginLeft: 10,
+        marginRight: 10
+    },
+    exchange_tag: {
+        margin: 2,
+        borderWidth: 1,
+        borderColor: "#2E8B57",
+        color: "#2E8B57",
+        borderRadius: 10,
+        paddingHorizontal: 10
     }
 })

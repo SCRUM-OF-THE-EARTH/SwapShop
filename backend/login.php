@@ -52,6 +52,16 @@
         
         if ($res = $conn->query($sql)) {
             $row = $res->fetch_assoc();
+            $user_id = $row['id'];
+            $tags = array();
+
+            if ($tag_res = $conn->query("SELECT * FROM user_tags WHERE user = $user_id")) {
+                while ($tag_row = $tag_res->fetch_assoc()) {
+                    $tags[] = $tag_row['tags'];
+                }
+            }
+
+            $row['tags'] = $tags;
 
             if ($row['success'] == 1){
                 return $row;

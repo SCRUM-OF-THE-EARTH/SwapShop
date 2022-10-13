@@ -1,5 +1,7 @@
 
 import { communicator } from "./Communicator"
+import { Tag } from "./Tag";
+import { login_user } from "../screens/SignInScreen";
 
 // the item list class is used a data structure to contain and manage:
 // - all the posted trade item from users
@@ -51,8 +53,6 @@ export class Item_List {
         this.json_items.forEach(item => {
             this.items.push(this.constructorFunc(item));
         });
-
-        this.loaded = true;
         this.filteredResults = this.items;
     }
 
@@ -157,7 +157,7 @@ export class Item_List {
 export class Trade_item_list extends Item_List {
     constructor() {;
         super("fetch-trade-items");
-        this.index = 0;
+        this.index = null;
         this.tagsActive = false;
         this.ActiveTags = [];
     }
@@ -167,9 +167,51 @@ export class Trade_item_list extends Item_List {
     // it takes in an integer from 0 to 4 or NULL
     // and returns a sorted list of trade items
     Sort(index) {
+        console.log("indes is: ", this.index);
+        console.log(this.filteredResults)
         if (index != null) {
             this.index = index;
+        } 
+        if (this.index == null) {
+            console.log("this index is null");
+            this.filteredResults.sort(function (a,b) {
+                let counta = 0;
+                let countb = 0;
+
+                login_user.getInterests().forEach(tag_id => {
+                    console.log(tag_id);
+                    a.getTags().forEach((tag) => {
+                        if (tag.getID() == tag_id) {
+                            counta++;
+                        }
+                    });
+
+                    b.getTags().forEach((tag) => {
+                        if (tag.getID() == tag_id) {
+                            countb++;
+                        }
+                    })
+                });
+
+                console.log("count a:", counta);
+                console.log(a);
+                console.log("count b:", countb);
+                console.log(b)
+                
+                if (counta < countb) {
+                    console.log("returing 1");
+                    return 1;
+                } 
+                if (counta > countb) {
+                    console.log("retrning -1")
+                    return -1;
+                }
+
+                return 0;
+            })
         }
+
+        console.log(this.filteredResults)
 
         if (this.index == 0) {
             this.filteredResults.sort((a,b) => Date(b.date_created) < Date(a.date_created) ? 1:-1);
@@ -197,9 +239,8 @@ export class Trade_item_list extends Item_List {
         this.tagActive = true;
         this.searchTerm = searchterm;
         super.searchItems(searchterm);
-        this.Sort();
         this.filterByTags(this.ActiveTags);
-        
+        this.Sort();
     }
 
     //filterByTags is used to filter the list of items by a list of active tags
@@ -231,6 +272,15 @@ export class Trade_item_list extends Item_List {
         }
         this.Sort();
     }
+
+    fetchImages() { 
+        let promises = [];
+        this.items.forEach((item) => {
+            promises.push(item.fetchImages());
+        })
+
+        return Promise.all(promises)
+    }
 }
 
 // The Tag list class is a sub class of item_list made specifically for lists of Tag objects
@@ -253,5 +303,12 @@ export class Tag_list extends Item_List {
             names.push(tempTagItem);
         });
         return names;
+    }
+
+    addTag(tag) {
+        this.json_items.push(tag);
+        let newTag = new Tag(tag)
+        this.items.push(newTag);
+        return this;
     }
 }

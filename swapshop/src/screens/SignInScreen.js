@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Alert} from 'react-native';
 import React, {useState} from 'react';
 import SignUpScreen from './SignUpScreen';
