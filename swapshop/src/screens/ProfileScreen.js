@@ -81,8 +81,10 @@ const ProfileScreen = ({ navigation }) => {
                 />
 
 
+                <View style = {styles.tag}>
+                    <View>{activeTags}</View>
+                </View>
 
-                <View>{activeTags}</View>
 
                 <Tab nav={navigation} activeTab="profile" />
             </View>
@@ -184,6 +186,12 @@ const styles = StyleSheet.create({
         color: "#3CB371",
         fontWeight:"bold",
         textAlign:"center",
+
+    },
+    tag:{
+        marginTop: 20,
+        marginLeft: 20,
+
 
     }
 
