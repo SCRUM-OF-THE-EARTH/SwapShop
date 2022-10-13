@@ -2,8 +2,8 @@
 
     include("../../backend/conf.php");
 
-    $ImageBase64= $_POST['image-content'];
-    $fileName = time() . '_' . $_POST['image-file'];
+    $ImageBase64= $_POST['image_content'];
+    $fileName = time() . '_' . $_POST['image_file'];
     $item_id = $_POST['item_id'];
 
     $ifp = fopen($fileName, "wb");

@@ -9,6 +9,7 @@ import { User_Account } from '../classes/User_Account';
 import { Tag } from '../classes/Tag';
 import SortBar from '../components/SortBar';
 import DropDownPicker from 'react-native-dropdown-picker';
+import Tab from '../components/Tab';
 
 export const trade_items_list = new Trade_item_list();
 export const user_accounts_item_list = new Item_List("fetch-user-accounts");
@@ -21,18 +22,16 @@ export const tags_list = new Tag_list();
 const MainScreen = ({navigation}) =>{
     const isFocused = useIsFocused(); // check if the main screen is active on screen
     const [displayItems, setDisplayItems] = useState(''); // the list of trade item's GUI components
+    const [loaded, setLoaded] = useState(false);
     
-    
-
     const [tagMenuOpen, setTagMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
     const [tagValues, setTagValues] = useState([]);
     const [tags, setTags] = useState([]);
 
-
     // this function is run when a tracked value is changed
     // specifivally it is used to fetch and reload the list 
     // when the page is loaded
-    useEffect(() => {
+    useEffect(async () => {
         if (!user_accounts_item_list.loaded){
             user_accounts_item_list.loadItems((item) => {
                 let tempUser = new User_Account();
@@ -40,34 +39,33 @@ const MainScreen = ({navigation}) =>{
                 .setFisrtName(item["fname"])
                 .setLastName(item["lname"])
                 .setID(item["id"])
-                .setUsername(item["username"]);
+                .setUsername(item["username"])
+                .setInterests(item["tags"]);
                 return tempUser;
             });
         }
 
         if (!tags_list.loaded) {
-            console.log("loading tags");
             tags_list.loadItems((item) => {
-                console.log("item or tag is: ", item);
                 let tag = new Tag(item);
                 return tag;
             })
         }
         setTags(tags_list.getTags());
-        console.log(tags_list);
-        console.log(tags);
 
         if (!trade_items_list.loaded){
-            console.log("making use of useEffect")
             trade_items_list.loadItems((item) => {
                 let Owner = user_accounts_item_list.findByID(item["owner_id"]);
-                console.log("the found owner is: ", Owner, item);
 
                 let trade_Item = new Trade_Item(item, navigation);
-                trade_Item.fetchImages();
-                item["tags"].forEach((id) => {
-                    let tag = tags_list.findByID(id);
-                    trade_Item.addTag(tag);   
+                item["tags"].forEach((json_tag) => {
+                    let tempTag = new Tag(json_tag);
+                    if (tempTag.exchange == 1) {
+                        trade_Item.addExchangeTag(tempTag);
+                    } else {
+                        trade_Item.addTag(tempTag);
+                    }
+                       
                 })
 
                 if (Owner != false) {
@@ -75,8 +73,13 @@ const MainScreen = ({navigation}) =>{
                 }
                 return trade_Item;
             });
+
+            await trade_items_list.fetchImages();
+                setLoaded(true);
+            
         }
-                
+            
+        
     }, [])
 
     // this is used to refresh the list of items on the main screen when the
@@ -84,7 +87,8 @@ const MainScreen = ({navigation}) =>{
     useEffect(() => {
         setDisplayItems('')
         setDisplayItems(LoadBlocks(''));
-    }, [isFocused])
+    }, [isFocused, loaded])
+
 
     let screen = (<View style={styles.container}>
         <View style={styles.search_Bar}>
@@ -122,13 +126,13 @@ const MainScreen = ({navigation}) =>{
             />
         </View>
 
-        <ScrollView style={styles.center}>{displayItems}</ScrollView>
-        <View style={styles.addItemBtn}>
-            <Button color="#2E8B57" title='post a new item' onPress={() => navigation.navigate('addItemScreen')}/>
-        </View>
+            <ScrollView style={styles.center}>{loaded ? displayItems : null}</ScrollView>
+        <Tab style={{position: 'absolute', top: '50'}} nav={navigation} activeTab="home"/>
         </View>);
-
-    return screen;
+    
+        return screen;
+    
+    
 }
 
 // th LoadBlocks function is used to filter thr list of items by the search term and load them into the GUI componen
@@ -136,7 +140,6 @@ const MainScreen = ({navigation}) =>{
 // and sets the value of displayItems
 // and returns the list of filtered rendered GUI items
 function LoadBlocks(searchTerm) {
-    console.log(searchTerm);
     trade_items_list.searchItems(searchTerm);
     return loadSorted(trade_items_list.filteredResults);
 }
@@ -151,7 +154,6 @@ function loadSorted(items) {
 }
 
 function filterByTag(tags) {
-    console.log("tags and items are: ", tags);
 
     trade_items_list.filterByTags(tags);
     return loadSorted(trade_items_list.filteredResults);
@@ -163,7 +165,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
     center: {
         width:'90%',
@@ -172,9 +174,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,  
         elevation: 5,
-        marginVertical:10,
+        marginTop:10,
         marginTop: 0,
+        marginBottom: 60,
         zIndex: -5,
+        // height: '40%'
     },
     addItemBtn:{
         width: "70%",

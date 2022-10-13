@@ -1,10 +1,14 @@
 import { Button, TextInput, View, ScrollView, StyleSheet, Text, Image } from "react-native"
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Slideshow from 'react-native-image-slider-show';
-import {login_user} from './SignInScreen.js';
+import { login_user } from './SignInScreen.js';
 import { trade_items_list } from "./MainScreen.js";
 import * as ImagePicker from 'expo-image-picker';
 import { communicator } from "../classes/Communicator.js";
+import * as Permissions from 'expo-permissions';
+import { tags_list } from "./MainScreen.js";
+import DropDownPicker from 'react-native-dropdown-picker';
+import { useIsFocused } from "@react-navigation/native";
 
 // This is the screen for creating a new trade item
 //  export default function MainImage() {
@@ -12,24 +16,48 @@ import { communicator } from "../classes/Communicator.js";
 
 const AddItem = ({navigation}) => {
 
+    // listMode="SCROLLVIEW"
+    // // scrollViewProps={{
+    // //   nestedScrollEnabled: true,
+    // // }}
+
+    const isFocused = useIsFocused(); 
+
     const [name, onNameChange] = useState(''); // the name of the new item
     const [description, onDescChange] = useState(''); // the description of the new item
     const [value, onValueChange] = useState(''); // the float value of the new item
     const [errorMessage, onChangeError] = useState(''); // the error message displayed
     const [image, setImage] = useState(null); //the uploaded image.
-    const [imageList, setImgaeList] = useState('');
-    const [exchange, setExchange] = useState(''); // the item the poster wants in exchange
+    const [imageList, setImgaeList] = useState(''); // the item the poster wants in exchange
 
+    const [itemTagsMenuOpen, setitemTagsMenuOpen] = useState(false);
+    const [itemTagValues, setItemTagValues] = useState([]);
+    const [itemTags, setItemTags] = useState([]);
+
+    const [tagMenuOpen, setTagMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
+    const [tagValues, setTagValues] = useState([]);
+    const [tags, setTags] = useState([]);
+
+
+    useEffect(() => {
+        console.log("using effect");
+        console.log(tags_list.getTags());
+        setTags(tags_list.getTags());
+
+        setItemTags(tags_list.getTags());
+
+    }, [isFocused]);
 
     const pickImage = async ({navigate}) => {
         //the uploaded image.
         //uploaded image contents
+
         ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             // allowsEditing: true,
             allowsMultipleSelection: true,
             aspect: [4, 3],
-            quality: 1,
+            quality: 0.2,
             base64: true,
         })
         .then((result) => {
@@ -40,11 +68,9 @@ const AddItem = ({navigation}) => {
             if (!result.cancelled) {
             let temp = [];
             let tempImageList = [];
-            console.log("selected: ", result['selected']);
             for (let i = 0; i < result.selected.length; i++) {
                 let uri = result.selected[i].uri;
                 // uri = uri.replace('file://', "");
-                console.log(uri);
                 tempImageList.push(result.selected[i]);
                 let item = <Image style={{position:'relative', height: 200, margin: 20}} key={i} source={{
                     uri: uri
@@ -62,12 +88,16 @@ const AddItem = ({navigation}) => {
     };
 
     const takePicture = async () => {
+
+        await Promise.all([
+            Permissions.askAsync(Permissions.CAMERA),
+        ])
         // the taken image
         //upload image contents
-        let results = await ImagePicker.launchCameraAsync({
+        ImagePicker.launchCameraAsync({
             allowsEditing: true,
             aspect: [4, 3],
-            quality: 1,
+            quality: 0.2,
             base64: true,  
         }).then((result) => {
             if (!result.selected) {
@@ -76,17 +106,18 @@ const AddItem = ({navigation}) => {
             }
             if (!result.cancelled) {
             let temp = [];
-            console.log("selected: ", result['selected']);
+            let tempImageList = [];
             for (let i = 0; i < result.selected.length; i++) {
                 let uri = result.selected[i].uri;
                 // uri = uri.replace('file://', "");
-                console.log(uri);
+                tempImageList.push(result.selected[i]);
                 let item = <Image style={{position:'relative', height: 200, margin: 20}} key={i} source={{
                     uri: uri
                 }}/>;
                 temp.push(item);
             }
             setImage(temp);
+            setImgaeList(tempImageList);
         }
         })
     }
@@ -97,7 +128,28 @@ const AddItem = ({navigation}) => {
     return (
 
         <View style={styles.container}>
+            
             <Text style={styles.header}>Post a new item to trade</Text>
+            <DropDownPicker
+                addCustomItem={true}
+                // style={styles.tagMenu}
+                containerStyle={styles.tagMenu}
+                open={itemTagsMenuOpen}
+                searchable={true}
+                placeholder="tags for this item"
+                multiple={true}
+                min={0}
+                max={5}
+                mode="BADGE"
+                value={itemTagValues}
+                items={itemTags}
+                setOpen={setitemTagsMenuOpen}
+                setValue={setItemTagValues}
+                setItems={setItemTags}
+                // onChangeValue={(value) => setDisplayItems(filterByTag(value))}
+            />
+
+
             <Text style={{color: 'red', textAlign: 'center'}}>{errorMessage}</Text>
             <TextInput style={styles.TextInput} placeholder="name of item"
                        onChangeText={(name) => onNameChange(name)}/>
@@ -106,7 +158,23 @@ const AddItem = ({navigation}) => {
             <TextInput style={styles.TextInput} placeholder="estimate for value of item"
                        onChangeText={(value) => onValueChange(value)}/>
 
-            <TextInput style={styles.TextInput} onChangeText={(text) => setExchange(text)} placeholder="wanted in exhange"/>
+            <DropDownPicker
+                addCustomItem={true}
+                containerStyle={styles.tagMenu}
+                open={tagMenuOpen}
+                searchable={true}
+                placeholder="add tags for items wnated in exchange"
+                multiple={true}
+                min={0}
+                max={5}
+                mode="BADGE"
+                value={tagValues}
+                items={tags}
+                setOpen={setTagMenuOpen}
+                setValue={setTagValues}
+                setItems={setTags}
+                // onChangeValue={(value) => setDisplayItems(filterByTag(value))}
+            />
 
             {/*this is the uploaded image from the user's gallery*/}
             {/*{image && <Image source={{uri: image}} style={{width: 200, height: 200, marginLeft:80,marginTop: 200}}/>}*/}
@@ -135,7 +203,7 @@ const AddItem = ({navigation}) => {
                 {image}
             </ScrollView>
 
-            <Text style={styles.addItemBtn} onPress={() => AddNewItem(name, description, value, exchange, onChangeError, navigation, imageList)}>Post</Text>
+            <Text style={styles.addItemBtn} onPress={() => AddNewItem(name, description, value, tagValues, onChangeError, navigation, imageList, itemTagValues)}>Post</Text>
 
         </View>
     );
@@ -149,42 +217,59 @@ const AddItem = ({navigation}) => {
 // to create a new trade item which is then added to the list of trade items
 // if the item is successfully created the app will return to the home page
 // if not it will display an error
-function AddNewItem(name, description, value, exchange, setError, navigation, image) {
-    if (name == "" || description == "" || value == "") {
+async function AddNewItem(name, description, value, tags, setError, navigation, image, itemTags) {
+    if (name == "" || description == "" || value == "" ) {
         setError("Please fill in all the fields");
         return;
     }
 
-    if (exchange == "") {
-        exchange = "open";
-    }
+    await itemTags.forEach(async (tag, index) => {
+        if (typeof tag.id == 'undefined') {
+            tag = tag.toLowerCase();
+            let newTag = await communicator.makeRequestByCommand("add-Tag", [tag]);
+            let addTag = tags_list.addTag(newTag);
+            tags.splice(index, 1, addTag);
+        } else {
+            console.log('This tag already exists', tag)
+        }   
+    })
 
-    let owner_id = login_user.getID()
-    console.log("login_user id: ", owner_id);
-    console.log(name, description, value, owner_id);
-
-    trade_items_list.addItem('add-trade-item', [name,description, value, owner_id, exchange]).then(res => {
-
-        let item_id = trade_items_list.getItems()[trade_items_list.getItems().length -1].getID();
-        console.log("item id is: ", item_id)
-
-        if (image != "") {
-            communicator.makePostRequestForImage(image, item_id);
+    await tags.forEach(async (tag, index) => {
+        if (typeof tag.id == 'undefined') {
+            tag = tag.toLowerCase();
+            let newTag = await communicator.makeRequestByCommand("add-Tag", [tag]);
+            let addTag = tags_list.addTag(newTag);
+            tags.splice(index, 1, addTag);
+        } else {
+            console.log('This tag already exists', tag)
         }
-        
-        console.log(res);
-        navigation.navigate('MainScreen');
     });
 
-    
+    console.log(tags);
 
-    // console.log("Image is: ", image);
-    // console.log("image name: ");
-    
-    // console.log(type);
+    let owner_id = login_user.getID()
 
-    
+    trade_items_list.addItem('add-trade-item', [name,description, value, owner_id]).then(res => {
 
+        let trade_item = trade_items_list.getItems()[trade_items_list.getItems().length -1];
+        let item_id = trade_item.getID();
+
+        itemTags.forEach(tag => {
+            communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, 'false']);
+            trade_item.addTag(tag);   
+        })
+        tags.forEach(tag => {
+            console.log(item_id, tag.id);
+            communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, 'true']);
+            trade_item.addExchangeTag(tag);
+        })
+
+        if (image != "") {
+            console.log(image);
+            communicator.makePostRequestForImage(image, item_id);
+        }
+        navigation.navigate('MainScreen');
+    });
 }
 
 // the styles for the add items screen
@@ -237,6 +322,15 @@ const styles = StyleSheet.create({
         top:'85%',
         position: 'absolute'
     },
+
+    tagMenu: {
+        color: "gray",
+        alignSelf:"center",
+        margin: 5,
+        width: "90%",
+        zIndex: 5,
+        position: "relative"
+    }
 
 
 });

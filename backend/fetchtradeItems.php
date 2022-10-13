@@ -21,9 +21,9 @@
             $tags = array();
             $trade_item = array("id"=>0, "item_name"=>"name", "owner_id"=>0, "description"=>"desc", "item_value"=>0, "date_created"=>0, "tags"=>0, "exchange_item"=>0);
 
-            if ($sub_results = $conn->query("select * from item_tags WHERE item = $item_id;")) {
+            if ($sub_results = $conn->query("SELECT tags.id, tags.name, tags.date_created, item_tags.exchange FROM item_tags INNER JOIN tags ON item_tags.tag = tags.id AND item_tags.item = $item_id;")) {
                 while ($tag_row = $sub_results->fetch_assoc()) {
-                    $tags[] = $tag_row['tag'];
+                    $tags[] = $tag_row;
                 }
             }
 

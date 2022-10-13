@@ -41,7 +41,6 @@ class Communicator {
         let APIurl = this.url + call.file+"?";
 
         call.param_names.forEach((param, i) => {
-            console.log("param vaule: ",param_values[i]);
             param_values[i] = param_values[i].replace('/\n/g', '%0A');
             param_values[i] = param_values[i].replace('/ /g', '%20');
             param_values[i] = param_values[i].replace("/'/g", "\'");
@@ -50,7 +49,6 @@ class Communicator {
                 APIurl += "&&";
             }
         })
-        console.log(APIurl)
         return APIurl;
     }
 
@@ -80,11 +78,11 @@ class Communicator {
 
     makePostRequestForImage(images, item_id) {
         images.forEach(image => {
-                console.log(image.file);
+            // console.log(image);
                 let body = new FormData();
                 let fileName =  image.uri.substring(image.uri.lastIndexOf("/")+1);
-                body.append('image-content', image.base64);
-                body.append('image-file', fileName);
+                body.append('image_content', image.base64);
+                body.append('image_file', fileName);
                 body.append('item_id', item_id);
 
                 fetch(this.postUrl, {
@@ -93,32 +91,9 @@ class Communicator {
                         "content-type": "multipart/form-data",
                     },
                     body: body
-                }).then(res => console.log(res));
+                }).then(res => console.log(res))
         });
-
-        
-        
-        // let options = {
-        //     method: 'POST',
-        //     body: image
-        // }
-        // console.log(image);
-
-        // fetch(this.postUrl, options).then(res => {
-        //     console.log("Photo has been posted");
-        // })
     }
-
-    // uploadPhoto() {
-    //     return fetch(`${this.postUrl}`,{ 
-    //         method: 'POST',
-    //         headers:{  
-    //             "content-type": "multipart/form-data",
-    //         }, 
-    //         body :body} )
-    //     .then((res) => { console.log("response" +JSON.stringify(res)); })
-    //     .catch((e) => console.log(e));
-    // } 
 }
 
     

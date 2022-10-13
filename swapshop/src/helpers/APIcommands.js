@@ -36,7 +36,7 @@ const APIcommands = [
         command: "add-trade-item",
         file: "addTradeItem.php",
         param_names: [
-            "name", "desc", "value","id","exch"
+            "name", "desc", "value","id"
         ]
     },
     {
@@ -53,6 +53,27 @@ const APIcommands = [
         command: "fetch-trade-images",
         file: "getImages.php",
         param_names: ['id'],
+    },
+    {
+        command: "add-Tag",
+        file: "addTag.php",
+        param_names: ['name']
+    },
+    {
+        command: "add-item-tag",
+        file: "addItemtag.php",
+        param_names: ['item','tag', 'exchange']
+    },
+    {
+        command: "add-interest",
+        file: "addInterest.php",
+        param_names: ["user", "tag"]
+    },
+    {
+        command: "remove-interest",
+        file: "deleteInterest.php",
+        param_names: ["user", "tag"]
+
     }
 ];
 export default APIcommands;

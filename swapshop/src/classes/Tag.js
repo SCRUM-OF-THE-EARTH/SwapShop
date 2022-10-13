@@ -7,6 +7,7 @@ export class Tag {
         this.name = item['name']; 
         this.date_created = item['date_created'];
         this.id = item['id'];
+        this.exchange = item['exchange'];
     }
 
     // getName is used to retirieve the name of the tag
@@ -21,6 +22,14 @@ export class Tag {
     // and returns the Tag as an int
     getID() {
         return this.id;
+    }
+
+    getTagValue() {
+        let tempTagItem = {label: "", value: 0};
+        tempTagItem['label'] = this.name;
+        tempTagItem['value'] = this;
+
+        return tempTagItem;
     }
 
     // compareTerm is used to compare the Tag obejects name to a search Term

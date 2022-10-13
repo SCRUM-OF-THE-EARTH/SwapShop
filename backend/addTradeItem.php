@@ -21,10 +21,9 @@
     $description = $_REQUEST['desc'];
     $value = $_REQUEST['value'];
     $id =$_REQUEST['id'];
-    $exchange = $_REQUEST['exch'];
 
     // construct an insert query
-    $query = "INSERT INTO trade_items (item_name, description, item_value, owner_id, date_created, exchange_item) VALUE ('$name', '$description',$value, $id, CURDATE(), '$exchange');";
+    $query = "INSERT INTO trade_items (item_name, description, item_value, owner_id, date_created) VALUE ('$name', '$description',$value, $id, CURDATE());";
     
     // initialise the array that is going to be outputed
     $output = array("success"=>0, "results"=>0);
@@ -41,7 +40,6 @@
             $temp['item_value'] = $row['item_value'];
             $temp['owner_id'] = $row['owner_id'];
             $temp['date_created'] = $row['date_created'];
-            $temp['exchange_item'] = $row['exchange_item'];
             $tags = array();
             if ($sub_results = $conn->query("select * from item_tags WHERE item = $item_id;")) {
                 while ($tag_row = $sub_results->fetch_assoc()) {
