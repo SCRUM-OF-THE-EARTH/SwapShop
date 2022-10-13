@@ -112,11 +112,7 @@ FN:289,(anonymous_36)
 FNF:37
 FNH:37
 FNDA:2,(anonymous_0)
-<<<<<<< HEAD
-FNDA:8,(anonymous_1)
-=======
 FNDA:11,(anonymous_1)
->>>>>>> ec9ecddbe4dba96a217ca2b0f594142e49eeb5cc
 FNDA:2,(anonymous_2)
 FNDA:1,(anonymous_3)
 FNDA:1,(anonymous_4)
@@ -158,11 +154,7 @@ DA:22,2
 DA:23,2
 DA:24,2
 DA:25,2
-<<<<<<< HEAD
-DA:30,8
-=======
 DA:30,11
->>>>>>> ec9ecddbe4dba96a217ca2b0f594142e49eeb5cc
 DA:35,2
 DA:42,1
 DA:52,1
@@ -403,32 +395,19 @@ FNDA:8,(anonymous_0)
 FNDA:3,(anonymous_1)
 FNDA:2,(anonymous_2)
 FNDA:2,(anonymous_3)
-<<<<<<< HEAD
 FNDA:12,(anonymous_4)
 FNDA:22,(anonymous_5)
-FNDA:13,(anonymous_6)
-FNDA:16,(anonymous_7)
-FNDA:12,(anonymous_8)
-FNDA:37,(anonymous_9)
-FNDA:1,(anonymous_10)
-FNDA:1,(anonymous_11)
-FNDA:14,(anonymous_12)
-FNDA:17,(anonymous_13)
-=======
-FNDA:13,(anonymous_4)
-FNDA:23,(anonymous_5)
-FNDA:16,(anonymous_6)
-FNDA:19,(anonymous_7)
-FNDA:10,(anonymous_8)
-FNDA:35,(anonymous_9)
+FNDA:17,(anonymous_6)
+FNDA:20,(anonymous_7)
+FNDA:15,(anonymous_8)
+FNDA:40,(anonymous_9)
 FNDA:1,(anonymous_10)
 FNDA:1,(anonymous_11)
 FNDA:12,(anonymous_12)
 FNDA:15,(anonymous_13)
->>>>>>> ec9ecddbe4dba96a217ca2b0f594142e49eeb5cc
 FNDA:1,(anonymous_14)
-FNDA:11,(anonymous_15)
-FNDA:15,(anonymous_16)
+FNDA:18,(anonymous_15)
+FNDA:22,(anonymous_16)
 FNDA:1,(anonymous_17)
 FNDA:1,(anonymous_18)
 FNDA:0,(anonymous_19)
@@ -457,43 +436,25 @@ DA:41,2
 DA:43,2
 DA:44,2
 DA:46,2
-<<<<<<< HEAD
 DA:52,12
 DA:53,12
 DA:58,22
-DA:65,13
-DA:66,13
-DA:71,16
-DA:78,12
-DA:79,12
-DA:84,37
-DA:91,1
-DA:92,1
-DA:97,1
-DA:104,14
-DA:105,14
-DA:110,17
-=======
-DA:52,13
-DA:53,13
-DA:58,23
-DA:65,16
-DA:66,16
-DA:71,19
-DA:78,10
-DA:79,10
-DA:84,35
+DA:65,17
+DA:66,17
+DA:71,20
+DA:78,15
+DA:79,15
+DA:84,40
 DA:91,1
 DA:92,1
 DA:97,1
 DA:104,12
 DA:105,12
 DA:110,15
->>>>>>> ec9ecddbe4dba96a217ca2b0f594142e49eeb5cc
 DA:115,1
-DA:122,11
-DA:123,11
-DA:130,15
+DA:122,18
+DA:123,18
+DA:130,22
 DA:139,1
 DA:141,1
 DA:142,1
