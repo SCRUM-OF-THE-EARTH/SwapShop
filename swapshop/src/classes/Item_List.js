@@ -174,7 +174,41 @@ export class Trade_item_list extends Item_List {
         } 
         if (this.index == null) {
             console.log("this index is null");
-            this.filteredResults.sort((a,b) => comapreInterests(a,b));
+            this.filteredResults.sort((a,b) => {
+                let counta = 0;
+                let countb = 0;
+            
+                login_user.getInterests().forEach(tag_id => {
+                    console.log(tag_id);
+                    a.getTags().forEach((tag) => {
+                        if (tag.getID() == tag_id) {
+                            counta++;
+                        }
+                    });
+            
+                    b.getTags().forEach((tag) => {
+                        if (tag.getID() == tag_id) {
+                            countb++;
+                        }
+                    })
+                });
+            
+                console.log("count a:", counta);
+                console.log(a);
+                console.log("count b:", countb);
+                console.log(b)
+                
+                if (counta < countb) {
+                    console.log("returing 1");
+                    return 1;
+                } 
+                if (counta > countb) {
+                    console.log("retrning -1")
+                    return -1;
+                }
+            
+                return 0;     
+            });
         }
 
         console.log(this.filteredResults)
@@ -277,40 +311,4 @@ export class Tag_list extends Item_List {
         this.items.push(newTag);
         return this;
     }
-}
-
-function comapreInterests(a,b) {
-    let counta = 0;
-    let countb = 0;
-
-    login_user.getInterests().forEach(tag_id => {
-        console.log(tag_id);
-        a.getTags().forEach((tag) => {
-            if (tag.getID() == tag_id) {
-                counta++;
-            }
-        });
-
-        b.getTags().forEach((tag) => {
-            if (tag.getID() == tag_id) {
-                countb++;
-            }
-        })
-    });
-
-    console.log("count a:", counta);
-    console.log(a);
-    console.log("count b:", countb);
-    console.log(b)
-    
-    if (counta < countb) {
-        console.log("returing 1");
-        return 1;
-    } 
-    if (counta > countb) {
-        console.log("retrning -1")
-        return -1;
-    }
-
-    return 0;     
 }

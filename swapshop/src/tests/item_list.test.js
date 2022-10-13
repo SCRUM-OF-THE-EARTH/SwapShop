@@ -1,36 +1,46 @@
 import { Item_List, Tag_list, Trade_item_list } from '../classes/Item_List.js';
+import { Tag } from '../classes/Tag.js';
 import { Trade_Item } from '../classes/Trade_Item.js'
 import { Login_user } from '../classes/User_Account.js';
+import { login_user } from '../screens/SignInScreen';
 require('jest-fetch-mock').enableMocks()
 fetchMock.dontMock();
 
 const test_item_list = new Trade_item_list();
 const test_tag_list = new Tag_list();
-const user = new Login_user();
 waitFetch();
 let test_json_items;
 let testItemId;
 
-let json_items = [
+let testItems =[
     {
-        id:"288",
-        item_name:"Nike shoes",
-        owner_id:"846",
-        description:"Nike airforce size 9",
-        item_value:"250","date_created":"2022-10-12 00:00:00",
-        tags:[{id:"17",name:"shoes",date_created:"2022-10-12",exchange:"0"},{id:"18",name:"computer",date_created:"2022-10-12",exchange:"1"}]
-    },
+      item_name: "a test1",
+      item_value: "200",
+      item_description: "test item",
+      id: '1', 
+      date_created: "2022-10-12",
+      tags: [{name: "taga", date_created:"2022-10-12", id: 1, exchange: 0}]
+    }, 
     {
-        id:"289",
-        item_name:"Vans shoes",
-        owner_id:"846",
-        description:"Black vans shoes size 9",
-        item_value:"250","date_created":"2022-10-12 00:00:00",
-        tags:[{id:"16",name:"vans",date_created:"2022-10-12",exchange:"0"},{id:"17",name:"shoes",date_created:"2022-10-12",exchange:"0"},{id:"19",name:"guitar",date_created:"2022-10-12",exchange:"1"}]
+        item_name: "b test2",
+        item_value: "250",
+        item_description: "test item",
+        id: '2', 
+        date_created: "2022-09-12",
+        tags: [{name: "taga", date_created:"2022-10-12", id: 1, exchange: 0}, {name: "tagb", date_created:"2022-10-12", id: 2, exchange: 0}]
     }
 ];
 
-test_item_list.json_items = json_items;
+let tempTags = [{name: "taga", date_created:"2022-10-12", id: 1, exchange: 0}, {name: "tagb", date_created:"2022-10-12", id: 2, exchange: 0}]
+
+let interest = []
+tempTags.forEach(t => {
+    interest.push(new Tag(t))
+})
+
+login_user.setInterests(interest);
+
+test_item_list.items = [];
 
 async function waitFetch() {
     if(test_item_list.getItems() == false) {
@@ -157,41 +167,52 @@ describe("testing the item_list and its methods", () => {
                 expect(item.getName().toLowerCase().includes(searchterm.toLowerCase())).toBe(true);
             })
         })
+
+        test_item_list.searchItems("")
     });
 
     test("Given that I am using the app, when I am on the posts page and I am searching for an item, then I should be able to sort the items according to price or name and also make use of tags in order to group the items according to its type", () => {
         let index = 0;
         let sort_list;
 
-        // sort_list = test_item_list.getItems();
-        // console.log("sort testing list:", sort_list)
-        // expect(test_item_list.index).toBe(null);
+        test_item_list.items = [];
+        testItems.forEach(a => {
+            let tempTrade = new Trade_Item(a);
+            a.tags.forEach(t => {
+                let tempTag = new Tag(t);
+                tempTrade.addTag(tempTag);
+            })
+            test_item_list.items.push(tempTrade);
+        })
+        sort_list = test_item_list.getItems();
+        console.log("sort testing list:", sort_list)
+        expect(test_item_list.index).toBe(null);
 
-        // let sorted = true;
+        let sorted = true;
 
-        // let previosCount =Infinity;
+        let previosCount =Infinity;
 
-        // sort_list.forEach((item) => {
-        //     let count = 0;
-        //     item.getTags().forEach((tag) => {
-        //         user.getInterests().forEach(i => {
-        //             if (tag.getID() == i.getID()) {
-        //                 count++;
-        //             }
-        //         })
-        //     });
+        sort_list.forEach((item) => {
+            let count = 0;
+            item.getTags().forEach((tag) => {
+                login_user.getInterests().forEach(i => {
+                    if (tag.getID() == i.getID()) {
+                        count++;
+                    }
+                })
+            });
 
-        //     console.log(count);
-        //     console.log(previosCount);
-        //     if (count > previosCount) {
-        //         sorted = false;
-        //         return;
-        //     } else {
-        //         previosCount = count;
-        //     }
-        // });
+            console.log(count);
+            console.log(previosCount);
+            if (count > previosCount) {
+                sorted = false;
+                return;
+            } else {
+                previosCount = count;
+            }
+        });
 
-        // expect(sorted).toBe(false);
+        expect(sorted).toBe(false);
 
         sort_list = test_item_list.Sort();
         expect(test_item_list.index).toBe(null);
@@ -203,7 +224,7 @@ describe("testing the item_list and its methods", () => {
         sort_list.forEach((item) => {
             let count = 0;
             item.getTags().forEach((tag) => {
-                user.getInterests().forEach(i => {
+                login_user.getInterests().forEach(i => {
                     if (tag.getID() == i.getID()) {
                         count++;
                     }
@@ -294,12 +315,54 @@ describe("testing the item_list and its methods", () => {
     });
 
     test("testing filter by tag", () => {
-        let Tags = test_tag_list.getTags();
-        let testing_Tags =test_tag_list.getItems();
+        test_item_list.filterByTags([]);
+        // test_item_list.filteredResults = test_item_list.getItems()
 
-        for (let i =0; i < Tags.length; i++) {
-            expect(Tags[i]['label']).toBe(testing_Tags[i].getName());
-            expect(tags[i]['value']).toBe(testing_Tags[i]);
+        expect(test_item_list.filteredResults.length).toBe(2);
+
+        test_item_list.filterByTags([interest[0]]);
+        expect(test_item_list.filteredResults.length).toBe(2);
+
+        test_item_list.filterByTags([interest[1]]);
+        expect(test_item_list.filteredResults.length).toBe(1);
+
+        test_item_list.filterByTags(interest);
+        expect(test_item_list.filteredResults.length).toBe(1);
+    });
+
+    test("testing the item lists ability to fetch images for trade items",() => {
+        return test_item_list.fetchImages().then(() => {
+            test_item_list.getItems().forEach((t) => {
+                if (t.hasImages) {
+                    t.id = `${t.id}`;
+                    let slideshow = t.getImageSlideShow();
+                    slideshow.forEach(slide => {
+                        expect(slide.url == 'https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg');
+                    })
+                }
+            })
+        })
+    })
+
+    test("testing the tag list's ability to add tags them to the list of tags and retrieve ", () => {
+        test_tag_list.items = [];
+        test_tag_list.json_items = [];
+
+        tempTags.forEach(i => {
+            test_tag_list.addTag(i);
+        });
+
+        let droptags = test_tag_list.getTags();
+
+        let iter = 0;
+
+        for (iter =0; iter < interest.length; iter++) {
+            expect(droptags[iter]['label']).toBe(interest[iter].getName())
+            expect(droptags[iter]['value']['date_created']).toBe(tempTags[iter]['date_created']);
+            expect(droptags[iter]['value']['exchange']).toBe(tempTags[iter]['exchange']);
+            expect(droptags[iter]['value']['id']).toBe(tempTags[iter]['id']);
         }
     })
+
+
 })
