@@ -5,8 +5,8 @@ This the repository for the software design group SCRUM OF THE EARTH for the swa
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/SCRUM-OF-THE-EARTH/SwapShop/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/SCRUM-OF-THE-EARTH/SwapShop/tree/main)
 
 ## coverage
-![](https://img.shields.io/badge/Coverage-80%25-83A603.svg?prefix=$coverage$)
+![](https://img.shields.io/badge/Coverage-93%25-83A603.svg?prefix=$coverage$)
 
 | statements  |  branches |  functions |  lines  |
 |---|---|---|---|
-| ![](https://img.shields.io/badge/Coverage-82%25-83A603.svg?prefix=$statements$)  | ![](https://img.shields.io/badge/Coverage-75%25-5A7302.svg?prefix=$branches$)  | ![](https://img.shields.io/badge/Coverage-81%25-83A603.svg?prefix=$functions$) | ![](https://img.shields.io/badge/Coverage-82%25-83A603.svg?prefix=$lines$) |
+| ![](https://img.shields.io/badge/Coverage-96%25-83A603.svg?prefix=$statements$)  | ![](https://img.shields.io/badge/Coverage-88%25-83A603.svg?prefix=$branches$)  | ![](https://img.shields.io/badge/Coverage-94%25-83A603.svg?prefix=$functions$) | ![](https://img.shields.io/badge/Coverage-96%25-83A603.svg?prefix=$lines$) |
