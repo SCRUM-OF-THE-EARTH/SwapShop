@@ -1,7 +1,7 @@
 import { Button, TextInput, View, ScrollView, StyleSheet, Text, Image } from "react-native"
 import {useEffect, useState} from 'react';
 import Slideshow from 'react-native-image-slider-show';
-import { login_user } from '.../classes/User_Account';
+import { login_user } from '../classes/User_Account';
 import { trade_items_list } from "./MainScreen.js";
 import * as ImagePicker from 'expo-image-picker';
 import { communicator } from "../classes/Communicator.js";

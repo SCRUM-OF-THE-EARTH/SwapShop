@@ -1,4 +1,9 @@
 import { communicator } from '../classes/Communicator.js';
+function FormDataMock() {
+    this.append = jest.fn();
+}
+  
+global.FormData = FormDataMock
 
 import APIcommands from '../helpers/APIcommands.js';
 require('jest-fetch-mock').enableMocks()
@@ -38,5 +43,24 @@ describe("testing the communicator system", () => {
         return communicator.makeRequestByCommand("login_account", params).then(data => {
             expect(data).toBe(false);
         });
+    })
+
+    test("testing the ability to upload a photo", () => {
+        let image = [{
+            uri: "/test1.jpg",
+            base64: "AAAAAAABAA",
+        },{
+            uri: "/test2.jpg",
+            base64: "BBBBA2CBA"
+        }];
+
+        item_id = 1;
+
+
+        let resp = communicator.makePostRequestForImage(image, item_id);
+
+        resp.forEach(r => {
+            expect(t.status).toBe("200");
+        })
     })
 })
