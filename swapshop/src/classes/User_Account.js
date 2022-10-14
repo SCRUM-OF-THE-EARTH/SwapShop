@@ -18,17 +18,6 @@ export class User_Account {
         this.id =0;
     }
 
-    // logUser is used to print the account item to the console
-    logUser() {
-        console.group("user");
-        console.log("Name: "+this.fname+" "+this.lname);
-        console.log("Username: "+this.username);
-        console.log("Email: "+this.email);
-        console.groupEnd();
-
-        return this;
-    }
-
     // setID is used to set the value of the id
     // takes in an integer
     // returns this
@@ -67,7 +56,6 @@ export class User_Account {
             throw Error(`0 can not set the full name of a user with ${names.length}, method requires 2 names (first and last)`);
         }
 
-        console.log(names[0], names[1])
         this.fname = names[0];
         this.lname = names[1];
 
@@ -93,7 +81,6 @@ export class User_Account {
     // it takes in a string 
     // and returns this
     setUsername(user) {
-        console.log(user);
         if (user.includes(' ')){
             throw Error("1 username can not contain spaces");
         }
@@ -143,7 +130,6 @@ export class Login_user extends User_Account {
     async Login(password) {
         let response = await communicator.makeRequestByCommand("login_account", [this.username, password]);
 
-        console.log(response);
         if (!response) {
             return false;
         }
@@ -159,7 +145,6 @@ export class Login_user extends User_Account {
     }
 
     async deleteAccount() {
-        console.log("deleting the account with ID:",this.getID());
         params = [this.getID()];
         return await communicator.makeRequestByCommand("delete-account", params);
     }
@@ -192,3 +177,5 @@ export class Registering_User extends Login_user {
     }
 
 }
+
+export const login_user = new Login_user();

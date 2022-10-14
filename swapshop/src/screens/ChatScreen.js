@@ -7,7 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import colors from "../../config/colors";
 //import { collection, addDoc, query, orderBy, onSnapshot, QuerySnapshot, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig/firebase";
-import { login_user } from "./SignInScreen"; 
+import { login_user } from "../classes/User_Account"; 
 
 // create a chat screen UI
 // so the user can be redirected to this page when, they choose the option to contact the client.

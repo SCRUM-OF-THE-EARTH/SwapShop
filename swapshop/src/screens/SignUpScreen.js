@@ -85,7 +85,6 @@ const SignUpScreen = ({navigation}) =>{
 }
 
 function register(fullName, username, password, email, navigation, onChangeError) {
-    console.log("register button has been pressed")
 
     if (fullName == "") {
         onChangeError("please enter a first and last name")
@@ -107,8 +106,6 @@ function register(fullName, username, password, email, navigation, onChangeError
         new_user = new Registering_User(fullName, username, email);
     } catch (err) {
         let errorCode = err.message.charAt(0)
-        console.log(err)
-        console.log(errorCode)
         if (errorCode == "0") {
             onChangeError("Please enter a valid first and last name")
         }
@@ -120,7 +117,6 @@ function register(fullName, username, password, email, navigation, onChangeError
         return 
     }
 
-    console.log("user class has been created withou errors")
 
     let success = new_user.register_Account(password);
     
