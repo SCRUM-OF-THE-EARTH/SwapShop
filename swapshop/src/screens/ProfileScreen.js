@@ -36,6 +36,7 @@ const ProfileScreen = ({ navigation }) => {
         });
         
         setTags(tempTags);
+        setInterests(tempInterests);
         setActiveTags(loadInterests(tempInterests, setInterests, loadInterests, setActiveTags, tags, setTags));
         setLoaded(true);
     }, [isFocused]);
@@ -101,7 +102,12 @@ function updateInterest(tag, setTagValues, interests, setTags, tags) {
         }
     });
     tempInterests.push(tag);
+    let updatedUserInterests = [];
+    tempInterests.forEach(t => {
+        updatedUserInterests.push(t.getID());
+    })
 
+    login_user.setInterests(updatedUserInterests);
     setTagValues(null);
     setTags(tags);
 
@@ -112,12 +118,15 @@ function removeInterest(tag, interest, tags, setTags) {
     let tagId = tag.getID();
     let userId = login_user.getID();
     let addTag;
+
+    let newInterests = [];
     
     interest.forEach((i, index) => {
         if (i.getID() == tagId) {
             addTag = i;
             interest.splice(index, 1);
-            return;
+        } else {
+            newInterests.push(i.getID());
         }
     });
 
@@ -126,6 +135,7 @@ function removeInterest(tag, interest, tags, setTags) {
     tags.push(addTag.getTagValue());
 
     setTags(tags);
+    login_user.setInterests(newInterests);
 
     return interest;
     

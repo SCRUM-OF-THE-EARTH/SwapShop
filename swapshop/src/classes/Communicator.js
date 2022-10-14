@@ -92,11 +92,11 @@ class Communicator {
                     },
                     body: body
                 }).then(res => {
-                    res = res.json()
                     response.push(res)
                 })
                 .catch(e => {
                     console.error(error);
+
                 })
         });
         return response;

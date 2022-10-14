@@ -86,7 +86,7 @@ const MainScreen = ({navigation}) =>{
             await trade_items_list.fetchImages();
             setLoaded(true);
         });
-    }, [])
+    }, []);
 
     // this is used to refresh the list of items on the main screen when the
     // changes between this screen adn another screen or vice versa

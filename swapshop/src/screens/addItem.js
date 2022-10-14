@@ -221,14 +221,20 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
         return;
     }
 
+    console.log("item tasg are: ", itemTags);
     await itemTags.forEach(async (tag, index) => {
         if (typeof tag.id == 'undefined') {
             tag = tag.toLowerCase();
-            let newTag = await communicator.makeRequestByCommand("add-Tag", [tag]);
-            let addTag = tags_list.addTag(newTag);
-            tags.splice(index, 1, addTag);
+            communicator.makeRequestByCommand("add-Tag", [tag]).then(newTag => {
+                console.log("new Tag is:", newTag);
+                let addTag = tags_list.addTag(newTag);
+                itemTags.splice(index, 1, addTag);
+            })
+            
         } 
     })
+
+    console.log(itemTags);
 
     await tags.forEach(async (tag, index) => {
         if (typeof tag.id == 'undefined') {
@@ -236,24 +242,24 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
             let newTag = await communicator.makeRequestByCommand("add-Tag", [tag]);
             let addTag = tags_list.addTag(newTag);
             tags.splice(index, 1, addTag);
-        } else {
         }
     });
 
 
     let owner_id = login_user.getID()
 
-    trade_items_list.addItem('add-trade-item', [name,description, value, owner_id]).then(res => {
+    trade_items_list.addItem('add-trade-item', [name,description, value, owner_id]).then( async res => {
 
         let trade_item = trade_items_list.getItems()[trade_items_list.getItems().length -1];
         let item_id = trade_item.getID();
 
-        itemTags.forEach(tag => {
-            communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, 'false']);
+        await itemTags.forEach(async tag => {
+            console.log(item_id, tag, 0);
+            await communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, '0']);
             trade_item.addTag(tag);   
         })
-        tags.forEach(tag => {
-            communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, 'true']);
+        await tags.forEach(async tag => {
+            await communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, '1']);
             trade_item.addExchangeTag(tag);
         })
 

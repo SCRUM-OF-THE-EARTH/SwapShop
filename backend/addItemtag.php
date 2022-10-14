@@ -12,6 +12,10 @@
 
     if ($result = $conn->query($query)) {
         $output['success'] = 1;
+
+        $tag_results = $conn->query("SELECT * FROM tags WHERE id = $tag");
+        $row = $tag_results->fetch_assoc();
+        $output['results'] = $row;
     }
 
     echo json_encode($output);
