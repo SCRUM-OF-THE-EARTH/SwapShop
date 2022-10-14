@@ -53,38 +53,35 @@ const ProfileScreen = ({ navigation }) => {
             <View style={styles.container}>
 
                 <Text style={styles.welcome}>
-                    <Text>WELCOME, {login_user.getUsername()}</Text>
+                  My profile
                 </Text>
 
 
                 <View style = {styles.details}>
-                    <Text>Full Names: {login_user.getFullName()}</Text>
-                    <Text>UserName: {login_user.getUsername()}</Text>
-                    <Text>Email Address: {login_user.getEmail()}</Text>
+                    <Text style={styles.label}>full names:</Text>
+                    <Text style={styles.data_field}>{login_user.getFullName()}</Text>
+                    <Text style={styles.label}>username: </Text>
+                    <Text style={styles.data_field}>{login_user.getUsername()}</Text>
+                    <Text style={styles.label}>email address:</Text>
+                    <Text style={styles.data_field}>{login_user.getEmail()}</Text>
 
+                    <Text style={styles.label}>My interest:</Text>
+                    <DropDownPicker
+                        open={tagMenuOpen}
+                        searchable={true}
+                        placeholder="add an interest"
+                        value={tagValues}
+                        items={tags}
+                        setOpen={setTagMenuOpen}
+                        setValue={setTagValues}
+                        setItems={setTags}
+                        onChangeValue={(value) => {
+                            setInterests(updateInterest(value, setTagValues, interests, setTags, tags));
+                            setActiveTags(loadInterests(interests, setInterests, loadInterests, setActiveTags, tags, setTags));
+                        }}
+                    />
                 </View>
-
-
-                <DropDownPicker
-                    open={tagMenuOpen}
-                    searchable={true}
-                    placeholder="add an interest"
-                    value={tagValues}
-                    items={tags}
-                    setOpen={setTagMenuOpen}
-                    setValue={setTagValues}
-                    setItems={setTags}
-                    onChangeValue={(value) => {
-                        setInterests(updateInterest(value, setTagValues, interests, setTags, tags));
-                        setActiveTags(loadInterests(interests, setInterests, loadInterests, setActiveTags, tags, setTags));
-                    }}
-                />
-
-
-                <View style = {styles.tag}>
-                    <View>{activeTags}</View>
-                </View>
-
+                <View style = {styles.tags}>{activeTags}</View>
 
                 <Tab nav={navigation} activeTab="profile" />
             </View>
@@ -158,10 +155,10 @@ function loadInterests(interest, setInterests, loadInterests, setActiveTags, tag
     let tempInterestComps = [];
     interest.forEach(t => {
         tempInterestComps.push(
-            <View key={t.getID()}><Text>{t.getName()}</Text><TouchableOpacity onPress={() => {
+            <View style={styles.tag_container} key={t.getID()}><Text>{t.getName()}</Text><TouchableOpacity  style={styles.close} onPress={() => {
                 setInterests(removeInterest(t, interest, tags, setTags));
                 setActiveTags(loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags));
-            }}><Icon name="close-circle-outline" /></TouchableOpacity></View>
+            }}><Icon size={20} name="close-circle-outline" /></TouchableOpacity></View>
         );
     })
 
@@ -170,29 +167,59 @@ function loadInterests(interest, setInterests, loadInterests, setActiveTags, tag
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 70,
-        height: '90%'
-        // marginTop: 50,
-        // marginBottom: 50,
+        height: '100%'
     },
     details:{
-
-        marginBottom: 20,
+        marginHorizontal: 90,
     },
     welcome:{
-        marginBottom: 50,
+        paddingTop: 40,
+        paddingBottom: 10,
+        marginBottom: 20,
         alignItems:"center",
-        fontSize: 20,
-        color: "#3CB371",
-        fontWeight:"bold",
+        fontSize: 40,
+        backgroundColor: "#3CB371",
+        color: 'white',
+        fontWeight:"700",
         textAlign:"center",
 
     },
-    tag:{
-        marginTop: 20,
+    tags:{
+        marginVertical: 20,
+        marginHorizontal: 20,
+        display: 'flex',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        justifyContent: 'center'
+
+    },
+    data_field: {
         marginLeft: 20,
-
-
+        color: "#3CB371",
+        fontSize: 22,
+        fontWeight: '400'
+    },
+    label: {
+        paddingTop: 10,
+        fontSize: 16,
+        color: 'gray'
+    },
+    tag_container: {
+        display: 'flex',
+        flexDirection:'row',
+        backgroundColor: '#A3E0BF',
+        borderRadius: 10,
+        paddingLeft: 15,
+        paddingVertical: 5,
+        margin: 5,
+        color: "white",
+        justifyContent: 'center'
+    },
+    close: {
+        // padding: 5,
+        paddingLeft: 10,
+        paddingRight:5,
+        justifyContent:'center'
     }
 
 })
