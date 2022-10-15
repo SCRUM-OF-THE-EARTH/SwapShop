@@ -14,13 +14,20 @@ import { login_user } from "./SignInScreen";
 // this will make use of React-Native Gifted Chats (a builtin package which handles the components of the chat screen interface)
 const ChatScreen = ({route, navigation}) => {
   const [messages, setMessages] = useState([]);
+  const item = route.params;
+  
+  let username_1 = login_user.getUsername();
+  let username_2 = item.owner.getUsername()
+
+  let db_tmp = username_1 + username_2;
+  let chat_database = db_tmp.split("").sort().join("");
 
   useEffect(() => {
 
     // the collection of messages (in firestore database) is ordered in descending order by the time the message has been sent
     // then a listener is set to detect if any changes have occured in the collection
     // if so it updates the chat screen on both the users end by using react-native-gifted-chat builtin setMessage function
-    const unsub = db.collection("messages").orderBy('createdAt', 'desc').onSnapshot(snapshot => setMessages(
+    const unsub = db.collection(chat_database).orderBy('createdAt', 'desc').onSnapshot(snapshot => setMessages(
       snapshot.docs.map(doc=>({
         _id: doc.data()._id,
         createdAt: doc.data().createdAt.toDate(),
@@ -60,7 +67,7 @@ const ChatScreen = ({route, navigation}) => {
       user,
     }=messages[0];
 
-    db.collection('messages').add({
+    db.collection(chat_database).add({
       _id,
       createdAt,
       text,

@@ -1,4 +1,4 @@
-
+import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
 import React, {useState} from 'react';
 import { Registering_User } from '../classes/User_Account';
