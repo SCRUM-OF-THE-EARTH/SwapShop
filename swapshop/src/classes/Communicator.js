@@ -77,8 +77,8 @@ class Communicator {
 
 
     makePostRequestForImage(images, item_id) {
+        let response = [];
         images.forEach(image => {
-            // console.log(image);
                 let body = new FormData();
                 let fileName =  image.uri.substring(image.uri.lastIndexOf("/")+1);
                 body.append('image_content', image.base64);
@@ -91,8 +91,15 @@ class Communicator {
                         "content-type": "multipart/form-data",
                     },
                     body: body
-                }).then(res => console.log(res))
+                }).then(res => {
+                    response.push(res)
+                })
+                .catch(e => {
+                    console.error(error);
+
+                })
         });
+        return response;
     }
 }
 

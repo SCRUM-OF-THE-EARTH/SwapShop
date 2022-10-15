@@ -3,8 +3,9 @@ import React, {useState} from 'react';
 import SignUpScreen from './SignUpScreen';
 import { Login_user } from '../classes/User_Account.js'
 import { User_Account } from '../classes/User_Account.js';
+import { login_user } from '../classes/User_Account.js';
 // defining a new login user for the sign in screen
-export const login_user = new Login_user();
+
 
 // this is the sign in screen for the app
 // users will enter a username and a password
@@ -78,10 +79,8 @@ const SignInScreen = ({navigation}) => {
  // if the login was a succes thsi will change the pagea to the main screen 
  // if not then it will display an error to the user
 async function Login(username, password, navigation, onChangeError){
-  console.log(username, password);
   login_user.setUsername(username);
   let success = await login_user.Login(password);
-  console.log(success);
 
   if (success) {
     navigation.navigate('MainScreen');

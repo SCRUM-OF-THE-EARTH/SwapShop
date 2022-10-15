@@ -77,7 +77,6 @@ describe("testing the login, register and user account system", () => {
 
     test("testing the user accounts class functions", ()=> {
         let user_account = new User_Account();
-        expect(user_account.logUser()).toBe(user_account);
 
         expect(user_account.setID(1)).toBe(user_account);
         expect(user_account.getID()).toBe(1);
