@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import { Item_List, Tag_list, Trade_item_list  } from '../classes/Item_List';
 import { Trade_Item } from '../classes/Trade_Item';
 //import { ScrollView } from 'react-native-gesture-handler';
@@ -10,6 +10,7 @@ import { Tag } from '../classes/Tag';
 import SortBar from '../components/SortBar';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Tab from '../components/Tab';
+import themeContext from '../components/themeContext';
 
 export const trade_items_list = new Trade_item_list();
 export const user_accounts_item_list = new Item_List("fetch-user-accounts");
@@ -27,6 +28,7 @@ const MainScreen = ({navigation}) =>{
     const [tagMenuOpen, setTagMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
     const [tagValues, setTagValues] = useState([]);
     const [tags, setTags] = useState([]);
+    const theme = useContext(themeContext);
 
     // this function is run when a tracked value is changed
     // specifivally it is used to fetch and reload the list 
@@ -96,7 +98,7 @@ const MainScreen = ({navigation}) =>{
     }, [isFocused, loaded])
 
 
-    let screen = (<View style={styles.container}>
+    let screen = (<View style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.search_Bar}>
             <View style={{flexDirection: 'row'}}>
                 <TextInput 
@@ -171,7 +173,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white',
+       // backgroundColor: 'white',
     },
     center: {
         width:'90%',

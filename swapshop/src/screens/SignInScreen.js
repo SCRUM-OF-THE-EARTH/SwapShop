@@ -1,9 +1,12 @@
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Alert} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, Switch, Text, View, Image, TextInput, TouchableOpacity, Button, Alert} from 'react-native';
+import React, {useState, useContext} from 'react';
 import SignUpScreen from './SignUpScreen';
 import { Login_user } from '../classes/User_Account.js'
 import { User_Account } from '../classes/User_Account.js';
 import { login_user } from '../classes/User_Account.js';
+import {EventRegister} from 'react-native-event-listeners' ;
+import themeContext from '../components/themeContext';
+//import { useContext } from 'react';
 // defining a new login user for the sign in screen
 
 
@@ -16,26 +19,32 @@ const SignInScreen = ({navigation}) => {
     const [username, onChangeUsername] = useState(''); // the username of the user
     const [password, onChangePassword] = useState(''); // the password of the user
     const [errorMessage, onChangeError] = useState(''); // the error message that is displayed
-
+    const [mode, setMode] = useState(false);
+ // const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = (value) => { setMode(value);
+   EventRegister.emit("changeTheme", value);
+};
+    const theme = useContext(themeContext);
     // this is the GUI component for the sign in screen
     return(
     
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: theme.background}]}>
+      
 
       <Image
           source={require("../../assets/appLogo.png")}
           style={styles.image}
       />
       <Text style={styles.error_message}>{errorMessage}</Text>
-      <View style = {styles.inputView}>
+        <View style={[styles.inputView, { backgroundColor: theme.inputColor }]}>
         
-        <TextInput style = {styles.TextInput}
+          <TextInput style={styles.TextInput}
                    placeholder="Username"
                    placeholderTextColor="#3CB371"
                    onChangeText={(username) => onChangeUsername(username)}/>
       </View>
 
-      <View style = {styles.inputView}>
+        <View style={[styles.inputView, { backgroundColor: theme.inputColor }]}>
         <TextInput style = {styles.TextInput}
                    placeholder="Password"
                    placeholderTextColor="#3CB371"
@@ -47,29 +56,38 @@ const SignInScreen = ({navigation}) => {
       <View style = {styles.forgot_button}>
         <TouchableOpacity style={styles.forgot_button} 
         onPress={() => navigation.navigate('ForgotPasswordScreen')}>
-          <Text style={{color: "#2E8B57"}}> Forgot Password? </Text>
+          <Text style={{color: theme.color}}> Forgot Password? </Text>
         </TouchableOpacity>
 
       </View>
 
-      <View style={styles.loginBtn} >
+        <View style={[styles.loginBtn, { backgroundColor: theme.sec }]} >
         <Button
-                title="LOG IN"
-                color="#2E8B57"
-                onPress = {() => Login(username, password, navigation, onChangeError)}
+              // style={{color:theme.color}}
+               title="LOG IN"
+               color="#ffffff"
+               onPress = {() => Login(username, password, navigation, onChangeError)}
         />
       </View>
 
-      <Text>Don't have an account?</Text>
+        <Text style={{ color: theme.color }}>Don't have an account?</Text>
 
-      <View style = {styles.signupBtn}>
+        <View style={[styles.signupBtn, { backgroundColor: theme.sec }]}>
         <Button
             title="SIGN UP"
-            color = "#3CB371"
+            color = "#ffff"
             onPress = {() => navigation.navigate('SignUpScreen')}
         />
       </View>
-      
+      <Switch style = {styles.switch} 
+          onValueChange={toggleSwitch}
+          value={mode}
+      //    value={isEnabled} 
+      //  onValueChange={(value) => {
+      //    setMode(value);
+      //  EventRegister.emit("changeTheme", value);
+     // }}
+      ></Switch>
     </View>
     );  
  }
@@ -97,7 +115,7 @@ async function Login(username, password, navigation, onChangeError){
   },
   container: {
     flex: 1,
-    backgroundColor: 'white',
+  //  backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
 
@@ -113,7 +131,7 @@ async function Login(username, password, navigation, onChangeError){
   },
 
   inputView :{
-    backgroundColor:"#F5F5F5",
+   // backgroundColor:"#F5F5F5",
     borderRadius:50,
     width:"70%",
     height: 45,
@@ -148,7 +166,7 @@ async function Login(username, password, navigation, onChangeError){
     justifyContent:"center",
     marginTop:0,
     marginBottom:50,
-    backgroundColor:"#2E8B57",
+   // backgroundColor:"#2E8B57",
 
   },
 
@@ -159,7 +177,7 @@ async function Login(username, password, navigation, onChangeError){
     alignItems:"center",
     justifyContent:"center",
     marginTop:10,
-    backgroundColor:"#3CB371",
+ //   backgroundColor:"#3CB371",
 
   },
 
@@ -169,6 +187,10 @@ async function Login(username, password, navigation, onChangeError){
     color: "black",
     // fontFamily: "bold"
 
+  },
+  switch:{
+    marginBottom:-100,
+    marginLeft:300
   },
 
 
