@@ -1,5 +1,5 @@
-import { StyleSheet, View, Text } from 'react-native';
-import { useState, useEffect } from 'react';
+import {StyleSheet, View, Text, Image,Button} from 'react-native';
+import React, { useState, useEffect } from 'react';
 import Tab from '../components/Tab.js';
 import { login_user } from '../classes/User_Account';
 import { useIsFocused } from "@react-navigation/native";
@@ -9,6 +9,8 @@ import { communicator } from '../classes/Communicator.js';
 import { LightSpeedOutLeft, set } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
+import * as ImagePicker from 'expo-image-picker';
+
 
 const ProfileScreen = ({ navigation }) => {
 
@@ -19,6 +21,21 @@ const ProfileScreen = ({ navigation }) => {
     const [tags, setTags] = useState([]);
     const [interests, setInterests] = useState([]);
     const [activeTags, setActiveTags] = useState([]);
+    const [image, setImage] = useState(null);
+
+    const pickImage = async() =>{
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+
+        });
+        console.log(result);
+        if(!result.cancelled){
+            setImage(result.uri);
+        }
+    };
 
     useEffect(() => {
         let tempTags = tags_list.getTags();
@@ -35,6 +52,9 @@ const ProfileScreen = ({ navigation }) => {
             tempInterests.push(t);
         });
 
+
+
+
         setTags(tempTags);
         setInterests(tempInterests);
         setActiveTags(loadInterests(tempInterests, setInterests, loadInterests, setActiveTags, tags, setTags));
@@ -45,20 +65,41 @@ const ProfileScreen = ({ navigation }) => {
         return (
             <View style={styles.container}>
 
-                <Text style={styles.welcome}>
-                    My profile
-                </Text>
+                <Text style={styles.welcome}>{login_user.getUsername()}</Text>
+                {image && <Image source={{uri:image}} style={styles.image}/>}
+
+                {/*<View style = {styles.add}>*/}
+                {/*    <Button style = {styles.add}*/}
+                {/*            title="+" onPress={pickImage}*/}
+                {/*            color="rgba(0, 0,0, 0)"*/}
+
+                {/*    />*/}
+
+
+                {/*</View>*/}
+
+
+                <View style = {styles.button}>
+                    <Button
+                        title = "edit profile" onPress={pickImage}
+                        color = "#299617"
+
+                    />
+
+                </View>
+
+
+
+
 
 
                 <View style = {styles.details}>
-                    <Text style={styles.label}>full names:</Text>
+                    <Text style={styles.label}></Text>
                     <Text style={styles.data_field}>{login_user.getFullName()}</Text>
-                    <Text style={styles.label}>username: </Text>
-                    <Text style={styles.data_field}>{login_user.getUsername()}</Text>
-                    <Text style={styles.label}>email address:</Text>
                     <Text style={styles.data_field}>{login_user.getEmail()}</Text>
 
-                    <Text style={styles.label}>My interest:</Text>
+
+                    <Text style={styles.label2}>My interests</Text>
                     <DropDownPicker
                         open={tagMenuOpen}
                         searchable={true}
@@ -74,7 +115,21 @@ const ProfileScreen = ({ navigation }) => {
                         }}
                     />
                 </View>
+
+                <Image
+                    source={require("../../assets/user.png")}
+                    style={styles.imageP}
+                />
+
+                <Image
+                    source={require("../../assets/email.png")}
+                    style={styles.imageE}
+                />
+
                 <View style = {styles.tags}>{activeTags}</View>
+
+
+
 
                 <Tab nav={navigation} activeTab="profile" />
             </View>
@@ -160,18 +215,24 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     details:{
-        marginHorizontal: 90,
+        marginHorizontal: 30,
+        marginLeft: 50,
+        marginTop: -30,
+        marginBottom: 20,
     },
     welcome:{
         paddingTop: 40,
-        paddingBottom: 10,
-        marginBottom: 20,
+        paddingBottom: 100,
+        marginBottom: 80,
         alignItems:"center",
         fontSize: 40,
-        backgroundColor: "#3CB371",
+        backgroundColor: "#299617",
+        // borderRadius: ,
+
         color: 'white',
         fontWeight:"700",
         textAlign:"center",
+
 
     },
     tags:{
@@ -180,37 +241,109 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexWrap: 'wrap',
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 175,
 
     },
     data_field: {
-        marginLeft: 20,
-        color: "#3CB371",
-        fontSize: 22,
-        fontWeight: '400'
+        marginLeft: 5,
+        color: "gray",
+        fontSize: 15,
+        //marginBottom: 100,
+        marginTop: 30,
+
+        // fontWeight: '400',
+        // textDecorationLine:"underline"
+
+
     },
     label: {
         paddingTop: 10,
         fontSize: 16,
-        color: 'gray'
+        color: 'red',
+        marginBottom: 40,
+        marginTop: 5,
     },
     tag_container: {
         display: 'flex',
         flexDirection:'row',
-        backgroundColor: '#A3E0BF',
-        borderRadius: 10,
+        backgroundColor: '#299617',
+        borderRadius: 20,
         paddingLeft: 15,
         paddingVertical: 5,
         margin: 5,
         color: "white",
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop:-25,
+        marginBottom:40,
+
+
     },
     close: {
         // padding: 5,
         paddingLeft: 10,
         paddingRight:5,
         justifyContent:'center'
+    },
+    imageP:{
+        height: 40,
+        width: 40,
+        marginLeft: 10,
+        marginTop: -215,
+        marginBottom: 430,
+
+    },
+    imageE:{
+        height: 30,
+        width: 30,
+        marginLeft: 15,
+        marginTop: -410,
+        // marginBottom: -65,
+
+    },
+    label2:{   //this is the text for "My interests"
+        paddingTop: 10,
+        fontSize: 16,
+        color: 'gray',
+        marginTop: 10,
+        textAlign:"center",
+        marginBottom:10,
+
+
+
+    },
+    button:{
+
+        marginTop: 20,
+        marginBottom: -50,
+        marginHorizontal:100,
+        marginLeft:120,
+
+
+    },
+    image:{
+        height: 150,
+        width: 150,
+        alignItems: "center",
+        marginTop: -150,
+        marginLeft: 110,
+        marginBottom: -10,
+        //overlayColor: "gray",
+        borderRadius:100,
+        borderColor:"white",
+        // flex: 1,
+    },
+    add:{
+
+        marginHorizontal:140,
+        marginTop:-30,
+        //borderRadius:0,
+        marginLeft: 160,
+        // backgroundColor:'transparent'
+
     }
+
+
 
 })
 
