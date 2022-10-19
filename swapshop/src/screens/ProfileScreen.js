@@ -268,6 +268,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection:'row',
         backgroundColor: '#299617',
+        //backgroundColor: '#32CD32',
         borderRadius: 20,
         paddingLeft: 15,
         paddingVertical: 5,
