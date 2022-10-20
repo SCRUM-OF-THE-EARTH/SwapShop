@@ -54,7 +54,8 @@ const MainScreen = ({navigation}) =>{
                 .setLastName(item["lname"])
                 .setID(item["id"])
                 .setUsername(item["username"])
-                .setInterests(item["tags"]);
+                .setInterests(item["tags"])
+                .setPhotot(item['photo']);
                 return tempUser;
             });
 

@@ -76,7 +76,7 @@ class Communicator {
 
 
 
-    makePostRequestForImage(images, item_id) {
+    makePostRequestForImage(images, item_id, type) {
         let response = [];
         images.forEach(image => {
                 let body = new FormData();
@@ -84,6 +84,7 @@ class Communicator {
                 body.append('image_content', image.base64);
                 body.append('image_file', fileName);
                 body.append('item_id', item_id);
+                body.append('item_type', type);
 
                 fetch(this.postUrl, {
                     method: 'POST',

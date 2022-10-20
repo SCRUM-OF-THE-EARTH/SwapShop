@@ -27,6 +27,7 @@ const ProfileScreen = ({ navigation }) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
+            base64: true,
             aspect: [4, 3],
             quality: 1,
 
@@ -34,6 +35,8 @@ const ProfileScreen = ({ navigation }) => {
         console.log(result);
         if(!result.cancelled){
             setImage(result.uri);
+            communicator.makePostRequestForImage([result], login_user.getID(), 'profile');  
+            reloadPhoto(); 
         }
     };
 
@@ -52,7 +55,7 @@ const ProfileScreen = ({ navigation }) => {
             tempInterests.push(t);
         });
 
-
+        setImage(login_user.getPhoto());
 
 
         setTags(tempTags);
@@ -136,6 +139,17 @@ const ProfileScreen = ({ navigation }) => {
         )
     }
 
+}
+
+async function reloadPhoto() {
+    let new_profile = await communicator.makeRequestByCommand('fetch-profile-photo', [login_user.getID()]);
+    if (new_profile['photo'] == login_user.getPhoto()) {
+        setTimeout(reloadPhoto, 200);   
+    } else {
+        login_user.setPhoto(new_profile['photo']);
+        console.log("new photo set");
+        console.log(login_user)
+    }
 }
 
 function updateInterest(tag, setTagValues, interests, setTags, tags) {
