@@ -8,7 +8,7 @@
     include('conf.php');
 
     // SELECT query to be executed 
-    $query = "SELECT * FROM trade_items WHERE sold = 0;";
+    $query = "SELECT * FROM trade_items WHERE sold = 1;";
 
     // setup the return array
     $output = array("success"=>0, "results"=>0);

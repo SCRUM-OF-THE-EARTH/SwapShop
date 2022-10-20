@@ -155,8 +155,14 @@ export class Item_List {
 //  | filter by tags which takes in a list of tags filters he list of trade ites by the tags they are associated to
 
 export class Trade_item_list extends Item_List {
-    constructor() {;
-        super("fetch-trade-items");
+    constructor(sold) {
+
+        if (sold) {
+            super("fetch-sold-trade-items")
+        } else {
+            super("fetch-trade-items");
+        }
+        
         this.index = null;
         this.tagsActive = false;
         this.ActiveTags = [];

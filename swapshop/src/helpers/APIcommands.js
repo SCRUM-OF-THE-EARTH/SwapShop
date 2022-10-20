@@ -28,6 +28,11 @@ const APIcommands = [
         param_names: []
     },
     {
+        command: "fetch-sold-trade-items",
+        file: "fetchSoldItems.php",
+        param_names: []
+    },
+    {
         command: "fetch-user-accounts",
         file: "fetchUserAccounts.php",
         param_names: []

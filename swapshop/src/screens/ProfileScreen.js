@@ -55,6 +55,12 @@ const ProfileScreen = ({ navigation }) => {
             tempInterests.push(t);
         });
 
+        trade_items_list.forEach(item => {
+            if (item.getOwner().getID() == login_user.getID()) {
+
+            }
+        })
+
         setImage(login_user.getPhoto());
 
 

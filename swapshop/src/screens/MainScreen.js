@@ -11,14 +11,31 @@ import SortBar from '../components/SortBar';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Tab from '../components/Tab';
 import themeContext from '../components/themeContext';
+import Trade_List from '../components/Trade_List';
 
-export const trade_items_list = new Trade_item_list();
-export const user_accounts_item_list = new Item_List("fetch-user-accounts");
-export const tags_list = new Tag_list();
+export let trade_items_list;
+export let sold_trade_items_list;
+export let user_accounts_item_list;;
+export let tags_list;
 
 // this is the main page
 // this is the page the user is taken to after logging in
 // the search bar and displayed items are handled here
+
+
+function initialise() {
+    Promise.all(
+
+    ).then(
+        tags_list.loadItems((item) => {
+            return new Tag(item);
+        });
+
+        setTags(tags_list.getTags());
+    )
+}
+
+
 
 const MainScreen = ({navigation}) =>{
     const isFocused = useIsFocused(); // check if the main screen is active on screen
@@ -34,61 +51,7 @@ const MainScreen = ({navigation}) =>{
     // specifivally it is used to fetch and reload the list 
     // when the page is loaded
     useEffect(async () => {
-        let promises = [];
-        trade_items_list.json_items = false;
-        trade_items_list.items = []
-        user_accounts_item_list.json_items = false;
-        user_accounts_item_list.items = [];
-        tags_list.json_items = false;
-        tags_list.items = [];
-
-        promises.push(trade_items_list.fetchItems());
-        promises.push(user_accounts_item_list.fetchItems())
-        promises.push(tags_list.fetchItems());
-
-        Promise.all(promises).then(async () => {
-            user_accounts_item_list.loadItems((item) => {
-                let tempUser = new User_Account();
-                tempUser.setEmail(item["email"])
-                .setFisrtName(item["fname"])
-                .setLastName(item["lname"])
-                .setID(item["id"])
-                .setUsername(item["username"])
-                .setInterests(item["tags"])
-                .setPhotot(item['photo']);
-                return tempUser;
-            });
-
-            tags_list.loadItems((item) => {
-                let tag = new Tag(item);
-                return tag;
-            })
-
-            setTags(tags_list.getTags());
-
-            trade_items_list.loadItems((item) => {
-                let Owner = user_accounts_item_list.findByID(item["owner_id"]);
-
-                let trade_Item = new Trade_Item(item, navigation);
-                item["tags"].forEach((json_tag) => {
-                    let tempTag = new Tag(json_tag);
-                    if (tempTag.exchange == 1) {
-                        trade_Item.addExchangeTag(tempTag);
-                    } else {
-                        trade_Item.addTag(tempTag);
-                    }
-                       
-                })
-
-                if (Owner != false) {
-                    trade_Item.setOwner(Owner);
-                }
-                return trade_Item;
-            });
-
-            await trade_items_list.fetchImages();
-            setLoaded(true);
-        });
+        initialise(setLoaded, setTags);
     }, []);
 
     // this is used to refresh the list of items on the main screen when the
@@ -135,7 +98,11 @@ const MainScreen = ({navigation}) =>{
             />
         </View>
 
-            <ScrollView style={styles.center}>{loaded ? displayItems : null}</ScrollView>
+        <Trade_List
+            available={true}
+            sold={false}
+        />
+
         <Tab style={{position: 'absolute', top: '50'}} nav={navigation} activeTab="home"/>
         </View>);
     
@@ -148,10 +115,7 @@ const MainScreen = ({navigation}) =>{
 // it takes in a search term (string)
 // and sets the value of displayItems
 // and returns the list of filtered rendered GUI items
-function LoadBlocks(searchTerm) {
-    trade_items_list.searchItems(searchTerm);
-    return loadSorted(trade_items_list.filteredResults);
-}
+
 
 function loadSorted(items) {
     let tempArray = [];
