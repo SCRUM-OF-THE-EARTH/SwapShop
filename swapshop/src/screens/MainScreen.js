@@ -100,10 +100,10 @@ const MainScreen = ({navigation}) =>{
 
 
     let screen = (<View style={[styles.container, { backgroundColor: theme.background }]}>
-        <View style={[styles.search_Bar, { backgroundColor: theme.mainItem }]}>
+        <View style={[styles.search_Bar]}>
             <View style={{flexDirection: 'row'}}>
                 <TextInput 
-                    style={styles.TextInput} 
+                    style={[styles.TextInput, { backgroundColor: theme.sec }]} 
                     placeholderTextColor="#3CB371" 
                     placeholder="search" 
                     onChangeText={(searchTerm) => setDisplayItems(LoadBlocks(searchTerm))}
@@ -118,7 +118,7 @@ const MainScreen = ({navigation}) =>{
             </View>
 
             <DropDownPicker
-                style={styles.tagMenu}
+                style={[styles.tagMenu, { backgroundColor: theme.sec }]}
                 open={tagMenuOpen}
                 searchable={true}
                 placeholder="filter by tag"

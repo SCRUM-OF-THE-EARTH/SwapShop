@@ -1,5 +1,5 @@
 import { Button, TextInput, View, ScrollView, StyleSheet, Text, Image } from "react-native"
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import Slideshow from 'react-native-image-slider-show';
 import { login_user } from '../classes/User_Account';
 import { trade_items_list } from "./MainScreen.js";
@@ -9,7 +9,7 @@ import * as Permissions from 'expo-permissions';
 import { tags_list } from "./MainScreen.js";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useIsFocused } from "@react-navigation/native";
-
+import themeContext from '../components/themeContext';
 // This is the screen for creating a new trade item
 //  export default function MainImage() {
 
@@ -20,7 +20,7 @@ const AddItem = ({navigation}) => {
     // // scrollViewProps={{
     // //   nestedScrollEnabled: true,
     // // }}
-
+    const theme = useContext(themeContext);   //change theme to dark/light mode
     const isFocused = useIsFocused(); 
 
     const [name, onNameChange] = useState(''); // the name of the new item
@@ -125,13 +125,13 @@ const AddItem = ({navigation}) => {
     // the React GUI component
     return (
 
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: theme.background }]}>
             
-            <Text style={styles.header}>Post a new item to trade</Text>
+            <Text style={[styles.header, {backgroundColor: theme.background}]}>Post a new item to trade</Text>
             <DropDownPicker
                 addCustomItem={true}
-                // style={styles.tagMenu}
-                containerStyle={styles.tagMenu}
+                style={{ backgroundColor: theme.sec }}
+                containerStyle={[styles.tagMenu]}
                 open={itemTagsMenuOpen}
                 searchable={true}
                 placeholder="tags for this item"
@@ -149,16 +149,17 @@ const AddItem = ({navigation}) => {
 
 
             <Text style={{color: 'red', textAlign: 'center'}}>{errorMessage}</Text>
-            <TextInput style={styles.TextInput} placeholder="name of item"
+            <TextInput style={[styles.TextInput]} placeholder="name of item"
                        onChangeText={(name) => onNameChange(name)}/>
-            <TextInput style={[styles.TextInput, {paddingVertical: 20}]} type="textarea" placeholder="description"
+            <TextInput style={[styles.TextInput, { paddingVertical: 20 }, { backgroundColor: theme.sec }]} type="textarea" placeholder="description"
                        multiline={true} onChangeText={(description) => onDescChange(description)}/>
-            <TextInput style={styles.TextInput} placeholder="estimate for value of item"
+            <TextInput style={[styles.TextInput, { backgroundColor: theme.sec }]} placeholder="estimate for value of item"
                        onChangeText={(value) => onValueChange(value)}/>
 
             <DropDownPicker
+                style={{ backgroundColor: theme.sec }}
                 addCustomItem={true}
-                containerStyle={styles.tagMenu}
+                containerStyle={[styles.tagMenu, { backgroundColor: theme.sec }]}
                 open={tagMenuOpen}
                 searchable={true}
                 placeholder="Add tags for items wanted in exchange"
@@ -201,7 +202,7 @@ const AddItem = ({navigation}) => {
                 {image}
             </ScrollView>
 
-            <Text style={styles.addItemBtn} onPress={() => AddNewItem(name, description, value, tagValues, onChangeError, navigation, imageList, itemTagValues)}>Post</Text>
+            <Text style={[styles.addItemBtn, { backgroundColor: theme.sec }]} onPress={() => AddNewItem(name, description, value, tagValues, onChangeError, navigation, imageList, itemTagValues)}>Post</Text>
 
         </View>
     );

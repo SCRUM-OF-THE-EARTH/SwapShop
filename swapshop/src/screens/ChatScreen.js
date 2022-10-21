@@ -8,6 +8,7 @@ import colors from "../../config/colors";
 //import { collection, addDoc, query, orderBy, onSnapshot, QuerySnapshot, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig/firebase";
 import { login_user } from "../classes/User_Account"; 
+import themeContext from '../components/themeContext';
 
 // create a chat screen UI
 // so the user can be redirected to this page when, they choose the option to contact the client.
@@ -15,7 +16,7 @@ import { login_user } from "../classes/User_Account";
 const ChatScreen = ({route, navigation}) => {
   const [messages, setMessages] = useState([]);
   const item = route.params;
-  
+  const theme = useContext(themeContext);
   let username_1 = login_user.getUsername();
   let username_2 = item.owner.getUsername()
 
