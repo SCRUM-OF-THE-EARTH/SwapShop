@@ -16,6 +16,7 @@ export class User_Account {
         this.email = "";
         this.tags = [];
         this.id =0;
+        this.photo_url = "";
     }
 
     // setID is used to set the value of the id
@@ -114,6 +115,15 @@ export class User_Account {
         return this.tags;
     }
     
+
+    setPhoto(photo) {
+        this.photo_url = photo;
+        return this;
+    }
+
+    getPhoto() {
+        return this.photo_url;
+    }
 }
 
 // the Login_user is a sub class of User_Account that is used to validate a user's input in order to try and
@@ -139,7 +149,8 @@ export class Login_user extends User_Account {
         .setFisrtName(response["fname"])
         .setLastName(response["lname"])
         .setEmail(response["email"])
-        .setInterests(response["tags"]);
+        .setInterests(response["tags"])
+        .setPhoto(response["photo"]);
 
         return true;
     }

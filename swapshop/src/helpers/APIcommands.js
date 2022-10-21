@@ -74,6 +74,11 @@ const APIcommands = [
         file: "deleteInterest.php",
         param_names: ["user", "tag"]
 
+    },
+    {
+        command: "fetch-profile-photo",
+        file: "fetchNewPhoto.php",
+        param_names: ["id"]
     }
 ];
 export default APIcommands;

@@ -264,7 +264,7 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
         })
 
         if (image != "") {
-            communicator.makePostRequestForImage(image, item_id);
+            communicator.makePostRequestForImage(image, item_id, "trade");
         }
         navigation.navigate('MainScreen');
     });
