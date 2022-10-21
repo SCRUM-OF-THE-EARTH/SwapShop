@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import colors from '../../config/colors';
+import themeContext from '../components/themeContext';
+
 
 const Messages = [
   {
@@ -30,8 +32,9 @@ const Messages = [
 ];
 
 const MessagesScreen = ({navigation}) => {
+  const theme = useContext(themeContext);
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: theme.inputColor }]}>
         <FlatList 
           data={Messages}
           keyExtractor={item=>item.id}

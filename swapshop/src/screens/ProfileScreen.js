@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Tab from '../components/Tab.js';
 import { login_user } from '../classes/User_Account';
 import { useIsFocused } from "@react-navigation/native";
@@ -9,9 +9,10 @@ import { communicator } from '../classes/Communicator.js';
 import { LightSpeedOutLeft, set } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
+import themeContext from '../components/themeContext.js';
 
 const ProfileScreen = ({ navigation }) => {
-
+    const theme = useContext(themeContext);
     const isFocused = useIsFocused();
     const [loaded, setLoaded] = useState(false);
     const [tagMenuOpen, setTagMenuOpen] = useState(false);
