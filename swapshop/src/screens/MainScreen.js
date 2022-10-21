@@ -99,7 +99,7 @@ const MainScreen = ({navigation}) =>{
 
 
     let screen = (<View style={[styles.container, { backgroundColor: theme.background }]}>
-        <View style={styles.search_Bar}>
+        <View style={[styles.search_Bar, { backgroundColor: theme.mainItem }]}>
             <View style={{flexDirection: 'row'}}>
                 <TextInput 
                     style={styles.TextInput} 
@@ -134,8 +134,8 @@ const MainScreen = ({navigation}) =>{
             />
         </View>
 
-            <ScrollView style={styles.center}>{loaded ? displayItems : null}</ScrollView>
-        <Tab style={{position: 'absolute', top: '50'}} nav={navigation} activeTab="home"/>
+        <ScrollView style={[styles.center, {backgroundColor: theme.background}]}>{loaded ? displayItems : null}</ScrollView>
+        <Tab style={{ position: 'absolute', top: '50', backgroundColor: theme.background }} nav={navigation} activeTab="home"/>
         </View>);
     
         return screen;
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     },
     center: {
         width:'90%',
-        shadowColor: '#000',
+        shadowColor: '#3CB371',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 2,  

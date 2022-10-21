@@ -1,8 +1,10 @@
-import {useState} from 'react';
+import React, {useState, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import themeContext from '../components/themeContext';
 
 const SortBar = ({data, setItemsFunc, load}) => {
+    const theme = useContext(themeContext);
     // declare and initialise state variables for the sorting drop down menu
     const [sortMenuOpen, setSortMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
     const [sortValue, setSortValue] = useState(null);
@@ -24,7 +26,7 @@ const SortBar = ({data, setItemsFunc, load}) => {
                     setValue={setSortValue}
                     setItems={setSortItems}
                     placeholder="Sort"
-                    style={styles.sortMenu}
+                style={[styles.sortMenu, { backgroundColor: theme.inputColor }]}
                     dropDownContainerStyle={styles.dropMenu}
                     onChangeValue={(value) => doSort(value, data, load, setItemsFunc)}
                 />

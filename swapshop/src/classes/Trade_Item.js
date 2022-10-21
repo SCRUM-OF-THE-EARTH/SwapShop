@@ -1,7 +1,9 @@
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from "react";
 import { communicator } from './Communicator';
-
+import themeContext from '../components/themeContext';
+import { useEffect, useState, useContext } from 'react';
+import theme from '../components/config/theme';
 // Trade item is used to create and store items fetched from the database of trading items
 // it has 5 parameters:
 //  | item_name - the name of the item (string)
@@ -9,7 +11,10 @@ import { communicator } from './Communicator';
 //  | owner - the user account that posted the item (User_Account)
 //  | item_description - the desiption provided to the trade item (string)
 //  | id - the id of the trade item (integer)
+
+//const theme = useContext(themeContext);
 export class Trade_Item {
+    
     constructor(item, navigation) {
         this.item_name = item['item_name'];
         this.item_value = item['item_value'];
@@ -143,8 +148,9 @@ export class Trade_Item {
                 <Text style={styles.exchange_tag} key={tag.getID()}>{tag.getName()}</Text>
             )
         })
+    
         return (
-            <TouchableOpacity key={this.id} style={styles.container} onPress={() => this.navigation.navigate("detailed_item", {item: this})}>
+            <TouchableOpacity key={this.id} style={[styles.container]} onPress={() => this.navigation.navigate("detailed_item", {item: this})}>
                 <Text style={styles.header}>{this.item_name}</Text>
             <View style={styles.innerContainer}>
                 

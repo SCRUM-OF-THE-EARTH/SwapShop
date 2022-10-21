@@ -1,18 +1,19 @@
-import { StyleSheet, Button, View, ImageBackground, TouchableOpacity } from "react-native"
+import { StyleSheet, Button, View, ImageBackground, TouchableOpacity } from "react-native";
+import React, { useEffect, useState, useContext } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Dimensions } from 'react-native';
-
+import themeContext from '../components/themeContext';
 
 const Tab = ({nav, activeTab}) => {
-
+    const theme = useContext(themeContext);
     const navigation= nav;
     const aTab = activeTab;
 
     const windowWidth = Dimensions.get('window').width;
 
     return (
-    <View style={styles.container}>
-        <View style={styles.back_Bar}></View>
+    <View style={[styles.container, {backgroundColor: theme.background}]}>
+            <View style={[styles.back_Bar, { backgroundColor: theme.background }]}></View>
         <TouchableOpacity style={styles.sideTab} ><Icon color={aTab == 'settings' ? "#3CB371" : "#000000"} style={{}} name="settings-outline" size={windowWidth/12} title="" /></TouchableOpacity>
         <TouchableOpacity style={styles.sideTab} onPress={() => navigation.navigate("MessageScreen")}><Icon color={aTab == 'chat' ? "#3CB371" : "#000000"} name="chatbubbles-outline" size={windowWidth/12} title="" /></TouchableOpacity>
         <TouchableOpacity style={styles.mainTab} onPress={() => navigation.navigate("addItemScreen")} ><Icon name="add-outline" color="white" size={windowWidth/12} title="" /></TouchableOpacity>

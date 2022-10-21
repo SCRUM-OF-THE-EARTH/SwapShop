@@ -5,6 +5,7 @@ const theme = {
         color: "#3CB371",
         sec: "#3CB371",
         inputColor: "#F5F5F5",
+        mainItem: "#589774",
     },
     dark: {
         theme: "dark",
@@ -12,6 +13,7 @@ const theme = {
         color: 'white',
         sec: "#b5c4bb",
         inputColor: "#b5c4bb",
+        mainItem: "#6a8576",
     },
 }
 
