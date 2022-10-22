@@ -25,7 +25,8 @@ const SortBar = ({data, setIndex}) => {
                     setValue={setSortValue}
                     setItems={setSortItems}
                     placeholder="Sort"
-                style={[styles.sortMenu, { backgroundColor: theme.inputColor }]}
+                    // { backgroundColor: theme.inputColor }
+                style={[styles.sortMenu]}
                     dropDownContainerStyle={styles.dropMenu}
                     onChangeValue={(value) => setIndex(value)}
                 />
