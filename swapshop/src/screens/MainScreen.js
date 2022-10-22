@@ -87,7 +87,7 @@ const MainScreen = ({navigation}) =>{
                 <View style={styles.sortMenu}>
                     <SortBar
                         data={trade_items_list}
-                        setItemsFunc={setSortIndex}
+                        setIndex={setSortIndex}
                      />
                 </View>
             </View>
@@ -116,6 +116,7 @@ const MainScreen = ({navigation}) =>{
             searchTerm={searchTerm}
             sortIndex={sortIndex}
             navigation={navigation}
+            tags={tagValues}
         /> : <ScrollView style={styles.center}></ScrollView>}
         
 

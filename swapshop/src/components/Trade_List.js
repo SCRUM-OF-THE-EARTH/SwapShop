@@ -38,7 +38,6 @@ function initialiseTradeItem(item) {
 function initialise(setDisplayItems) {
 
     let promises = [];
-    let tempItems = [];
 
     if (global_available) {
         trade_items_list.searchTerm = global_search;
@@ -50,17 +49,27 @@ function initialise(setDisplayItems) {
         promises.push(trade_items_list.fetchItems());
     }
 
-    Promise.all(promises).then(async () => {
+    Promise.all(promises).then(() => {
+        if (global_available) {
+            trade_items_list.fetchImages();
+        }
+        if (global_sold) {
+            sold_trade_items_list.fetchImages();
+        }
+        loadItems(setDisplayItems);
+    });
+}
 
-        console.log("fetched ITems: ", trade_items_list);
+async function loadItems(setDisplayItems) {
+    let tempItems = [];
+
+    console.log("fetched ITems: ", trade_items_list);
         if (global_available) {
             
             trade_items_list.items = [];
             trade_items_list.loadItems((item) => {
                 return initialiseTradeItem(item);   
             });
-
-            trade_items_list.fetchImages();
 
             trade_items_list.getItems().forEach((item) => {
                 if (global_id == null || item.getOwner().getID() == global_id) {
@@ -73,7 +82,7 @@ function initialise(setDisplayItems) {
             sold_trade_items_list.loadItems((item) => {
                 return initialiseTradeItem(item);
             });
-            sold_trade_items_list.fetchImages();
+            
 
             sold_trade_items_list.forEach((item) => {
                 if (global_id == null || item.getOwner().getID() == global_id) {
@@ -83,17 +92,14 @@ function initialise(setDisplayItems) {
         }
 
         setDisplayItems(tempItems);
-    });
-}
+} 
 
 
-const Trade_List = ({sold, available, searchTerm, tags, id, loaded, sortIndex, navigation}) => {
+const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigation}) => {
 
     global_sold = sold ? true : false;
     global_available = available ? true : false;
     global_id = id ? id : null;
-    global_search = searchTerm
-    global_tags = tags ? tags : [];
     gNavigation = navigation
 
     console.log("Global_sold:", global_sold);
@@ -106,12 +112,26 @@ const Trade_List = ({sold, available, searchTerm, tags, id, loaded, sortIndex, n
     const [displayItems, setDisplayItems] = useState([]);
 
     useEffect(() => {
-        setDisplayItems([]);
         initialise(setDisplayItems, tags);
     }, []);
 
     useEffect(() => {
-        console.log("I sense a change")
+        
+        console.log("I sense a change");
+        let tempItems = [];
+        if (displayItems.length > 0 && available) {
+            trade_items_list.searchTerm = searchTerm;
+            trade_items_list.index = sortIndex;
+            console.log("filtered results",trade_items_list.filterByTags(tags));
+            console.log("tags passed to Trade list", tags, tags.length)
+            let filtered = trade_items_list.filterByTags(tags);
+            filtered.forEach(item => {
+                tempItems.push(item.createItemBlock());
+            })
+        };
+
+        console.log("temp ITems are:", tempItems);
+        setDisplayItems(tempItems);
     }, [searchTerm, tags, sortIndex])
 
     return (
