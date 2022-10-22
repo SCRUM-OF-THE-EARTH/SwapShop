@@ -4,6 +4,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { sold_trade_items_list, trade_items_list } from "../screens/MainScreen";
 import { user_accounts_item_list } from "../screens/MainScreen";
 import { Trade_item_list } from "../classes/Item_List";
+import { Tag } from "../classes/Tag.js";
 import { ScrollView } from "react-native";
 import { Trade_Item } from '../classes/Trade_Item';
 
@@ -12,11 +13,12 @@ let global_available;
 let global_id;
 let global_search ="";
 let global_tags= [];
+let gNavigation;
 
 function initialiseTradeItem(item) {
     let Owner = user_accounts_item_list.findByID(item["owner_id"]);
 
-    let trade_Item = new Trade_Item(item, navigation);
+    let trade_Item = new Trade_Item(item, gNavigation);
     item["tags"].forEach((json_tag) => {
         let tempTag = new Tag(json_tag);
         if (tempTag.exchange == 1) {
@@ -39,30 +41,29 @@ function initialise(setDisplayItems) {
     let tempItems = [];
 
     if (global_available) {
-        trade_items_list = new Trade_item_list(false);
         trade_items_list.searchTerm = global_search;
         promises.push(trade_items_list.fetchItems());
     }
     
     if (global_sold) {
-        sold_trade_list_items = new Trade_item_list(true);
         sold_trade_items_list.searchTerm = global_search;
         promises.push(trade_items_list.fetchItems());
     }
 
     Promise.all(promises).then(async () => {
 
+        console.log("fetched ITems: ", trade_items_list);
         if (global_available) {
             
+            trade_items_list.items = [];
             trade_items_list.loadItems((item) => {
                 return initialiseTradeItem(item);   
             });
 
             trade_items_list.fetchImages();
 
-            trade_items_list.filterByTags(tags)
-            trade_items_list.forEach((item) => {
-                if (global_id == null || item.getOwner().getID() == id) {
+            trade_items_list.getItems().forEach((item) => {
+                if (global_id == null || item.getOwner().getID() == global_id) {
                     tempItems.push(item.createItemBlock());
                 }
             })
@@ -73,10 +74,9 @@ function initialise(setDisplayItems) {
                 return initialiseTradeItem(item);
             });
             sold_trade_items_list.fetchImages();
-            sold_trade_items_list.filterByTags(tags);
 
             sold_trade_items_list.forEach((item) => {
-                if (global_id == null || item.getOwner().getID() == id) {
+                if (global_id == null || item.getOwner().getID() == global_id) {
                     tempItems.push(item.createItemBlock());
                 }
             })
@@ -87,27 +87,35 @@ function initialise(setDisplayItems) {
 }
 
 
-const Trade_List = ({sold = false, available = false, searchTerm = "", tags = [], id = null, loaded = false, sortIndex = 0}) => {
+const Trade_List = ({sold, available, searchTerm, tags, id, loaded, sortIndex, navigation}) => {
 
-    global_sold = sold;
-    global_available = available;
-    global_id = id;
-    global_search = searchTerm;
-    global_tags = tags;
+    global_sold = sold ? true : false;
+    global_available = available ? true : false;
+    global_id = id ? id : null;
+    global_search = searchTerm
+    global_tags = tags ? tags : [];
+    gNavigation = navigation
+
+    console.log("Global_sold:", global_sold);
+    console.log("Global available:", global_available);
+    console.log("Global Id:", global_id);
+    console.log("Global searchTerm", global_search);
+    console.log("Global tags", global_tags);
 
     const isFocused = useIsFocused();
     const [displayItems, setDisplayItems] = useState([]);
 
     useEffect(() => {
         setDisplayItems([]);
-        if (loaded) {
-            initialise(setDisplayItems, tags);
-        }
-    
-    }, [isFocused, loaded]);
+        initialise(setDisplayItems, tags);
+    }, []);
+
+    useEffect(() => {
+        console.log("I sense a change")
+    }, [searchTerm, tags, sortIndex])
 
     return (
-        <ScrollView style={styles.center}>{displayItems != [] ? displayItems : null}</ScrollView>
+        <ScrollView style={styles.center}>{displayItems}</ScrollView>
     )
     
 }

@@ -13,10 +13,10 @@ import Tab from '../components/Tab';
 import themeContext from '../components/themeContext';
 import Trade_List from '../components/Trade_List';
 
-export let trade_items_list = new Trade_item_list();
-export let sold_trade_items_list = new Trade_item_list();
+export const trade_items_list = new Trade_item_list(false);
+export const sold_trade_items_list = new Trade_item_list(true);
 export const user_accounts_item_list = new Item_List('fetch-user-accounts');
-export let tags_list = new Tag_list();
+export const tags_list = new Tag_list();
 
 // this is the main page
 // this is the page the user is taken to after logging in
@@ -88,7 +88,6 @@ const MainScreen = ({navigation}) =>{
                     <SortBar
                         data={trade_items_list}
                         setItemsFunc={setSortIndex}
-                        load={loadSorted}
                      />
                 </View>
             </View>
@@ -110,15 +109,15 @@ const MainScreen = ({navigation}) =>{
             />
         </View>
 
-        {/* {loaded ? 
+        {loaded ? 
             <Trade_List
             available={true}
             sold={false}
-            serachTerm={searchTerm}
-            loaded={loaded}
+            searchTerm={searchTerm}
             sortIndex={sortIndex}
+            navigation={navigation}
         /> : <ScrollView style={styles.center}></ScrollView>}
-         */}
+        
 
         <Tab style={{position: 'absolute', top: '50'}} nav={navigation} activeTab="home"/>
         </View>);
@@ -134,20 +133,20 @@ const MainScreen = ({navigation}) =>{
 // and returns the list of filtered rendered GUI items
 
 
-function loadSorted(items) {
-    let tempArray = [];
-    items.forEach((item) => {
-        tempArray.push(item.createItemBlock());
-    });
+// function loadSorted(items) {
+//     let tempArray = [];
+//     items.forEach((item) => {
+//         tempArray.push(item.createItemBlock());
+//     });
 
-    return tempArray;
-}
+//     return tempArray;
+// }
 
-function filterByTag(tags) {
+// function filterByTag(tags) {
 
-    trade_items_list.filterByTags(tags);
-    return loadSorted(trade_items_list.filteredResults);
-}
+//     trade_items_list.filterByTags(tags);
+//     return loadSorted(trade_items_list.filteredResults);
+// }
 
 // the styles of the home page
 const styles = StyleSheet.create({

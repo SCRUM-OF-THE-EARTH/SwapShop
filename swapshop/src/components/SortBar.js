@@ -2,7 +2,7 @@ import {useState} from 'react';
 import { View, StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-const SortBar = ({data, setIndex, load}) => {
+const SortBar = ({data, setIndex}) => {
     // declare and initialise state variables for the sorting drop down menu
     const [sortMenuOpen, setSortMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
     const [sortValue, setSortValue] = useState(null);
