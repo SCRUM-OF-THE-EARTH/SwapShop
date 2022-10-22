@@ -27,6 +27,7 @@ export class Trade_Item {
         this.images = ['https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg'];
         this.date_created = item['date_created'];
         this.exchange = [];
+        this.sold = item['sold'];
 
         this.tags = [];
 
@@ -202,6 +203,15 @@ export class Trade_Item {
     addExchangeTag(tag) {
         this.exchange.push(tag);
         return this;
+    }
+
+    setSold(sold) {
+        this.sold = sold;
+        return this;
+    }
+
+    getSold() {
+        return this.sold;
     }
 }
 

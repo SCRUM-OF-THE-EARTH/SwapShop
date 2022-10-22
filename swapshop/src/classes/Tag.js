@@ -7,7 +7,6 @@ export class Tag {
         this.name = item['name']; 
         this.date_created = item['date_created'];
         this.id = item['id'];
-        this.exchange = item['exchange'];
     }
 
     // getName is used to retirieve the name of the tag

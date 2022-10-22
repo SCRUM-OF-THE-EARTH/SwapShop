@@ -155,8 +155,14 @@ export class Item_List {
 //  | filter by tags which takes in a list of tags filters he list of trade ites by the tags they are associated to
 
 export class Trade_item_list extends Item_List {
-    constructor() {;
-        super("fetch-trade-items");
+    constructor(sold) {
+
+        if (sold) {
+            super("fetch-sold-trade-items")
+        } else {
+            super("fetch-trade-items");
+        }
+        
         this.index = null;
         this.tagsActive = false;
         this.ActiveTags = [];
@@ -201,8 +207,8 @@ export class Trade_item_list extends Item_List {
         this.tagActive = true;
         this.searchTerm = searchterm;
         super.searchItems(searchterm);
-        this.filterByTags(this.ActiveTags);
-        this.Sort();
+        // this.filterByTags(this.ActiveTags);
+        // this.Sort();
     }
 
     //filterByTags is used to filter the list of items by a list of active tags
@@ -211,10 +217,13 @@ export class Trade_item_list extends Item_List {
     filterByTags(tags) {
         this.ActiveTags = tags;
 
+        console.log("Items in Item list: ", tags);
+
         super.searchItems(this.searchTerm);
 
         if (tags.length == 0) {
-            return;
+            this.Sort();
+            return this.filteredResults;
         }
 
         let isTagged;
@@ -233,6 +242,7 @@ export class Trade_item_list extends Item_List {
             }
         }
         this.Sort();
+        return this.filteredResults;
     }
 
     fetchImages() { 

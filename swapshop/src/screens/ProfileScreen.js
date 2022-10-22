@@ -9,7 +9,9 @@ import { communicator } from '../classes/Communicator.js';
 import { LightSpeedOutLeft, set } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
-import themeContext from '../components/themeContext.js';
+import * as ImagePicker from 'expo-image-picker';
+import Trade_List from '../components/Trade_List.js';
+
 
 const ProfileScreen = ({ navigation }) => {
     const theme = useContext(themeContext);
@@ -76,6 +78,16 @@ const ProfileScreen = ({ navigation }) => {
                     />
                 </View>
                 <View style = {styles.tags}>{activeTags}</View>
+
+
+                <Text>My Items:</Text>
+
+                <Trade_List
+                    available={true}
+                    sold={true}
+                    id={login_user.getID()}   
+                    navigation={navigation}
+                />
 
                 <Tab nav={navigation} activeTab="profile" />
             </View>
