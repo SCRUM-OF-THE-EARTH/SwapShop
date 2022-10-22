@@ -46,7 +46,7 @@ function initialise(setDisplayItems) {
     
     if (global_sold) {
         sold_trade_items_list.searchTerm = global_search;
-        promises.push(trade_items_list.fetchItems());
+        promises.push(sold_trade_items_list.fetchItems());
     }
 
     Promise.all(promises).then(() => {
@@ -79,12 +79,13 @@ async function loadItems(setDisplayItems) {
         }
 
         if (global_sold) {
+            sold_trade_items_list.items = [];
             sold_trade_items_list.loadItems((item) => {
                 return initialiseTradeItem(item);
             });
             
 
-            sold_trade_items_list.forEach((item) => {
+            sold_trade_items_list.getItems().forEach((item) => {
                 if (global_id == null || item.getOwner().getID() == global_id) {
                     tempItems.push(item.createItemBlock());
                 }

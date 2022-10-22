@@ -10,6 +10,7 @@ import { LightSpeedOutLeft, set } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
+import Trade_List from '../components/Trade_List.js';
 
 
 const ProfileScreen = ({ navigation }) => {
@@ -132,7 +133,14 @@ const ProfileScreen = ({ navigation }) => {
                 <View style = {styles.tags}>{activeTags}</View>
 
 
+                <Text>My Items:</Text>
 
+                <Trade_List
+                    available={true}
+                    sold={true}
+                    id={login_user.getID()}   
+                    navigation={navigation}
+                />
 
                 <Tab nav={navigation} activeTab="profile" />
             </View>
