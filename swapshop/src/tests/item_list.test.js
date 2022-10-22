@@ -373,7 +373,7 @@ describe("testing the item_list and its methods", () => {
         for (iter =0; iter < interest.length; iter++) {
             expect(droptags[iter]['label']).toBe(interest[iter].getName())
             expect(droptags[iter]['value']['date_created']).toBe(tempTags[iter]['date_created']);
-            expect(droptags[iter]['value']['exchange']).toBe(tempTags[iter]['exchange']);
+            // expect(droptags[iter]['value']['exchange']).toBe(tempTags[iter]['exchange']);
             expect(droptags[iter]['value']['id']).toBe(tempTags[iter]['id']);
         }
     })

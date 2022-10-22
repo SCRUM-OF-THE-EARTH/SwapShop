@@ -6,7 +6,7 @@
 
     $output = array("success"=>0, "results"=>0);
     $users = array();
-    $user_accounts = array('id'=>0, 'fname'=>'', 'lname'=>'', 'username'=>'', 'password'=>'', 'email'=>'', 'tags'=>'');
+    $user_accounts = array('id'=>0, 'fname'=>'', 'lname'=>'', 'username'=>'', 'password'=>'', 'email'=>'', 'tags'=>'', 'photo' =>"");
     if ($results = $conn->query($query)) {
         $output["success"] = 1;
         while($row = $results->fetch_assoc()) {
@@ -17,6 +17,7 @@
             $user_accounts['username'] = $row['username'];
             $user_accounts['password'] = $row['password'];
             $user_accounts['email'] = $row['email'];
+            $user_accounts['photo'] = $row['photo'];
             $tags = array();
 
             if ($user_results = $conn->query("SELECT * FROM user_tags WHERE user = $user_id")) {

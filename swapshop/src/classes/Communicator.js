@@ -63,6 +63,7 @@ class Communicator {
         let call = this.getCallByCommand(commandName);
 
         let APIurl = this.constructURL(call, param_values);        
+        console.log("url is:", APIurl)
 
         let response = await fetch(APIurl).catch(e=>console.error(e))
         let json = await response.json();

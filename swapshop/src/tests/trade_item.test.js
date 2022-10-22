@@ -50,13 +50,13 @@ describe("testing the trade item class", () => {
         expect(test_item.getDateCreated()).toBe(date);
     });
 
-    test("testing the ability to fetch an image from the server", () => {
-        return test_item.fetchImages().then(() => {
-            expect(test_item.hasImages).toBe(true);
-            expect(test_item.images.length).toBe(1);
-            expect(test_item.images[0]).toBe('https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg');
-        })
-    });
+    // test("testing the ability to fetch an image from the server", () => {
+    //     return test_item.fetchImages().then(() => {
+    //         expect(test_item.hasImages).toBe(true);
+    //         expect(test_item.images.length).toBe(1);
+    //         expect(test_item.images[0]).toBe('https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg');
+    //     })
+    // });
 
     test("testing the ability to create and retrieve an image sldeshow", () => {
         let slildeshow = test_item.getImageSlideShow();

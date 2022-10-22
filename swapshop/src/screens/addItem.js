@@ -246,13 +246,14 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
     });
 
 
-    let owner_id = login_user.getID()
+    let owner_id = login_user.getID();
 
-    trade_items_list.addItem('add-trade-item', [name,description, value, owner_id]).then( async res => {
-
-        let trade_item = trade_items_list.getItems()[trade_items_list.getItems().length -1];
-        let item_id = trade_item.getID();
-
+    console.log("Owner id is: ", owner_id);
+    console.log("details are: ", name,description, value, owner_id);
+    
+    communicator.makeRequestByCommand('add-trade-item', [name,description, value, owner_id]).then(async (item) => {
+        console.log("item is: ", item);
+        let item_id = item['id'];
         await itemTags.forEach(async tag => {
             console.log(item_id, tag, 0);
             await communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, '0']);
@@ -267,7 +268,11 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
             communicator.makePostRequestForImage(image, item_id, "trade");
         }
         navigation.navigate('MainScreen');
-    });
+    })
+
+        
+
+        
 }
 
 // the styles for the add items screen

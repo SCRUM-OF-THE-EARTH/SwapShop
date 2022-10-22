@@ -13,54 +13,67 @@ import Tab from '../components/Tab';
 import themeContext from '../components/themeContext';
 import Trade_List from '../components/Trade_List';
 
-export let trade_items_list;
-export let sold_trade_items_list;
-export let user_accounts_item_list;;
-export let tags_list;
+export let trade_items_list = new Trade_item_list();
+export let sold_trade_items_list = new Trade_item_list();
+export const user_accounts_item_list = new Item_List('fetch-user-accounts');
+export let tags_list = new Tag_list();
 
 // this is the main page
 // this is the page the user is taken to after logging in
 // the search bar and displayed items are handled here
 
 
-function initialise() {
-    Promise.all(
+async function initialise(setLoaded, setTags) {
+    await user_accounts_item_list.fetchItems();
+    user_accounts_item_list.loadItems(item => {
+        return initialiseAccount(item);
+    })
 
-    ).then(
-        tags_list.loadItems((item) => {
-            return new Tag(item);
-        });
+    await tags_list.fetchItems();
+    tags_list.loadItems((item) => {
+        return new Tag(item);
+    })
 
-        setTags(tags_list.getTags());
-    )
+        console.log("tags: ", tags_list);
+    setLoaded(true);
+    setTags(tags_list.getTags())
+}
+
+function initialiseAccount(item) {
+    let tempUser = new User_Account();
+    console.log("setting user account: ", item)
+    tempUser.setEmail(item["email"])
+    .setFisrtName(item["fname"])
+    .setLastName(item["lname"])
+    .setID(item["id"])
+    .setUsername(item["username"])
+    .setInterests(item["tags"])
+    .setPhoto(item["photo"]);
+    return tempUser; 
 }
 
 
 
 const MainScreen = ({navigation}) =>{
     const isFocused = useIsFocused(); // check if the main screen is active on screen
-    const [displayItems, setDisplayItems] = useState(''); // the list of trade item's GUI components
     const [loaded, setLoaded] = useState(false);
     
     const [tagMenuOpen, setTagMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
     const [tagValues, setTagValues] = useState([]);
     const [tags, setTags] = useState([]);
+    const [sortIndex, setSortIndex] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
     const theme = useContext(themeContext);
 
     // this function is run when a tracked value is changed
     // specifivally it is used to fetch and reload the list 
     // when the page is loaded
-    useEffect(async () => {
+    useEffect(() => {
         initialise(setLoaded, setTags);
     }, []);
 
     // this is used to refresh the list of items on the main screen when the
     // changes between this screen adn another screen or vice versa
-    useEffect(() => {
-        setDisplayItems('')
-        setDisplayItems(LoadBlocks(''));
-    }, [isFocused, loaded])
-
 
     let screen = (<View style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={styles.search_Bar}>
@@ -69,12 +82,12 @@ const MainScreen = ({navigation}) =>{
                     style={styles.TextInput} 
                     placeholderTextColor="#3CB371" 
                     placeholder="search" 
-                    onChangeText={(searchTerm) => setDisplayItems(LoadBlocks(searchTerm))}
+                    onChangeText={(value => setSearchTerm(value))}
                 />
                 <View style={styles.sortMenu}>
                     <SortBar
                         data={trade_items_list}
-                        setItemsFunc={setDisplayItems}
+                        setItemsFunc={setSortIndex}
                         load={loadSorted}
                      />
                 </View>
@@ -94,14 +107,18 @@ const MainScreen = ({navigation}) =>{
                 setOpen={setTagMenuOpen}
                 setValue={setTagValues}
                 setItems={setTags}
-                onChangeValue={(value) => setDisplayItems(filterByTag(value))}
             />
         </View>
 
-        <Trade_List
+        {/* {loaded ? 
+            <Trade_List
             available={true}
             sold={false}
-        />
+            serachTerm={searchTerm}
+            loaded={loaded}
+            sortIndex={sortIndex}
+        /> : <ScrollView style={styles.center}></ScrollView>}
+         */}
 
         <Tab style={{position: 'absolute', top: '50'}} nav={navigation} activeTab="home"/>
         </View>);
