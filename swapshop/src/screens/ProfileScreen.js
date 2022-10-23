@@ -11,7 +11,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import Trade_List from '../components/Trade_List.js';
+import { Dimensions } from 'react-native';
 
+const windowHeight = Dimensions.get('window').height;
 
 const ProfileScreen = ({ navigation }) => {
 
@@ -23,6 +25,7 @@ const ProfileScreen = ({ navigation }) => {
     const [interests, setInterests] = useState([]);
     const [activeTags, setActiveTags] = useState([]);
     const [image, setImage] = useState(null);
+    const [id, setID] = useState(login_user.getID());
 
     const pickImage = async() =>{
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -46,103 +49,94 @@ const ProfileScreen = ({ navigation }) => {
         let tempInterests = [];
 
         login_user.getInterests().forEach(tag_id => {
-            let t = tags_list.findByID(tag_id);
             tempTags.forEach((a, index) => {
                 if (a.value.id == tag_id) {
-                    tempTags.splice(index, 1);
+                    tempInterests.push(a.value);
                     return;
                 }
             })
-            tempInterests.push(t);
+            
         });
 
         setImage(login_user.getPhoto());
-
+        setInterests(tempInterests);
 
         setTags(tempTags);
-        setInterests(tempInterests);
-        setActiveTags(loadInterests(tempInterests, setInterests, loadInterests, setActiveTags, tags, setTags));
         setLoaded(true);
     }, [isFocused]);
 
     if (loaded) {
         return (
-            <View style={styles.container}>
-
+            <View style={styles.mainContainer}>
                 <Text style={styles.welcome}>{login_user.getUsername()}</Text>
+            <View style={styles.container}>
+                <View style={styles.imageContainer} >
                 {image && <Image source={{uri:image}} style={styles.image}/>}
-
-                {/*<View style = {styles.add}>*/}
-                {/*    <Button style = {styles.add}*/}
-                {/*            title="+" onPress={pickImage}*/}
-                {/*            color="rgba(0, 0,0, 0)"*/}
-
-                {/*    />*/}
-
-
-                {/*</View>*/}
-
-
-                <View style = {styles.button}>
-                    <Button
-                        title = "edit profile" onPress={pickImage}
-                        color = "#299617"
-
-                    />
-
                 </View>
 
+                {/*  */}
+                
 
+                {/* <View style = {styles.button}>
+                    <Button
+                        title = "edit profile" onPress={pickImage}
+                        color = "#3CB371"
 
-
-
+                    />
+                </View> */}
 
                 <View style = {styles.details}>
-                    <Text style={styles.label}></Text>
-                    <Text style={styles.data_field}>{login_user.getFullName()}</Text>
-                    <Text style={styles.data_field}>{login_user.getEmail()}</Text>
+
+                    <View style={styles.data_container}>
+                        <Image
+                            source={require("../../assets/user.png")}
+                            style={styles.imageDetail}
+                        />
+                        <Text style={styles.data_field}>{login_user.getFullName()}</Text>
+                    </View>
+
+                    <View style={styles.data_container}>
+                        <Image
+                            source={require("../../assets/email.png")}
+                            style={styles.imageDetail}
+                        />
+                        <Text style={styles.data_field}>{login_user.getEmail()}</Text>
+                    </View>
 
 
-                    <Text style={styles.label2}>My interests</Text>
+                    <Text style={styles.label}>My interests: </Text>
+
                     <DropDownPicker
                         open={tagMenuOpen}
                         searchable={true}
+                        multiple={true}
+                        min={0}
+                        max={5}
+                        mode="BADGE"
                         placeholder="add an interest"
-                        value={tagValues}
+                        value={interests}
                         items={tags}
                         setOpen={setTagMenuOpen}
-                        setValue={setTagValues}
+                        setValue={setInterests}
                         setItems={setTags}
-                        onChangeValue={(value) => {
-                            setInterests(updateInterest(value, setTagValues, interests, setTags, tags));
-                            setActiveTags(loadInterests(interests, setInterests, loadInterests, setActiveTags, tags, setTags));
-                        }}
+                        onChangeValue={(value) => setInterests(value)}
+                        containerStyle={styles.interests}
                     />
                 </View>
 
-                <Image
-                    source={require("../../assets/user.png")}
-                    style={styles.imageP}
-                />
-
-                <Image
-                    source={require("../../assets/email.png")}
-                    style={styles.imageE}
-                />
-
-                <View style = {styles.tags}>{activeTags}</View>
-
-
-                <Text>My Items:</Text>
+                <Text style={styles.label}>My Items:</Text>
 
                 <Trade_List
                     available={true}
                     sold={true}
                     id={login_user.getID()}   
                     navigation={navigation}
+                    edit={true}
                 />
 
-                <Tab nav={navigation} activeTab="profile" />
+                
+            </View>
+            <Tab nav={navigation} activeTab="profile" />
             </View>
         )
     }
@@ -160,102 +154,114 @@ async function reloadPhoto() {
     }
 }
 
-function updateInterest(tag, setTagValues, interests, setTags, tags) {
+// function updateInterest(tag, setTagValues, interests, setTags, tags) {
 
-    let tempInterests = interests;
-    if (tag == null) {
-        return tempInterests;
-    }
+//     let tempInterests = interests;
+//     if (tag == null) {
+//         return tempInterests;
+//     }
 
-    let tagId = tag["id"];
-    let userId = login_user.getID();
+//     let tagId = tag["id"];
+//     let userId = login_user.getID();
 
-    communicator.makeRequestByCommand("add-interest", [userId, tagId]);
+//     communicator.makeRequestByCommand("add-interest", [userId, tagId]);
 
-    tags.forEach((t, index) => {
-        if (t.value.id == tagId) {
-            tags.splice(index, 1);
-            return;
-        }
-    });
-    tempInterests.push(tag);
-    let updatedUserInterests = [];
-    tempInterests.forEach(t => {
-        updatedUserInterests.push(t.getID());
-    })
+//     tags.forEach((t, index) => {
+//         if (t.value.id == tagId) {
+//             tags.splice(index, 1);
+//             return;
+//         }
+//     });
+//     tempInterests.push(tag);
+//     let updatedUserInterests = [];
+//     tempInterests.forEach(t => {
+//         updatedUserInterests.push(t.getID());
+//     })
 
-    login_user.setInterests(updatedUserInterests);
-    setTagValues(null);
-    setTags(tags);
+//     login_user.setInterests(updatedUserInterests);
+//     setTagValues(null);
+//     setTags(tags);
 
-    return tempInterests;
-}
+//     return tempInterests;
+// }
 
-function removeInterest(tag, interest, tags, setTags) {
-    let tagId = tag.getID();
-    let userId = login_user.getID();
-    let addTag;
+// function removeInterest(tag, interest, tags, setTags) {
+//     let tagId = tag.getID();
+//     let userId = login_user.getID();
+//     let addTag;
 
-    let newInterests = [];
+//     let newInterests = [];
 
-    interest.forEach((i, index) => {
-        if (i.getID() == tagId) {
-            addTag = i;
-            interest.splice(index, 1);
-        } else {
-            newInterests.push(i.getID());
-        }
-    });
+//     interest.forEach((i, index) => {
+//         if (i.getID() == tagId) {
+//             addTag = i;
+//             interest.splice(index, 1);
+//         } else {
+//             newInterests.push(i.getID());
+//         }
+//     });
 
-    communicator.makeRequestByCommand('remove-interest', [userId, tagId]);
+//     communicator.makeRequestByCommand('remove-interest', [userId, tagId]);
 
-    tags.push(addTag.getTagValue());
+//     tags.push(addTag.getTagValue());
 
-    setTags(tags);
-    login_user.setInterests(newInterests);
+//     setTags(tags);
+//     login_user.setInterests(newInterests);
 
-    return interest;
+//     return interest;
 
-}
+// }
 
-function loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags) {
-    let tempInterestComps = [];
-    interest.forEach(t => {
-        tempInterestComps.push(
-            <View style={styles.tag_container} key={t.getID()}><Text>{t.getName()}</Text><TouchableOpacity  style={styles.close} onPress={() => {
-                setInterests(removeInterest(t, interest, tags, setTags));
-                setActiveTags(loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags));
-            }}><Icon size={20} name="close-circle-outline" /></TouchableOpacity></View>
-        );
-    })
+// function loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags) {
+//     let tempInterestComps = [];
+//     interest.forEach(t => {
+//         tempInterestComps.push(
+//             <View style={styles.tag_container} key={t.getID()}><Text>{t.getName()}</Text><TouchableOpacity  style={styles.close} onPress={() => {
+//                 setInterests(removeInterest(t, interest, tags, setTags));
+//                 setActiveTags(loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags));
+//             }}><Icon size={20} name="close-circle-outline" /></TouchableOpacity></View>
+//         );
+//     })
 
-    return tempInterestComps;
-}
+//     return tempInterestComps;
+// }
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%'
+        backgroundColor: "white",
+        height: windowHeight - 130,
+        // paddingBottom: 
     },
-    details:{
-        marginHorizontal: 30,
-        marginLeft: 50,
-        marginTop: -30,
-        marginBottom: 20,
+    interests: {
+        paddingHorizontal: 10
+    },
+    imageContainer: {
+        alignItems: 'center',
+        // flex: 1,
+        marginBottom: -75,
+        justifyContent: 'center'
+    },
+    data_container: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     welcome:{
-        paddingTop: 40,
-        paddingBottom: 100,
-        marginBottom: 80,
+        // paddingTop: 40,
+        // paddingBottom: 100,
+        // marginBottom: 80,
+        paddingTop: 20,
+        paddingBottom: 80,
         alignItems:"center",
         fontSize: 40,
-        backgroundColor: "#299617",
-        // borderRadius: ,
-
         color: 'white',
         fontWeight:"700",
         textAlign:"center",
-
-
+    },
+    details: {
+        alignContent: 'center',
+        justifyContent: 'center'
     },
     tags:{
         marginVertical: 20,
@@ -265,107 +271,57 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         marginTop: 175,
-
     },
     data_field: {
-        marginLeft: 5,
         color: "gray",
         fontSize: 15,
-        //marginBottom: 100,
-        marginTop: 30,
-
-        // fontWeight: '400',
-        // textDecorationLine:"underline"
-
-
+        // flex: 1,
+        // justifyContent: 'center',
+        width: 'auto',
+        padding: 10, 
+        textAlign: 'center'
     },
     label: {
-        paddingTop: 10,
         fontSize: 16,
-        color: 'red',
-        marginBottom: 40,
-        marginTop: 5,
-    },
-    tag_container: {
-        display: 'flex',
-        flexDirection:'row',
-        backgroundColor: '#299617',
-        //backgroundColor: '#32CD32',
-        borderRadius: 20,
-        paddingLeft: 15,
-        paddingVertical: 5,
-        margin: 5,
-        color: "white",
-        justifyContent: 'center',
-        marginTop:-25,
-        marginBottom:40,
-
-
+        color: "#3CB371",
+        padding: 10,
+        fontWeight: '300'
     },
     close: {
-        // padding: 5,
         paddingLeft: 10,
         paddingRight:5,
         justifyContent:'center'
     },
-    imageP:{
+    imageDetail:{
         height: 40,
         width: 40,
-        marginLeft: 10,
-        marginTop: -215,
-        marginBottom: 430,
-
-    },
-    imageE:{
-        height: 30,
-        width: 30,
-        marginLeft: 15,
-        marginTop: -410,
-        // marginBottom: -65,
-
-    },
-    label2:{   //this is the text for "My interests"
-        paddingTop: 10,
-        fontSize: 16,
-        color: 'gray',
-        marginTop: 10,
-        textAlign:"center",
-        marginBottom:10,
-
-
-
+        justifyContent: 'center'
     },
     button:{
 
-        marginTop: 20,
-        marginBottom: -50,
-        marginHorizontal:100,
-        marginLeft:120,
+        // marginTop: 20,
+        // marginBottom: -50,
+        // marginHorizontal:100,
+        // marginLeft:120,
+        padding: 20,
 
 
     },
     image:{
         height: 150,
         width: 150,
-        alignItems: "center",
-        marginTop: -150,
-        marginLeft: 110,
-        marginBottom: -10,
-        //overlayColor: "gray",
+        // alignItems: "center",
+        transform:[
+            {translateY:-75} 
+        ],
+        // //overlayColor: "gray",
         borderRadius:100,
-        borderColor:"white",
-        // flex: 1,
+        // borderColor:"white",
     },
-    add:{
-
-        marginHorizontal:140,
-        marginTop:-30,
-        //borderRadius:0,
-        marginLeft: 160,
-        // backgroundColor:'transparent'
-
+    mainContainer: {
+        backgroundColor: "#3CB371",
+        height: "100%"
     }
-
 
 
 })

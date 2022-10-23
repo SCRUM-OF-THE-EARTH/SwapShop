@@ -1,14 +1,42 @@
 import { useState, useEffect } from 'react';
-import { View, Text,StyleSheet, Button } from 'react-native';
+import { View, Text,StyleSheet, Button, TouchableOpacity, Alert } from 'react-native';
 import Slideshow from 'react-native-image-slider-show';
-import { color } from 'react-native-reanimated';
+import { color, combineTransition } from 'react-native-reanimated';
+import { login_user } from '../classes/User_Account';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { communicator } from '../classes/Communicator';
 
 //export const ownerID = 0;
+
+const confirmSubmit = (item, navigation) => {
+    Alert.alert(
+        "Confirm delete",
+        `Are you sure you want to delete item: \n ${item.getName()}`,
+        [
+            {            
+                text: "cancel",
+                onPress: () => console.log("cancel press"),
+                style: "cancel"
+            },
+            {
+                text: "confirm",
+                onPress: async () => {
+                    await communicator.makeRequestByCommand("delete-trade-item", [item.getID()]);
+                    navigation.goBack();
+                },
+                
+            }
+
+        ]
+    )
+}
 
 const Detailed_Trade_item = ({route, navigation}) => {
 
     // retrieve the item passed through the navigation
     const { item } = route.params;
+    const { edit } = route.params
+
     let loaded = false;
 
     const [images, setImages] = useState([]);
@@ -71,11 +99,17 @@ const Detailed_Trade_item = ({route, navigation}) => {
                     <Text style={styles.description}>{item.getOwner().getFullName()}</Text>
                 </View>
                 
+                { (item.getOwner().getID() == login_user.getID()) ? 
+                    <View style={{display: 'flex',justifyContent: 'center'}}>
+                        <TouchableOpacity onPress={() => console.log("edit pressed")}><Icon style={{padding: 10}} size={30} color="#3CB371" name="create-outline"></Icon></TouchableOpacity>
+                        <TouchableOpacity onPress={() => confirmSubmit(item, navigation)}><Icon style={{padding: 10}} size={30} color="#CA054D" name="trash-outline"></Icon></TouchableOpacity>
+                    </View> 
+                : 
                 <Button 
                     color="#3CB371" 
                     title={"contact"}
                     onPress = {() => navigation.navigate('ChatScreen',{owner: item.getOwner()})}
-                />
+                /> }
             </View>
 
 

@@ -37,6 +37,7 @@
     "@react-navigation/stack": "^6.3.1",
     "coverage-badge-creator": "^1.0.13",
     "expo": "^46.0.10",
+    "expo-camera": "~12.3.0",
     "expo-image-manipulator": "~10.4.0",
     "expo-image-picker": "~13.3.1",
     "expo-linear-gradient": "~11.4.0",

@@ -146,16 +146,10 @@ describe("testing the trade item class", () => {
 
         let Test_Tag = {id: 0, name: 'tags_name', item: 88}
         let Test_Tag_2 = {id: 1, name: 'tag2_name', item: 85};
-        expect(test_item.addTag(Test_Tag)).toBe(test_item);
+        expect(test_item.addTag(Test_Tag)).toBe(Test_Tag);
         expect(test_item.getTags()).toStrictEqual([Test_Tag]);
-        expect(test_item.addTag(Test_Tag_2)).toBe(test_item);
+        expect(test_item.addTag(Test_Tag_2)).toBe(Test_Tag_2);
         expect(test_item.getTags()).toStrictEqual([Test_Tag, Test_Tag_2]);
         
     });
-
-    test("testing the return of the item generator", () => {
-        const tree = renderer.create(test_item.createItemBlock()).toJSON();
-        expect(tree.children.length).toBe(2);
-    })
-
 })

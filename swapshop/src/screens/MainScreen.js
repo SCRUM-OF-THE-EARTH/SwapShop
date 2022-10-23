@@ -24,15 +24,18 @@ export const tags_list = new Tag_list();
 
 
 async function initialise(setLoaded, setTags) {
+    user_accounts_item_list.json_items = [];
     await user_accounts_item_list.fetchItems();
     user_accounts_item_list.loadItems(item => {
         return initialiseAccount(item);
     })
 
+    tags_list.json_item = [];
     await tags_list.fetchItems();
     tags_list.loadItems((item) => {
         return new Tag(item);
     })
+    console.log(tags_list);
 
         console.log("tags: ", tags_list);
     setLoaded(true);
@@ -70,7 +73,7 @@ const MainScreen = ({navigation}) =>{
     // when the page is loaded
     useEffect(() => {
         initialise(setLoaded, setTags);
-    }, []);
+    }, [isFocused]);
 
     // this is used to refresh the list of items on the main screen when the
     // changes between this screen adn another screen or vice versa

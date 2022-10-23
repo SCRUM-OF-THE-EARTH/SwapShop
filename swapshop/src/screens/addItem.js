@@ -87,37 +87,42 @@ const AddItem = ({navigation}) => {
 
     const takePicture = async () => {
 
+        // let cameraPermission = await ImagePicker.requestCameraPermissionsAsync()
         await Promise.all([
             Permissions.askAsync(Permissions.CAMERA),
+            Permissions.askAsync(Permissions.CAMERA_ROLL)
         ])
         // the taken image
         //upload image contents
-        ImagePicker.launchCameraAsync({
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 0.2,
-            base64: true,  
-        }).then((result) => {
-            if (!result.selected) {
-                let t = {"cancelled": result.cancelled, "selected" : [result]};
-                result = t;
+        // if (cameraPermission.granted === true) {
+            ImagePicker.launchCameraAsync({
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 0.2,
+                base64: true,  
+            }).then((result) => {
+                if (!result.selected) {
+                    let t = {"cancelled": result.cancelled, "selected" : [result]};
+                    result = t;
+                }
+                if (!result.cancelled) {
+                let temp = [];
+                let tempImageList = [];
+                for (let i = 0; i < result.selected.length; i++) {
+                    let uri = result.selected[i].uri;
+                    // uri = uri.replace('file://', "");
+                    tempImageList.push(result.selected[i]);
+                    let item = <Image style={{position:'relative', height: 200, margin: 20}} key={i} source={{
+                        uri: uri
+                    }}/>;
+                    temp.push(item);
+                }
+                setImage(temp);
+                setImgaeList(tempImageList);
             }
-            if (!result.cancelled) {
-            let temp = [];
-            let tempImageList = [];
-            for (let i = 0; i < result.selected.length; i++) {
-                let uri = result.selected[i].uri;
-                // uri = uri.replace('file://', "");
-                tempImageList.push(result.selected[i]);
-                let item = <Image style={{position:'relative', height: 200, margin: 20}} key={i} source={{
-                    uri: uri
-                }}/>;
-                temp.push(item);
-            }
-            setImage(temp);
-            setImgaeList(tempImageList);
-        }
-        })
+            })
+        // }
+        
     }
 
 
@@ -255,7 +260,7 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
         console.log("item is: ", item);
         let item_id = item['id'];
         await itemTags.forEach(async tag => {
-            console.log(item_id, tag, 0);
+            console.log("adding item and tags: ", item_id, tag, 0);
             await communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, '0']);
             trade_item.addTag(tag);   
         })

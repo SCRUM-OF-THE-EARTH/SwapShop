@@ -269,9 +269,10 @@ export class Tag_list extends Item_List {
         let names = [];
 
         this.items.forEach((item) => {
-            let tempTagItem = {label: "", value: 0};
+            let tempTagItem = {label: "", value: 0, key: ''};
             tempTagItem['label'] = item.getName();
             tempTagItem['value'] = item;
+            tempTagItem['key'] = item.getID();
             names.push(tempTagItem);
         });
         return names;
@@ -281,7 +282,7 @@ export class Tag_list extends Item_List {
         this.json_items.push(tag);
         let newTag = new Tag(tag)
         this.items.push(newTag);
-        return this;
+        return tag;
     }
 }
 
