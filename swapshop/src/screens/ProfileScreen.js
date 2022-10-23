@@ -25,7 +25,7 @@ const ProfileScreen = ({ navigation }) => {
     const [interests, setInterests] = useState([]);
     const [activeTags, setActiveTags] = useState([]);
     const [image, setImage] = useState(null);
-    const [id, setID] = useState(login_user.getID());
+    const [id, setID] = useState(null);
 
     const pickImage = async() =>{
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -47,11 +47,14 @@ const ProfileScreen = ({ navigation }) => {
     useEffect(() => {
         let tempTags = tags_list.getTags();
         let tempInterests = [];
+        setInterests([]);
+        setActiveTags([]);
 
         login_user.getInterests().forEach(tag_id => {
             tempTags.forEach((a, index) => {
                 if (a.value.id == tag_id) {
                     tempInterests.push(a.value);
+                    tempTags.splice(index, 1);
                     return;
                 }
             })
@@ -59,9 +62,11 @@ const ProfileScreen = ({ navigation }) => {
         });
 
         setImage(login_user.getPhoto());
-        setInterests(tempInterests);
-
+        console.log("Interest:", tempInterests);
         setTags(tempTags);
+        setInterests(tempInterests);
+        setActiveTags(loadInterests(tempInterests, setInterests, loadInterests, setActiveTags, tags, setTags));
+        setID(login_user.getID())
         setLoaded(true);
     }, [isFocused]);
 
@@ -73,17 +78,6 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={styles.imageContainer} >
                 {image && <Image source={{uri:image}} style={styles.image}/>}
                 </View>
-
-                {/*  */}
-                
-
-                {/* <View style = {styles.button}>
-                    <Button
-                        title = "edit profile" onPress={pickImage}
-                        color = "#3CB371"
-
-                    />
-                </View> */}
 
                 <View style = {styles.details}>
 
@@ -106,33 +100,36 @@ const ProfileScreen = ({ navigation }) => {
 
                     <Text style={styles.label}>My interests: </Text>
 
-                    <DropDownPicker
-                        open={tagMenuOpen}
-                        searchable={true}
-                        multiple={true}
-                        min={0}
-                        max={5}
-                        mode="BADGE"
-                        placeholder="add an interest"
-                        value={interests}
-                        items={tags}
-                        setOpen={setTagMenuOpen}
-                        setValue={setInterests}
-                        setItems={setTags}
-                        onChangeValue={(value) => setInterests(value)}
-                        containerStyle={styles.interests}
-                    />
+                    <View style={styles.drop}>
+                        <DropDownPicker
+                            open={tagMenuOpen}
+                            searchable={true}
+                            placeholder="add an interest"
+                            value={tagValues}
+                            items={tags}
+                            setOpen={setTagMenuOpen}
+                            setValue={setTagValues}
+                            setItems={setTags}
+                            // onChangeValue={(value) => setInterests(value)}
+                            containerStyle={styles.interests}
+                            style={styles.interests}
+                        />
+                    </View>
                 </View>
+
+                <View style = {styles.tags} >{activeTags}</View>
 
                 <Text style={styles.label}>My Items:</Text>
 
+            { (id != null) ?
                 <Trade_List
                     available={true}
                     sold={true}
-                    id={login_user.getID()}   
+                    id={id}   
                     navigation={navigation}
                     edit={true}
-                />
+                /> : null }
+
 
                 
             </View>
@@ -154,77 +151,77 @@ async function reloadPhoto() {
     }
 }
 
-// function updateInterest(tag, setTagValues, interests, setTags, tags) {
+function updateInterest(tag, setTagValues, interests, setTags, tags) {
 
-//     let tempInterests = interests;
-//     if (tag == null) {
-//         return tempInterests;
-//     }
+    let tempInterests = interests;
+    if (tag == null) {
+        return tempInterests;
+    }
 
-//     let tagId = tag["id"];
-//     let userId = login_user.getID();
+    let tagId = tag["id"];
+    let userId = login_user.getID();
 
-//     communicator.makeRequestByCommand("add-interest", [userId, tagId]);
+    communicator.makeRequestByCommand("add-interest", [userId, tagId]);
 
-//     tags.forEach((t, index) => {
-//         if (t.value.id == tagId) {
-//             tags.splice(index, 1);
-//             return;
-//         }
-//     });
-//     tempInterests.push(tag);
-//     let updatedUserInterests = [];
-//     tempInterests.forEach(t => {
-//         updatedUserInterests.push(t.getID());
-//     })
+    tags.forEach((t, index) => {
+        if (t.value.id == tagId) {
+            tags.splice(index, 1);
+            return;
+        }
+    });
+    tempInterests.push(tag);
+    let updatedUserInterests = [];
+    tempInterests.forEach(t => {
+        updatedUserInterests.push(t.getID());
+    })
 
-//     login_user.setInterests(updatedUserInterests);
-//     setTagValues(null);
-//     setTags(tags);
+    login_user.setInterests(updatedUserInterests);
+    setTagValues(null);
+    setTags(tags);
 
-//     return tempInterests;
-// }
+    return tempInterests;
+}
 
-// function removeInterest(tag, interest, tags, setTags) {
-//     let tagId = tag.getID();
-//     let userId = login_user.getID();
-//     let addTag;
+function removeInterest(tag, interest, tags, setTags) {
+    let tagId = tag.getID();
+    let userId = login_user.getID();
+    let addTag;
 
-//     let newInterests = [];
+    let newInterests = [];
 
-//     interest.forEach((i, index) => {
-//         if (i.getID() == tagId) {
-//             addTag = i;
-//             interest.splice(index, 1);
-//         } else {
-//             newInterests.push(i.getID());
-//         }
-//     });
+    interest.forEach((i, index) => {
+        if (i.getID() == tagId) {
+            addTag = i;
+            interest.splice(index, 1);
+        } else {
+            newInterests.push(i.getID());
+        }
+    });
 
-//     communicator.makeRequestByCommand('remove-interest', [userId, tagId]);
+    communicator.makeRequestByCommand('remove-interest', [userId, tagId]);
 
-//     tags.push(addTag.getTagValue());
+    tags.push(addTag.getTagValue());
 
-//     setTags(tags);
-//     login_user.setInterests(newInterests);
+    setTags(tags);
+    login_user.setInterests(newInterests);
 
-//     return interest;
+    return interest;
 
-// }
+}
 
-// function loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags) {
-//     let tempInterestComps = [];
-//     interest.forEach(t => {
-//         tempInterestComps.push(
-//             <View style={styles.tag_container} key={t.getID()}><Text>{t.getName()}</Text><TouchableOpacity  style={styles.close} onPress={() => {
-//                 setInterests(removeInterest(t, interest, tags, setTags));
-//                 setActiveTags(loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags));
-//             }}><Icon size={20} name="close-circle-outline" /></TouchableOpacity></View>
-//         );
-//     })
+function loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags) {
+    let tempInterestComps = [];
+    interest.forEach(t => {
+        tempInterestComps.push(
+            <View style={styles.tag_container} key={t.id}><Text>{t.name}</Text><TouchableOpacity  style={styles.close} onPress={() => {
+                setInterests(removeInterest(t, interest, tags, setTags));
+                setActiveTags(loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags));
+            }}><Icon size={20} name="close-circle-outline" /></TouchableOpacity></View>
+        );
+    })
 
-//     return tempInterestComps;
-// }
+    return tempInterestComps;
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -233,7 +230,8 @@ const styles = StyleSheet.create({
         // paddingBottom: 
     },
     interests: {
-        paddingHorizontal: 10
+        zIndex: 9,
+        marginVertical: 10
     },
     imageContainer: {
         alignItems: 'center',
@@ -264,13 +262,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     tags:{
-        marginVertical: 20,
-        marginHorizontal: 20,
         display: 'flex',
         flexWrap: 'wrap',
         flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: 175,
     },
     data_field: {
         color: "gray",
@@ -286,6 +281,17 @@ const styles = StyleSheet.create({
         color: "#3CB371",
         padding: 10,
         fontWeight: '300'
+    },
+    tag_container: {
+        display: 'flex',
+        flexDirection:'row',
+        backgroundColor: '#A3E0BF',
+        borderRadius: 10,
+        paddingLeft: 15,
+        paddingVertical: 5,
+        margin: 5,
+        color: "white",
+        justifyContent: 'center'
     },
     close: {
         paddingLeft: 10,
