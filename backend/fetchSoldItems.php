@@ -30,7 +30,6 @@
 
             if ($sub_results = $conn->query("SELECT image_url FROM trade_images WHERE trade_id = $item_id")){
                 while ($photo_row = $sub_results->fetch_assoc()) {
-                    echo "Hello";
                     $photos[] = $photo_row['image_url'];
                 }
             }

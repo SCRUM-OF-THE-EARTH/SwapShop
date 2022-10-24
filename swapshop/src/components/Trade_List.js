@@ -44,18 +44,7 @@ function initialise(setDisplayItems, available, sold, id, search, navigation) {
     }
 
     Promise.all(promises).then(async () => {
-        let imagePromises = [];
-        if (available) {
-            imagePromises.push(trade_items_list.fetchImages());
-            
-        }
-        if (sold) {
-            imagePromises.push(sold_trade_items_list.fetchImages());
-        }
-        Promise.all(imagePromises).then(() => {
-            loadItems(setDisplayItems, available, sold, id, navigation);
-        })
-        
+        loadItems(setDisplayItems, available, sold, id, navigation);
     });
 }
 
