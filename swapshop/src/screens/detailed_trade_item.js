@@ -35,7 +35,8 @@ const Detailed_Trade_item = ({route, navigation}) => {
 
     // retrieve the item passed through the navigation
     const { item } = route.params;
-    const { edit } = route.params
+
+    const [soldStatus, setSoldStatus] = useState(item.sold);
 
     let loaded = false;
 
@@ -54,6 +55,8 @@ const Detailed_Trade_item = ({route, navigation}) => {
             <Text style={styles.exchangeTag}>#{tag.getName()}</Text>
         )
     });
+
+    console.log("sold status:", item.sold)
 
     let itemTags = [];
     item.getTags().forEach(tag => {
@@ -74,7 +77,12 @@ const Detailed_Trade_item = ({route, navigation}) => {
             
             <View style={styles.detailContainer}>
 
-                <Text style={styles.nameTitle}>{item.getName()}</Text>
+                <View style={styles.title_container}>
+                    <Text style={styles.nameTitle}>{item.getName()}</Text>
+                    { soldStatus == 0 ? <Text style={[styles.availability_tag, {borderColor: '#A3E0BF', color: '#A3E0BF'}]}>AVAILABLE</Text> : <Text style={[styles.availability_tag,  {borderColor: 'gray', color: 'gray'}]}>SOLD</Text> }
+                    
+                </View>
+
                 <View style={styles.descContainer}>
                     <Text style={{color: "#1E5C3A", fontSize: 18, fontWeight:'400'}}>Description:</Text>
                     <Text style={styles.description}>{item.getDescription()}</Text>
@@ -100,10 +108,7 @@ const Detailed_Trade_item = ({route, navigation}) => {
                 </View>
                 
                 { (item.getOwner().getID() == login_user.getID()) ? 
-                    <View style={{display: 'flex',justifyContent: 'center'}}>
-                        <TouchableOpacity onPress={() => console.log("edit pressed")}><Icon style={{padding: 10}} size={30} color="#3CB371" name="create-outline"></Icon></TouchableOpacity>
-                        <TouchableOpacity onPress={() => confirmSubmit(item, navigation)}><Icon style={{padding: 10}} size={30} color="#CA054D" name="trash-outline"></Icon></TouchableOpacity>
-                    </View> 
+                    null 
                 : 
                 <Button 
                     color="#3CB371" 
@@ -114,13 +119,66 @@ const Detailed_Trade_item = ({route, navigation}) => {
 
 
         </View>
+
+        { (item.getOwner().getID() == login_user.getID()) ? 
+                    <View style={styles.button_container}>
+                        <TouchableOpacity style={[styles.center_icon, styles.icon_button]} onPress={() => {
+                            if (soldStatus == 1) {
+                                communicator.makeRequestByCommand("update-sold-status", [item.id, '0']).then(() => {
+                                    setSoldStatus(0);
+                                })
+                            } else {
+                                communicator.makeRequestByCommand("update-sold-status", [item.id, '1']).then(() => {
+                                    setSoldStatus(1)
+                                })
+                            }
+                        }}>
+                            <Icon color="#044B7F" style={{padding:10}} size={30} name={soldStatus == 0 ? "square-outline" : "checkbox-outline" }></Icon>
+                            <Text style={[styles.button_text, {color: "#044B7F"}]}>{soldStatus == 0 ? "Mark as sold" : "Mark as available"}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.center_icon, styles.icon_button]} onPress={() => {
+                            console.log("edit pressed")
+                            navigation.navigate("addItemScreen", {item: item})}
+                        }
+                        >
+                            <Icon style={{padding: 10}} size={30} color="#3CB371" name="create-outline"></Icon>
+                            <Text style={[styles.button_text, {color: "#3CB371"}]}>Edit</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.center_icon, styles.icon_button]} onPress={() => confirmSubmit(item, navigation)}>
+                            <Icon style={{padding: 10}} size={30} color="#CA054D" name="trash-outline"></Icon>
+                            <Text style={[styles.button_text, {color: "#CA054D"}]}>Delete</Text>
+                        </TouchableOpacity>
+                    </View> 
+                : null }
         </View>
         
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
+    center_icon: {
+        justifyContent: 'center', 
+        alignItems: 'center',
+        textAlign: 'center'
+    }, 
+    icon_button: {
+        flex: 1,
+        marginHorizontal: 10,
+    }, 
+    button_container: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'row', 
+        textAlign: 'center', 
+        justifyContent: 'space-evenly',
+        backgroundColor: 'white',
+        width:"100%",
+        padding: 5,
+        alignSelf: 'center'
+    },
+    button_text: {
+        textAlign: "center",
+        fontSize: 12.5,
     },
     detailContainer: {
         backgroundColor: 'white',
@@ -142,9 +200,25 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         color: "#3CB371",
         textAlign: 'center',
-        borderBottomColor: 'gray',
-        borderBottomWidth: 0.5
+        flex: 1.5
     },
+    availability_tag: {
+        justifyContent: 'center',
+        borderRadius: 25, 
+        borderWidth: 1,
+        padding: 10,
+        margin: 10,
+        fontSize: 12, 
+        fontWeight: '900',
+        flex: 0.5,
+        textAlign: 'center'
+    },
+    title_container: {
+        borderBottomColor: 'gray',
+        borderBottomWidth: 0.5,
+        display: 'flex',
+        flexDirection:'row'
+    }, 
     imageWheel: {
         paddingVertical: 5,
         borderRadius:5

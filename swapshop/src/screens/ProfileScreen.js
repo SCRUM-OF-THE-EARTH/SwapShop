@@ -14,6 +14,7 @@ import Trade_List from '../components/Trade_List.js';
 import { Dimensions } from 'react-native';
 
 const windowHeight = Dimensions.get('window').height;
+DropDownPicker.setListMode("SCROLLVIEW");
 
 const ProfileScreen = ({ navigation }) => {
 
@@ -51,10 +52,9 @@ const ProfileScreen = ({ navigation }) => {
         setActiveTags([]);
 
         login_user.getInterests().forEach(tag_id => {
-            tempTags.forEach((a, index) => {
+            tempTags.forEach((a) => {
                 if (a.value.id == tag_id) {
                     tempInterests.push(a.value);
-                    tempTags.splice(index, 1);
                     return;
                 }
             })
@@ -65,7 +65,7 @@ const ProfileScreen = ({ navigation }) => {
         console.log("Interest:", tempInterests);
         setTags(tempTags);
         setInterests(tempInterests);
-        setActiveTags(loadInterests(tempInterests, setInterests, loadInterests, setActiveTags, tags, setTags));
+        setActiveTags(tempInterests);
         setID(login_user.getID())
         setLoaded(true);
     }, [isFocused]);
@@ -104,20 +104,43 @@ const ProfileScreen = ({ navigation }) => {
                         <DropDownPicker
                             open={tagMenuOpen}
                             searchable={true}
+                            multiple={true}
+                            min={0}
+                            max={5}
+                            mode="BADGE"
                             placeholder="add an interest"
-                            value={tagValues}
+                            value={interests}
                             items={tags}
                             setOpen={setTagMenuOpen}
-                            setValue={setTagValues}
+                            setValue={setInterests}
                             setItems={setTags}
-                            // onChangeValue={(value) => setInterests(value)}
+                            itemKey="key"
+                            // onChangeValue={(value) => {
+                            //     setInterests(updateInterest(value, setTagValues, interests, setTags, tags));
+                            //     setActiveTags(loadInterests(interests, setInterests, loadInterests, setActiveTags, tags, setTags));
+                            // }}
+                            onChangeValue={(value) => {
+                                if (activeTags.length > value.length) {
+                                    let difference = activeTags.filter(x => !value.includes(x));
+                                    console.log("difference: ", difference);
+                                    removeInterest(difference[0]).then(() => {
+                                        setActiveTags(value);
+                                    })
+                                } else {
+                                    let difference = value.filter(x => !activeTags.includes(x));
+                                    console.log("difference:", difference);
+                                    addInterest(difference[0]).then(() => {
+                                        setActiveTags(value);
+                                    })
+                                }
+                            }}
                             containerStyle={styles.interests}
                             style={styles.interests}
                         />
                     </View>
                 </View>
 
-                <View style = {styles.tags} >{activeTags}</View>
+                {/* <View style = {styles.tags} >{activeTags}</View> */}
 
                 <Text style={styles.label}>My Items:</Text>
 
@@ -151,6 +174,25 @@ async function reloadPhoto() {
     }
 }
 
+async function addInterest(tag) {
+    let tagId =  tag.id;
+    let userId = login_user.getID();
+    await communicator.makeRequestByCommand("add-interest", [userId, tagId]);
+    let interests = login_user.getInterests();
+    interests.push(tagId);
+}
+
+async function removeInterest(tag) {
+    let tagId = tag.id;
+    let userId = login_user.getID();
+    await communicator.makeRequestByCommand('remove-interest', [userId, tagId]);
+    let interests = login_user.getInterests();
+
+    let newInterests = interests.filter(x => x != tagId)
+    console.log("setting filtered interests:", newInterests);
+    login_user.setInterests(newInterests);
+}
+
 function updateInterest(tag, setTagValues, interests, setTags, tags) {
 
     let tempInterests = interests;
@@ -182,32 +224,7 @@ function updateInterest(tag, setTagValues, interests, setTags, tags) {
     return tempInterests;
 }
 
-function removeInterest(tag, interest, tags, setTags) {
-    let tagId = tag.getID();
-    let userId = login_user.getID();
-    let addTag;
 
-    let newInterests = [];
-
-    interest.forEach((i, index) => {
-        if (i.getID() == tagId) {
-            addTag = i;
-            interest.splice(index, 1);
-        } else {
-            newInterests.push(i.getID());
-        }
-    });
-
-    communicator.makeRequestByCommand('remove-interest', [userId, tagId]);
-
-    tags.push(addTag.getTagValue());
-
-    setTags(tags);
-    login_user.setInterests(newInterests);
-
-    return interest;
-
-}
 
 function loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags) {
     let tempInterestComps = [];

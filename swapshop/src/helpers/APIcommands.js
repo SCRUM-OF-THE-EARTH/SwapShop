@@ -84,6 +84,11 @@ const APIcommands = [
         command: "fetch-profile-photo",
         file: "fetchNewPhoto.php",
         param_names: ["id"]
+    },
+    {
+        command: "update-sold-status",
+        file: "updateSoldStatus.php",
+        param_names: ["item_id", "status"]
     }
 ];
 export default APIcommands;

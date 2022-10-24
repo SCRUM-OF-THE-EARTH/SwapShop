@@ -2,7 +2,9 @@ import { StyleSheet, Text, ScrollView, TouchableOpacity, View, Image } from 'rea
 import { useState } from 'react';
 
 export const ItemBlock = ({item}) => {
-    const [images, setImages] = useState([item.images]);
+    const [images, setImages] = useState(item.images);
+    const [soldStatus, setSoldStatus] = useState(item.sold);
+
     let exchangeTags = [];
 
         item.exchange.forEach(tag => {
@@ -12,9 +14,12 @@ export const ItemBlock = ({item}) => {
         })
         
         return (
-            <TouchableOpacity key={item.id} style={styles.container} onPress={() => item.navigation.navigate("detailed_item", {item: item})}>
-                <Text style={styles.header}>{item.item_name}</Text>
-        
+            <TouchableOpacity style={styles.container} onPress={() => item.navigation.navigate("detailed_item", {item: item})}>
+                <View style={styles.title_container}>
+                    <Text style={styles.header}>{item.item_name}</Text>
+                    { soldStatus == 0 ? <Text style={[styles.availability_tag, {borderColor: '#A3E0BF', color: '#A3E0BF'}]}>AVAILABLE</Text> : <Text style={[styles.availability_tag,  {borderColor: 'gray', color: 'gray'}]}>SOLD</Text> }
+                    
+                </View>
             <View style={styles.innerContainer}>
                 
                 <Image
@@ -22,7 +27,7 @@ export const ItemBlock = ({item}) => {
                     source={{uri:item.images[0]}}   
                 />
                 
-                <View style={{flexDirection:"column", flex:1,alignSelf: 'center'}}>
+                <View key={item.id} style={{flexDirection:"column", flex:1,alignSelf: 'center'}}>
                     <Text style={[styles.wrappedText, {paddingVertical: 10, color: 'gray'}]}>{item.item_description}</Text>
                     <Text style={styles.wrappedText}>Estimated value: R{item.item_value}</Text>
                     <Text style={styles.wrappedText}>Item wanted:</Text>
@@ -44,12 +49,28 @@ const styles = StyleSheet.create({
         backgroundColor: "#F5F5F5",
         marginVertical: 5,   
     },
+    title_container: {
+        display: 'flex',
+        flexDirection:'row'
+    },
+    availability_tag: {
+        justifyContent: 'center',
+        borderRadius: 25, 
+        borderWidth: 1,
+        padding: 5,
+        margin: 5,
+        fontSize: 12, 
+        fontWeight: '900',
+        flex: 0.5,
+        textAlign: 'center'
+    },
     header: {
         fontSize: 25,
         fontWeight: '300',
         color: "#3CB371",
         paddingRight: 20,
         paddingLeft: 20,
+        flex: 1.5
     },
     innerContainer: {
         display: 'flex',

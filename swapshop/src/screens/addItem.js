@@ -14,12 +14,9 @@ import { useIsFocused } from "@react-navigation/native";
 //  export default function MainImage() {
 
 
-const AddItem = ({navigation}) => {
+const AddItem = ({navigation, route}) => {
 
-    // listMode="SCROLLVIEW"
-    // // scrollViewProps={{
-    // //   nestedScrollEnabled: true,
-    // // }}
+    let { item } = route.params;
 
     const isFocused = useIsFocused(); 
 
@@ -40,9 +37,41 @@ const AddItem = ({navigation}) => {
 
 
     useEffect(() => {
-        setTags(tags_list.getTags());
+        let allTags = tags_list.getTags();
+        setTags(allTags);
 
-        setItemTags(tags_list.getTags());
+        setItemTags(allTags);
+
+        if (item ) {
+            let tempTags = [];
+            let tempExcTags = [];
+
+            allTags.forEach(a => {
+                item.getTags().forEach(tag => {
+                    if (a.value.id == tag.getID()) {
+                        tempTags.push(a.value);
+                        return;
+                    }
+                });
+
+                item.getExchangeTags().forEach(tag => {
+                    if (a.value.id == tag.getID()) {
+                        tempExcTags.push(a.value);
+                        return;
+                    }   
+                })
+            })
+            setItemTagValues(tempTags);
+            setTagValues(tempExcTags);
+
+
+            onNameChange(item.getName());
+            onDescChange(item.getDescription());
+            onValueChange(item.getValue());
+            setImgaeList(item.getImages());
+        }
+
+        
 
     }, [isFocused]);
 
@@ -132,7 +161,7 @@ const AddItem = ({navigation}) => {
 
         <View style={styles.container}>
             
-            <Text style={styles.header}>Post a new item to trade</Text>
+            <Text style={styles.header}>{item ? "Update an item" : "Post a new item to trade"}</Text>
             <DropDownPicker
                 addCustomItem={true}
                 // style={styles.tagMenu}
@@ -155,11 +184,11 @@ const AddItem = ({navigation}) => {
 
             <Text style={{color: 'red', textAlign: 'center'}}>{errorMessage}</Text>
             <TextInput style={styles.TextInput} placeholder="name of item"
-                       onChangeText={(name) => onNameChange(name)}/>
+                       onChangeText={(name) => onNameChange(name)} value={name}/>
             <TextInput style={[styles.TextInput, {paddingVertical: 20}]} type="textarea" placeholder="description"
-                       multiline={true} onChangeText={(description) => onDescChange(description)}/>
+                       multiline={true} onChangeText={(description) => onDescChange(description)} value={description}/>
             <TextInput style={styles.TextInput} placeholder="estimate for value of item"
-                       onChangeText={(value) => onValueChange(value)}/>
+                    onChangeText={(value) => onValueChange(value)} value={value}/>
 
             <DropDownPicker
                 addCustomItem={true}

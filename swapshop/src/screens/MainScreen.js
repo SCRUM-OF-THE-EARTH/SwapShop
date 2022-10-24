@@ -31,11 +31,11 @@ async function initialise(setLoaded, setTags) {
     })
 
     tags_list.json_item = [];
+    tags_list.items =[];
     await tags_list.fetchItems();
     tags_list.loadItems((item) => {
         return new Tag(item);
     })
-    console.log(tags_list);
 
         console.log("tags: ", tags_list);
     setLoaded(true);
@@ -101,6 +101,7 @@ const MainScreen = ({navigation}) =>{
                 searchable={true}
                 placeholder="filter by tag"
                 multiple={true}
+                itemKey="key"
                 min={0}
                 max={5}
                 mode="BADGE"

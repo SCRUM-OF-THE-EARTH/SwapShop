@@ -12,6 +12,7 @@ function initialiseTradeItem(item, navigation) {
     let Owner = user_accounts_item_list.findByID(item["owner_id"]);
 
     let trade_Item = new Trade_Item(item, navigation);
+    console.log("item tags:", trade_Item.tags);
     item["tags"].forEach((json_tag) => {
         let tempTag = new Tag(json_tag);
         if (tempTag.exchange == 1) {
@@ -116,8 +117,6 @@ const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigatio
         if (displayItems.length > 0 && available) {
             trade_items_list.searchTerm = searchTerm;
             trade_items_list.index = sortIndex;
-            console.log("filtered results",trade_items_list.filterByTags(tags));
-            console.log("tags passed to Trade list", tags, tags.length)
             let filtered = trade_items_list.filterByTags(tags);
             filtered.forEach(item => {
                 if (id == null || id == item.getOwner().getID()){

@@ -165,6 +165,10 @@ export class Trade_Item {
         this.exchange.push(tag);
         return tag;
     }
+    
+    getExchangeTags() {
+        return this.exchange;
+    }
 
     setSold(sold) {
         this.sold = sold;
@@ -173,5 +177,9 @@ export class Trade_Item {
 
     getSold() {
         return this.sold;
+    }
+
+    getImages() {
+        return this.images;
     }
 }

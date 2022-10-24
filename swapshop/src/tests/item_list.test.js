@@ -89,7 +89,7 @@ describe("testing the item_list and its methods", () => {
             for (let key in test_json_items[0]){
                 count++;
             }
-            expect(count).toBe(8);
+            expect(count).toBe(9);
         });
     });
 
