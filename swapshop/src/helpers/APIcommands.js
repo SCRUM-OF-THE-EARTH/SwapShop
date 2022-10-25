@@ -70,6 +70,11 @@ const APIcommands = [
         param_names: ['item','tag', 'exchange']
     },
     {
+        command: "delete-item-tag",
+        file: "deleteItemTag.php",
+        param_names: ['item', 'tag']
+    },
+    {
         command: "add-interest",
         file: "addInterest.php",
         param_names: ["user", "tag"]
@@ -89,6 +94,13 @@ const APIcommands = [
         command: "update-sold-status",
         file: "updateSoldStatus.php",
         param_names: ["item_id", "status"]
+    },
+    {
+        command: "update-trade-item",
+        file: "updateTradeItem.php",
+        param_names: [
+            "item_id", "name", "desc", "value"   
+        ]
     }
 ];
 export default APIcommands;

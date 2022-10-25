@@ -11,7 +11,6 @@
     $query = "SELECT * FROM trade_items WHERE sold = 1;";
 
     // setup the return array
-    $output = array("success"=>0, "results"=>0);
     $tradeItems = array();
 
     // check if the query was successful or not 
@@ -46,11 +45,9 @@
 
             $tradeItems[] = $tradeItem;
         }
-        $output['success'] = 1;
-        $output['results'] = $tradeItems;
+        setResults(1, $tradeItems);
     }
 
-    // return a json formatted array
-    echo json_encode($output);
+    printOutput();
 
 ?>

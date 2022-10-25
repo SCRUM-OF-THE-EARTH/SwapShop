@@ -38,7 +38,6 @@ export class Trade_Item {
             let temp = await communicator.makeRequestByCommand('fetch-trade-images', [this.id])
             if (temp.length > 0) {
                 this.images = temp;
-                console.log("images are: ", this.images);
             }
         }
 

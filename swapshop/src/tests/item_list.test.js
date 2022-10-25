@@ -1,7 +1,6 @@
-import { Item_List, Tag_list, Trade_item_list } from '../classes/Item_List.js';
+import { Tag_list, Trade_item_list } from '../classes/Item_List.js';
 import { Tag } from '../classes/Tag.js';
 import { Trade_Item } from '../classes/Trade_Item.js'
-import { Login_user } from '../classes/User_Account.js';
 import { login_user } from '../classes/User_Account.js';
 import { compareInterest } from '../classes/Item_List';
 require('jest-fetch-mock').enableMocks()

@@ -1,11 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import React, {useState, useEffect, useCallback, useLayoutEffect} from 'react';
-import {View, ScrollView, Text, Button, StyleSheet} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, StyleSheet} from 'react-native';
 import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import colors from "../../config/colors";
-//import { collection, addDoc, query, orderBy, onSnapshot, QuerySnapshot, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig/firebase";
 import { login_user } from "../classes/User_Account"; 
 

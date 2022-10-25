@@ -1,14 +1,9 @@
-import {StyleSheet, View, Text, Image,Button} from 'react-native';
+import {StyleSheet, View, Text, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Tab from '../components/Tab.js';
-import { login_user } from '../classes/User_Account';
+import { login_user, tags_list, communicator } from '../helpers/init';
 import { useIsFocused } from "@react-navigation/native";
-import { tags_list, trade_items_list } from "./MainScreen.js";
 import DropDownPicker from 'react-native-dropdown-picker';
-import { communicator } from '../classes/Communicator.js';
-import { LightSpeedOutLeft, set } from 'react-native-reanimated';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import Trade_List from '../components/Trade_List.js';
 import { Dimensions } from 'react-native';
@@ -37,7 +32,6 @@ const ProfileScreen = ({ navigation }) => {
             quality: 1,
 
         });
-        console.log(result);
         if(!result.cancelled){
             setImage(result.uri);
             communicator.makePostRequestForImage([result], login_user.getID(), 'profile');  
@@ -62,7 +56,6 @@ const ProfileScreen = ({ navigation }) => {
         });
 
         setImage(login_user.getPhoto());
-        console.log("Interest:", tempInterests);
         setTags(tempTags);
         setInterests(tempInterests);
         setActiveTags(tempInterests);
@@ -115,20 +108,14 @@ const ProfileScreen = ({ navigation }) => {
                             setValue={setInterests}
                             setItems={setTags}
                             itemKey="key"
-                            // onChangeValue={(value) => {
-                            //     setInterests(updateInterest(value, setTagValues, interests, setTags, tags));
-                            //     setActiveTags(loadInterests(interests, setInterests, loadInterests, setActiveTags, tags, setTags));
-                            // }}
                             onChangeValue={(value) => {
                                 if (activeTags.length > value.length) {
                                     let difference = activeTags.filter(x => !value.includes(x));
-                                    console.log("difference: ", difference);
                                     removeInterest(difference[0]).then(() => {
                                         setActiveTags(value);
                                     })
                                 } else {
                                     let difference = value.filter(x => !activeTags.includes(x));
-                                    console.log("difference:", difference);
                                     addInterest(difference[0]).then(() => {
                                         setActiveTags(value);
                                     })
@@ -140,8 +127,6 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                 </View>
 
-                {/* <View style = {styles.tags} >{activeTags}</View> */}
-
                 <Text style={styles.label}>My Items:</Text>
 
             { (id != null) ?
@@ -151,6 +136,9 @@ const ProfileScreen = ({ navigation }) => {
                     id={id}   
                     navigation={navigation}
                     edit={true}
+                    searchTerm=''
+                    tags={[]}
+                    sortIndex={0}
                 /> : null }
 
 
@@ -169,13 +157,12 @@ async function reloadPhoto() {
         setTimeout(reloadPhoto, 200);   
     } else {
         login_user.setPhoto(new_profile['photo']);
-        console.log("new photo set");
-        console.log(login_user)
     }
 }
 
 async function addInterest(tag) {
     let tagId =  tag.id;
+    
     let userId = login_user.getID();
     await communicator.makeRequestByCommand("add-interest", [userId, tagId]);
     let interests = login_user.getInterests();
@@ -184,60 +171,13 @@ async function addInterest(tag) {
 
 async function removeInterest(tag) {
     let tagId = tag.id;
+    
     let userId = login_user.getID();
     await communicator.makeRequestByCommand('remove-interest', [userId, tagId]);
     let interests = login_user.getInterests();
 
     let newInterests = interests.filter(x => x != tagId)
-    console.log("setting filtered interests:", newInterests);
     login_user.setInterests(newInterests);
-}
-
-function updateInterest(tag, setTagValues, interests, setTags, tags) {
-
-    let tempInterests = interests;
-    if (tag == null) {
-        return tempInterests;
-    }
-
-    let tagId = tag["id"];
-    let userId = login_user.getID();
-
-    communicator.makeRequestByCommand("add-interest", [userId, tagId]);
-
-    tags.forEach((t, index) => {
-        if (t.value.id == tagId) {
-            tags.splice(index, 1);
-            return;
-        }
-    });
-    tempInterests.push(tag);
-    let updatedUserInterests = [];
-    tempInterests.forEach(t => {
-        updatedUserInterests.push(t.getID());
-    })
-
-    login_user.setInterests(updatedUserInterests);
-    setTagValues(null);
-    setTags(tags);
-
-    return tempInterests;
-}
-
-
-
-function loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags) {
-    let tempInterestComps = [];
-    interest.forEach(t => {
-        tempInterestComps.push(
-            <View style={styles.tag_container} key={t.id}><Text>{t.name}</Text><TouchableOpacity  style={styles.close} onPress={() => {
-                setInterests(removeInterest(t, interest, tags, setTags));
-                setActiveTags(loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags));
-            }}><Icon size={20} name="close-circle-outline" /></TouchableOpacity></View>
-        );
-    })
-
-    return tempInterestComps;
 }
 
 const styles = StyleSheet.create({

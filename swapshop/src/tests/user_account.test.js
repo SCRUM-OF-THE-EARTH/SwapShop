@@ -1,6 +1,5 @@
 import { Login_user, Registering_User, User_Account } from "../classes/User_Account";
-import { communicator } from '../classes/Communicator.js' 
-// import LoginScreen from "../screens/loginScreen";
+
 require('jest-fetch-mock').enableMocks()
 fetchMock.dontMock();
 

@@ -5,7 +5,7 @@ import APIcommands from "../helpers/APIcommands.js";
 //  | url - the base url to the api layer
 //  | calls - the commands conatining the api file names. parameters names and command names. This is found in '../helpers/APIcommands.js' file
 
-class Communicator {
+export class Communicator {
 
     // the constructor class takes in the url that would direct the communicator to the API files
     constructor(url) {
@@ -62,8 +62,7 @@ class Communicator {
     async makeRequestByCommand(commandName, param_values) {
         let call = this.getCallByCommand(commandName);
 
-        let APIurl = this.constructURL(call, param_values);        
-        console.log("url is:", APIurl)
+        let APIurl = this.constructURL(call, param_values);
 
         let response = await fetch(APIurl).catch(e=>console.error(e))
         let json = await response.json();
@@ -77,8 +76,10 @@ class Communicator {
 
 
 
-    makePostRequestForImage(images, item_id, type) {
+    async makePostRequestForImage(images, item_id, type) {
         let response = [];
+        let promises = [];
+        console.log("Images:", images)
         images.forEach(image => {
                 let body = new FormData();
                 let fileName =  image.uri.substring(image.uri.lastIndexOf("/")+1);
@@ -87,7 +88,7 @@ class Communicator {
                 body.append('item_id', item_id);
                 body.append('item_type', type);
 
-                fetch(this.postUrl, {
+                promises.push(fetch(this.postUrl, {
                     method: 'POST',
                     headers: {  
                         "content-type": "multipart/form-data",
@@ -98,15 +99,9 @@ class Communicator {
                 })
                 .catch(e => {
                     console.error(error);
-
-                })
+                }));
         });
-        return response;
+        return Promise.all(promises);
     }
 }
 
-    
-
-// exporting a static instance of the communicator
-const communicator = new Communicator("https://sudocode.co.za/SwapShop/backend/");
-export { communicator,Communicator }

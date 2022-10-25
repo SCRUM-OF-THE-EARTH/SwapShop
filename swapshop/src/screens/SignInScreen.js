@@ -1,12 +1,8 @@
-import {StyleSheet, Switch, Text, View, Image, TextInput, TouchableOpacity, Button, Alert} from 'react-native';
+import {StyleSheet, Switch, Text, View, Image, TextInput, TouchableOpacity, Button } from 'react-native';
 import React, {useState, useContext} from 'react';
-import SignUpScreen from './SignUpScreen';
-import { Login_user } from '../classes/User_Account.js'
-import { User_Account } from '../classes/User_Account.js';
-import { login_user } from '../classes/User_Account.js';
+import { login_user } from '../helpers/init';
 import {EventRegister} from 'react-native-event-listeners' ;
 import themeContext from '../components/themeContext';
-//import { useContext } from 'react';
 // defining a new login user for the sign in screen
 
 
@@ -20,7 +16,6 @@ const SignInScreen = ({navigation}) => {
     const [password, onChangePassword] = useState(''); // the password of the user
     const [errorMessage, onChangeError] = useState(''); // the error message that is displayed
     const [mode, setMode] = useState(false);
- // const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = (value) => { setMode(value);
    EventRegister.emit("changeTheme", value);
 };
@@ -82,11 +77,6 @@ const SignInScreen = ({navigation}) => {
       <Switch style = {styles.switch} 
           onValueChange={toggleSwitch}
           value={mode}
-      //    value={isEnabled} 
-      //  onValueChange={(value) => {
-      //    setMode(value);
-      //  EventRegister.emit("changeTheme", value);
-     // }}
       ></Switch>
     </View>
     );  
@@ -166,7 +156,6 @@ async function Login(username, password, navigation, onChangeError){
     justifyContent:"center",
     marginTop:0,
     marginBottom:50,
-   // backgroundColor:"#2E8B57",
 
   },
 
@@ -177,7 +166,6 @@ async function Login(username, password, navigation, onChangeError){
     alignItems:"center",
     justifyContent:"center",
     marginTop:10,
- //   backgroundColor:"#3CB371",
 
   },
 
@@ -185,7 +173,6 @@ async function Login(username, password, navigation, onChangeError){
   login_text:{
     fontSize:20,
     color: "black",
-    // fontFamily: "bold"
 
   },
   switch:{

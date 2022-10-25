@@ -1,17 +1,12 @@
 import { Button, TextInput, View, ScrollView, StyleSheet, Text, Image } from "react-native"
 import {useEffect, useState} from 'react';
-import Slideshow from 'react-native-image-slider-show';
-import { login_user } from '../classes/User_Account';
-import { trade_items_list } from "./MainScreen.js";
+import { login_user, communicator, tags_list } from '../helpers/init';
 import * as ImagePicker from 'expo-image-picker';
-import { communicator } from "../classes/Communicator.js";
 import * as Permissions from 'expo-permissions';
-import { tags_list } from "./MainScreen.js";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useIsFocused } from "@react-navigation/native";
 
 // This is the screen for creating a new trade item
-//  export default function MainImage() {
 
 
 const AddItem = ({navigation, route}) => {
@@ -68,7 +63,14 @@ const AddItem = ({navigation, route}) => {
             onNameChange(item.getName());
             onDescChange(item.getDescription());
             onValueChange(item.getValue());
-            setImgaeList(item.getImages());
+            let tempImages = [];
+            item.getImages().forEach((image, index) => {
+                tempImages.push(<Image style={{position:'relative', height: 200, margin: 20}} key={index} source={{
+                    uri: image
+                }}/>);
+            })
+
+            setImage(tempImages)
         }
 
         
@@ -76,8 +78,6 @@ const AddItem = ({navigation, route}) => {
     }, [isFocused]);
 
     const pickImage = async ({navigate}) => {
-        //the uploaded image.
-        //uploaded image contents
 
         ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -97,7 +97,6 @@ const AddItem = ({navigation, route}) => {
             let tempImageList = [];
             for (let i = 0; i < result.selected.length; i++) {
                 let uri = result.selected[i].uri;
-                // uri = uri.replace('file://', "");
                 tempImageList.push(result.selected[i]);
                 let item = <Image style={{position:'relative', height: 200, margin: 20}} key={i} source={{
                     uri: uri
@@ -107,7 +106,7 @@ const AddItem = ({navigation, route}) => {
             setImage(temp);
             setImgaeList(tempImageList);
         }
-        }) //well get the log if the process in unsuccessful so we know where the error is:)
+        }) //well get the log if the process in unsuccessful so we know where the error is:
 
         
 
@@ -116,14 +115,10 @@ const AddItem = ({navigation, route}) => {
 
     const takePicture = async () => {
 
-        // let cameraPermission = await ImagePicker.requestCameraPermissionsAsync()
         await Promise.all([
             Permissions.askAsync(Permissions.CAMERA),
             Permissions.askAsync(Permissions.CAMERA_ROLL)
         ])
-        // the taken image
-        //upload image contents
-        // if (cameraPermission.granted === true) {
             ImagePicker.launchCameraAsync({
                 allowsEditing: true,
                 aspect: [4, 3],
@@ -139,7 +134,6 @@ const AddItem = ({navigation, route}) => {
                 let tempImageList = [];
                 for (let i = 0; i < result.selected.length; i++) {
                     let uri = result.selected[i].uri;
-                    // uri = uri.replace('file://', "");
                     tempImageList.push(result.selected[i]);
                     let item = <Image style={{position:'relative', height: 200, margin: 20}} key={i} source={{
                         uri: uri
@@ -150,11 +144,7 @@ const AddItem = ({navigation, route}) => {
                 setImgaeList(tempImageList);
             }
             })
-        // }
-        
     }
-
-
 
     // the React GUI component
     return (
@@ -164,7 +154,6 @@ const AddItem = ({navigation, route}) => {
             <Text style={styles.header}>{item ? "Update an item" : "Post a new item to trade"}</Text>
             <DropDownPicker
                 addCustomItem={true}
-                // style={styles.tagMenu}
                 containerStyle={styles.tagMenu}
                 open={itemTagsMenuOpen}
                 searchable={true}
@@ -173,12 +162,12 @@ const AddItem = ({navigation, route}) => {
                 min={0}
                 max={5}
                 mode="BADGE"
+                itemKey="key"
                 value={itemTagValues}
                 items={itemTags}
                 setOpen={setitemTagsMenuOpen}
                 setValue={setItemTagValues}
                 setItems={setItemTags}
-                // onChangeValue={(value) => setDisplayItems(filterByTag(value))}
             />
 
 
@@ -200,16 +189,13 @@ const AddItem = ({navigation, route}) => {
                 min={0}
                 max={5}
                 mode="BADGE"
+                itemKey="key"
                 value={tagValues}
                 items={tags}
                 setOpen={setTagMenuOpen}
                 setValue={setTagValues}
                 setItems={setTags}
-                // onChangeValue={(value) => setDisplayItems(filterByTag(value))}
             />
-
-            {/*this is the uploaded image from the user's gallery*/}
-            {/*{image && <Image source={{uri: image}} style={{width: 200, height: 200, marginLeft:80,marginTop: 200}}/>}*/}
 
 
             <View style={styles.addImageButton}>
@@ -235,7 +221,11 @@ const AddItem = ({navigation, route}) => {
                 {image}
             </ScrollView>
 
-            <Text style={styles.addItemBtn} onPress={() => AddNewItem(name, description, value, tagValues, onChangeError, navigation, imageList, itemTagValues)}>Post</Text>
+            { item ? 
+                <Text style={styles.addItemBtn} onPress={() => AddNewItem(name, description, value, tagValues, onChangeError, navigation, imageList, itemTagValues, true, item)}>Update</Text> :
+                <Text style={styles.addItemBtn} onPress={() => AddNewItem(name, description, value, tagValues, onChangeError, navigation, imageList, itemTagValues, false)}>Post</Text>
+            }
+            
 
         </View>
     );
@@ -249,26 +239,78 @@ const AddItem = ({navigation, route}) => {
 // to create a new trade item which is then added to the list of trade items
 // if the item is successfully created the app will return to the home page
 // if not it will display an error
-async function AddNewItem(name, description, value, tags, setError, navigation, image, itemTags) {
+async function AddNewItem(name, description, value, tags, setError, navigation, image, itemTags, update, item) {
     if (name == "" || description == "" || value == "" ) {
         setError("Please fill in all the fields");
         return;
     }
 
-    console.log("item tasg are: ", itemTags);
+    if (update) {
+        await communicator.makeRequestByCommand("update-trade-item", [item.getID(),name,description, value]);
+
+        tags.forEach(async tag => {
+            let tagIn = false;
+            let foundIndex = 0;
+            item.getExchange().forEach((iTag, index) => {
+                if (tag.id == iTag.getID()) {
+                    tagIn = true;
+                    foundIndex = index
+                    return;
+                }
+            })
+
+            if (!tagIn) {
+                await communicator.makeRequestByCommand('add-item-tag', [item.getID(), tag.id, '1']); 
+            } else {
+                let temp = item.getExchange();
+                temp.splice(foundIndex, 1);
+                item.exchange = temp;
+            }
+        });
+
+        itemTags.forEach(async tag => {
+            let tagIn = false;
+            let foundIndex = 0;
+            item.getTags().forEach((iTag, index) => {
+                if (tag.id == iTag.getID()) {
+                    tagIn = true;
+                    foundIndex = index
+                    return;
+                }
+            })
+
+            if (!tagIn) {
+                await communicator.makeRequestByCommand('add-item-tag', [item.getID(), tag.id, '0']); 
+            } else {
+                let temp = item.getTags();
+                temp.splice(foundIndex, 1);
+                item.exchange = temp;
+            }
+        })
+
+        item.getExchange().forEach(async tag => {
+            await communicator.makeRequestByCommand('delete-item-tag', [item.getID(), tag.id])
+        })
+
+        item.getTags().forEach(async tag => {
+            await communicator.makeRequestByCommand('delete-item-tag', [item.getID(), tag.id])
+        })
+
+        navigation.navigate("MainScreen");
+        return;
+        
+    }
+
     await itemTags.forEach(async (tag, index) => {
         if (typeof tag.id == 'undefined') {
             tag = tag.toLowerCase();
             communicator.makeRequestByCommand("add-Tag", [tag]).then(newTag => {
-                console.log("new Tag is:", newTag);
                 let addTag = tags_list.addTag(newTag);
                 itemTags.splice(index, 1, addTag);
             })
             
         } 
     })
-
-    console.log(itemTags);
 
     await tags.forEach(async (tag, index) => {
         if (typeof tag.id == 'undefined') {
@@ -281,25 +323,18 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
 
 
     let owner_id = login_user.getID();
-
-    console.log("Owner id is: ", owner_id);
-    console.log("details are: ", name,description, value, owner_id);
     
-    communicator.makeRequestByCommand('add-trade-item', [name,description, value, owner_id]).then(async (item) => {
-        console.log("item is: ", item);
-        let item_id = item['id'];
+    communicator.makeRequestByCommand('add-trade-item', [name,description, value, owner_id]).then(async (trade_item) => {
+        let item_id = trade_item['id'];
         await itemTags.forEach(async tag => {
-            console.log("adding item and tags: ", item_id, tag, 0);
-            await communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, '0']);
-            trade_item.addTag(tag);   
+            await communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, '0']); 
         })
         await tags.forEach(async tag => {
             await communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, '1']);
-            trade_item.addExchangeTag(tag);
         })
 
         if (image != "") {
-            communicator.makePostRequestForImage(image, item_id, "trade");
+            await communicator.makePostRequestForImage(image, item_id, "trade");
         }
         navigation.navigate('MainScreen');
     })
@@ -368,8 +403,6 @@ const styles = StyleSheet.create({
         zIndex: 5,
         position: "relative"
     }
-
-
 });
 
 export default AddItem;

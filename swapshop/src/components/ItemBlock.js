@@ -1,38 +1,38 @@
-import { StyleSheet, Text, ScrollView, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useState } from 'react';
 
 export const ItemBlock = ({item}) => {
-    const [images, setImages] = useState(item.images);
     const [soldStatus, setSoldStatus] = useState(item.sold);
 
     let exchangeTags = [];
 
         item.exchange.forEach(tag => {
             exchangeTags.push(
-                <Text style={styles.exchange_tag} key={tag.getID()}>{tag.getName()}</Text>
+                <Text style={styles.exchange_tag} key={`${tag.getID()}-${item.id}-tag`}>{tag.getName()}</Text>
             )
         })
         
         return (
-            <TouchableOpacity style={styles.container} onPress={() => item.navigation.navigate("detailed_item", {item: item})}>
-                <View style={styles.title_container}>
-                    <Text style={styles.header}>{item.item_name}</Text>
-                    { soldStatus == 0 ? <Text style={[styles.availability_tag, {borderColor: '#A3E0BF', color: '#A3E0BF'}]}>AVAILABLE</Text> : <Text style={[styles.availability_tag,  {borderColor: 'gray', color: 'gray'}]}>SOLD</Text> }
+            <TouchableOpacity key={`${item.id}-touchable-container`} style={styles.container} onPress={() => item.navigation.navigate("detailed_item", {item: item})}>
+                <View key={`${item.id}-title_container`} style={styles.title_container}>
+                    <Text key={`${item.id}-header`}  style={styles.header}>{item.item_name}</Text>
+                    { soldStatus == 0 ? <Text key={`${item.id}-available-tag`} style={[styles.availability_tag, {borderColor: '#A3E0BF', color: '#A3E0BF'}]}>AVAILABLE</Text> : <Text key={`${item.id}-available-tag`} style={[styles.availability_tag,  {borderColor: 'gray', color: 'gray'}]}>SOLD</Text> }
                     
                 </View>
-            <View style={styles.innerContainer}>
+            <View key={`${item.id}-inner-container`} style={styles.innerContainer}>
                 
                 <Image
+                    key={`${item.id}-Image`}
                     style={{width:150, height: 150, borderRadius:10}}
                     source={{uri:item.images[0]}}   
                 />
                 
-                <View key={item.id} style={{flexDirection:"column", flex:1,alignSelf: 'center'}}>
-                    <Text style={[styles.wrappedText, {paddingVertical: 10, color: 'gray'}]}>{item.item_description}</Text>
-                    <Text style={styles.wrappedText}>Estimated value: R{item.item_value}</Text>
-                    <Text style={styles.wrappedText}>Item wanted:</Text>
-                    <View style={styles.exchange_tag_container}>{exchangeTags}</View>
-                    <Text style={[styles.wrappedText, styles.green]}>{item.owner.getFullName()}</Text>
+                <View key={`${item.id}-detail-container`} style={{flexDirection:"column", flex:1,alignSelf: 'center'}}>
+                    <Text key={`${item.id}-description`}  style={[styles.wrappedText, {paddingVertical: 10, color: 'gray'}]}>{item.item_description}</Text>
+                    <Text key={`${item.id}-value`}  style={styles.wrappedText}>Estimated value: R{item.item_value}</Text>
+                    <Text key={`${item.id}-wanted-title`} style={styles.wrappedText}>Item wanted:</Text>
+                    <View key={`${item.id}-tag-container`} style={styles.exchange_tag_container}>{exchangeTags}</View>
+                    <Text key={`${item.id}-owner`} style={[styles.wrappedText, styles.green]}>{item.owner.getFullName()}</Text>
                 </View>
             </View>
             </TouchableOpacity>

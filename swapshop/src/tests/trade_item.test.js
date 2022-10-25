@@ -1,10 +1,6 @@
-import React from "react";
 import { Trade_Item } from "../classes/Trade_Item";
-import { User_Account } from "../classes/User_Account";
 import 'react-native';
-import renderer from "react-test-renderer";
 import { test_Reguser } from './user_account.test.js';
-import { communicator } from "../classes/Communicator";
 import { Tag } from "../classes/Tag.js";
 
 function generateString(length){

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { View, Text,StyleSheet, Button, TouchableOpacity, Alert } from 'react-native';
 import Slideshow from 'react-native-image-slider-show';
-import { color, combineTransition } from 'react-native-reanimated';
-import { login_user } from '../classes/User_Account';
+import { login_user, communicator } from '../helpers/init';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { communicator } from '../classes/Communicator';
 
 //export const ownerID = 0;
+
+
 
 const confirmSubmit = (item, navigation) => {
     Alert.alert(
@@ -15,14 +15,19 @@ const confirmSubmit = (item, navigation) => {
         [
             {            
                 text: "cancel",
-                onPress: () => console.log("cancel press"),
                 style: "cancel"
             },
             {
                 text: "confirm",
                 onPress: async () => {
                     await communicator.makeRequestByCommand("delete-trade-item", [item.getID()]);
-                    navigation.goBack();
+                    let canGoBack = navigation.canGoBack();
+                    if (canGoBack) {
+                        navigation.goBack();
+                    } else {
+                        navigation.navigate("MainScreen")
+                    }
+                    
                 },
                 
             }
@@ -55,8 +60,6 @@ const Detailed_Trade_item = ({route, navigation}) => {
             <Text style={styles.exchangeTag}>#{tag.getName()}</Text>
         )
     });
-
-    console.log("sold status:", item.sold)
 
     let itemTags = [];
     item.getTags().forEach(tag => {
@@ -137,7 +140,6 @@ const Detailed_Trade_item = ({route, navigation}) => {
                             <Text style={[styles.button_text, {color: "#044B7F"}]}>{soldStatus == 0 ? "Mark as sold" : "Mark as available"}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.center_icon, styles.icon_button]} onPress={() => {
-                            console.log("edit pressed")
                             navigation.navigate("addItemScreen", {item: item})}
                         }
                         >

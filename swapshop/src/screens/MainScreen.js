@@ -1,8 +1,5 @@
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
+import {StyleSheet, View, TextInput} from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
-import { Item_List, Tag_list, Trade_item_list  } from '../classes/Item_List';
-import { Trade_Item } from '../classes/Trade_Item';
-//import { ScrollView } from 'react-native-gesture-handler';
 import { ScrollView } from 'react-native';
 import { useIsFocused } from "@react-navigation/native";
 import { User_Account } from '../classes/User_Account';
@@ -12,16 +9,11 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Tab from '../components/Tab';
 import themeContext from '../components/themeContext';
 import Trade_List from '../components/Trade_List';
-
-export const trade_items_list = new Trade_item_list(false);
-export const sold_trade_items_list = new Trade_item_list(true);
-export const user_accounts_item_list = new Item_List('fetch-user-accounts');
-export const tags_list = new Tag_list();
+import { user_accounts_item_list, tags_list } from '../helpers/init.js';
 
 // this is the main page
 // this is the page the user is taken to after logging in
 // the search bar and displayed items are handled here
-
 
 async function initialise(setLoaded, setTags) {
     user_accounts_item_list.json_items = [];
@@ -37,14 +29,12 @@ async function initialise(setLoaded, setTags) {
         return new Tag(item);
     })
 
-        console.log("tags: ", tags_list);
     setLoaded(true);
     setTags(tags_list.getTags())
 }
 
 function initialiseAccount(item) {
     let tempUser = new User_Account();
-    console.log("setting user account: ", item)
     tempUser.setEmail(item["email"])
     .setFisrtName(item["fname"])
     .setLastName(item["lname"])
@@ -64,7 +54,7 @@ const MainScreen = ({navigation}) =>{
     const [tagMenuOpen, setTagMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
     const [tagValues, setTagValues] = useState([]);
     const [tags, setTags] = useState([]);
-    const [sortIndex, setSortIndex] = useState(0);
+    const [sortIndex, setSortIndex] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const theme = useContext(themeContext);
 
@@ -89,7 +79,6 @@ const MainScreen = ({navigation}) =>{
                 />
                 <View style={styles.sortMenu}>
                     <SortBar
-                        data={trade_items_list}
                         setIndex={setSortIndex}
                      />
                 </View>
@@ -128,38 +117,13 @@ const MainScreen = ({navigation}) =>{
         </View>);
     
         return screen;
-    
-    
 }
 
-// th LoadBlocks function is used to filter thr list of items by the search term and load them into the GUI componen
-// it takes in a search term (string)
-// and sets the value of displayItems
-// and returns the list of filtered rendered GUI items
-
-
-// function loadSorted(items) {
-//     let tempArray = [];
-//     items.forEach((item) => {
-//         tempArray.push(item.createItemBlock());
-//     });
-
-//     return tempArray;
-// }
-
-// function filterByTag(tags) {
-
-//     trade_items_list.filterByTags(tags);
-//     return loadSorted(trade_items_list.filteredResults);
-// }
-
-// the styles of the home page
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-       // backgroundColor: 'white',
     },
     center: {
         width:'90%',
@@ -172,7 +136,6 @@ const styles = StyleSheet.create({
         marginTop: 0,
         marginBottom: 60,
         zIndex: -5,
-        // height: '40%'
     },
     addItemBtn:{
         width: "70%",

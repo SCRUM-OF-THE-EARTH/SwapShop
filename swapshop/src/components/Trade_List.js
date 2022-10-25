@@ -1,9 +1,8 @@
-import { StyleSheet, Text, ScrollView, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, ScrollView, Text} from 'react-native';
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { sold_trade_items_list, trade_items_list } from "../screens/MainScreen";
-import { user_accounts_item_list } from "../screens/MainScreen";
-import { Trade_item_list } from "../classes/Item_List";
+import { sold_trade_items_list, trade_items_list } from "../helpers/init"
+import { user_accounts_item_list } from "../helpers/init";
 import { Tag } from "../classes/Tag.js";
 import { Trade_Item } from '../classes/Trade_Item';
 import { ItemBlock } from '../components/ItemBlock';
@@ -12,7 +11,6 @@ function initialiseTradeItem(item, navigation) {
     let Owner = user_accounts_item_list.findByID(item["owner_id"]);
 
     let trade_Item = new Trade_Item(item, navigation);
-    console.log("item tags:", trade_Item.tags);
     item["tags"].forEach((json_tag) => {
         let tempTag = new Tag(json_tag);
         if (tempTag.exchange == 1) {
@@ -29,7 +27,7 @@ function initialiseTradeItem(item, navigation) {
     return trade_Item;
 }
 
-function initialise(setDisplayItems, available, sold, id, search, navigation) {
+function initialise(available, sold, id, search, navigation) {
 
     let promises = [];
 
@@ -43,15 +41,14 @@ function initialise(setDisplayItems, available, sold, id, search, navigation) {
         promises.push(sold_trade_items_list.fetchItems());
     }
 
-    Promise.all(promises).then(async () => {
-        loadItems(setDisplayItems, available, sold, id, navigation);
+    return Promise.all(promises).then(async () => {
+        loadItems(available, sold, id, navigation);
     });
 }
 
-async function loadItems(setDisplayItems, available, sold, id, navigation) {
+function loadItems(available, sold, id, navigation) {
     let tempItems = [];
 
-    console.log("fetched ITems: ", trade_items_list);
         if (available) {
             
             trade_items_list.items = [];
@@ -61,7 +58,7 @@ async function loadItems(setDisplayItems, available, sold, id, navigation) {
 
             trade_items_list.getItems().forEach((item) => {
                 if (id == null || item.getOwner().getID() == id) {
-                    tempItems.push(<ItemBlock item={item}/>);
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
                 }
             })
         }
@@ -75,12 +72,10 @@ async function loadItems(setDisplayItems, available, sold, id, navigation) {
 
             sold_trade_items_list.getItems().forEach((item) => {
                 if (id == null || item.getOwner().getID() == id) {
-                    tempItems.push(<ItemBlock item={item}/>);
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
                 }
             })
         }
-
-        setDisplayItems(tempItems);
 } 
 
 const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigation}) => {
@@ -88,40 +83,56 @@ const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigatio
     const isFocused = useIsFocused();
     const [displayItems, setDisplayItems] = useState([]);
     const [loaded, setLoaded] = useState(false);
-    const [ListIDs, setListID] = useState(id);
+
+    const sortAndFilter = () => {
+            let tempItems = [];
+            if (available) {
+                trade_items_list.searchTerm = searchTerm;
+                trade_items_list.index = sortIndex;
+                let filtered = trade_items_list.filterByTags(tags);
+                filtered.forEach(item => {
+                    if (id == null || id == item.getOwner().getID()){
+                        tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
+                    }
+                    
+                })
+            };
+            if (sold) {
+                sold_trade_items_list.searchTerm = searchTerm;
+                sold_trade_items_list.index = sortIndex;
+                let filtered = sold_trade_items_list.filterByTags(tags);
+                filtered.forEach(item => {
+                    if (id == null || id == item.getOwner().getID()){
+                        tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
+                    }
+                    
+                })
+            };
+            setDisplayItems(tempItems); 
+    }
 
     useEffect(() => {
-        initialise(setDisplayItems, available, sold, id, searchTerm, navigation);
-        setLoaded(true);
+        trade_items_list.index = null;
+        sold_trade_items_list.index = null;
+        initialise(available, sold, id, searchTerm, navigation).then(() => {
+            setLoaded(true);
+            sortAndFilter();
+        })
+        
     }, [isFocused]);
 
     useEffect(() => {
 
-        if (!loaded) {
-            return;
+        if (loaded) {
+            sortAndFilter()  
         }
-        
-        console.log("I sense a change");
-        let tempItems = [];
-        if (displayItems.length > 0 && available) {
-            trade_items_list.searchTerm = searchTerm;
-            trade_items_list.index = sortIndex;
-            let filtered = trade_items_list.filterByTags(tags);
-            filtered.forEach(item => {
-                if (id == null || id == item.getOwner().getID()){
-                    tempItems.push(<ItemBlock item={item}/>);
-                }
-                
-            })
-        };
-
-        console.log("temp ITems are:", tempItems);
-        setDisplayItems(tempItems);
     }, [searchTerm, tags, sortIndex, loaded])
 
-    return (
-        <ScrollView style={styles.center}>{displayItems}</ScrollView>
-    )
+    if (displayItems.length >0 ) {
+        return (<ScrollView style={styles.center}>{displayItems}</ScrollView>);
+    }
+    
+    return (<Text style={styles.nullContainer}>(Nothing to show)</Text>);
     
 }
 
@@ -137,7 +148,12 @@ const styles = StyleSheet.create({
         marginBottom: 60,
         zIndex: -5,
         paddingHorizontal: 10
-        // height: '40%'
+    },
+    nullContainer: {
+        textAlign: 'center',
+        flex:1, 
+        textAlignVertical:'center',
+        color: 'gray'
     }
 })
 
