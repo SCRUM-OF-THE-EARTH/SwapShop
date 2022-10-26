@@ -1,5 +1,5 @@
 import { Button, TextInput, View, ScrollView, StyleSheet, Text, Image } from "react-native"
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import { login_user, communicator, tags_list } from '../helpers/init';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -12,6 +12,7 @@ import themeContext from '../components/themeContext';
 const AddItem = ({navigation, route}) => {
 
     let { item } = route.params;
+    let theme = useContext(themeContext);
 
     const isFocused = useIsFocused(); 
 

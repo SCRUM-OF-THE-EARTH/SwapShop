@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, Text, View, Image, TextInput, Button} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import themeContext from '../components/themeContext';
 import { Registering_User } from '../classes/User_Account';
 
 // this is the the dign up creen for the app 

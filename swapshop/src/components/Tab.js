@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity } from "react-native"
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Dimensions } from 'react-native';

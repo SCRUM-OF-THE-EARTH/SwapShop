@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext} from 'react';
 import { View, Text,StyleSheet, Button, TouchableOpacity, Alert } from 'react-native';
 import Slideshow from 'react-native-image-slider-show';
 import { login_user, communicator } from '../helpers/init';
 import Icon from 'react-native-vector-icons/Ionicons';
+import themeContext from '../components/themeContext';
 
 //export const ownerID = 0;
 

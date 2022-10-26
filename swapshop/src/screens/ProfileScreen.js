@@ -1,6 +1,6 @@
 import {StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Tab from '../components/Tab.js';
 import { login_user, tags_list, communicator } from '../helpers/init';
 import { useIsFocused } from "@react-navigation/native";
@@ -8,6 +8,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import * as ImagePicker from 'expo-image-picker';
 import Trade_List from '../components/Trade_List.js';
 import { Dimensions } from 'react-native';
+import themeContext from '../components/themeContext';
 
 const windowHeight = Dimensions.get('window').height;
 DropDownPicker.setListMode("SCROLLVIEW");
