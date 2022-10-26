@@ -11,6 +11,7 @@ This the repository for the software design group SCRUM OF THE EARTH for the swa
 |---|---|---|---|
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 | ![](https://img.shields.io/badge/Coverage-98%25-83A603.svg?prefix=$statements$)  | ![](https://img.shields.io/badge/Coverage-89%25-83A603.svg?prefix=$branches$)  | ![](https://img.shields.io/badge/Coverage-95%25-83A603.svg?prefix=$functions$) | ![](https://img.shields.io/badge/Coverage-98%25-83A603.svg?prefix=$lines$) |
 =======
 | ![](https://img.shields.io/badge/Coverage-96%25-83A603.svg?prefix=$statements$)  | ![](https://img.shields.io/badge/Coverage-84%25-83A603.svg?prefix=$branches$)  | ![](https://img.shields.io/badge/Coverage-93%25-83A603.svg?prefix=$functions$) | ![](https://img.shields.io/badge/Coverage-96%25-83A603.svg?prefix=$lines$) |
@@ -18,3 +19,6 @@ This the repository for the software design group SCRUM OF THE EARTH for the swa
 =======
 | ![](https://img.shields.io/badge/Coverage-94%25-83A603.svg?prefix=$statements$)  | ![](https://img.shields.io/badge/Coverage-78%25-5A7302.svg?prefix=$branches$)  | ![](https://img.shields.io/badge/Coverage-87%25-83A603.svg?prefix=$functions$) | ![](https://img.shields.io/badge/Coverage-95%25-83A603.svg?prefix=$lines$) |
 >>>>>>> trade_backlog
+=======
+| ![](https://img.shields.io/badge/Coverage-96%25-83A603.svg?prefix=$statements$)  | ![](https://img.shields.io/badge/Coverage-84%25-83A603.svg?prefix=$branches$)  | ![](https://img.shields.io/badge/Coverage-93%25-83A603.svg?prefix=$functions$) | ![](https://img.shields.io/badge/Coverage-96%25-83A603.svg?prefix=$lines$) |
+>>>>>>> 0d67630120cda823cd81839a65b0793de109a0ac
