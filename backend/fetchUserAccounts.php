@@ -4,11 +4,9 @@
 
     $query = "SELECT * FROM user_login_details";
 
-    $output = array("success"=>0, "results"=>0);
     $users = array();
     $user_accounts = array('id'=>0, 'fname'=>'', 'lname'=>'', 'username'=>'', 'password'=>'', 'email'=>'', 'tags'=>'', 'photo' =>"");
     if ($results = $conn->query($query)) {
-        $output["success"] = 1;
         while($row = $results->fetch_assoc()) {
             $user_id = $row['id'];
             $user_accounts['id'] = $user_id;
@@ -28,12 +26,11 @@
             $user_accounts['tags'] = $tags;
             $users[] = $user_accounts;
         }
+
+        setResults(1, $users);
         
     }
 
-    $output['results'] = $users;
-
-
-    echo json_encode($output);
+    printOutput();
 
 ?>

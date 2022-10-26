@@ -24,24 +24,30 @@ export class Trade_Item {
         this.hasImages = false;
         this.navigation = navigation;
         this.exchangeItem = "";
-        this.images = ['https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg'];
+        if (item['images']) {
+            this.images = item['images'];
+        } else {
+            this.images = ['https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg'];
+        }
+        
         this.date_created = item['date_created'];
         this.exchange = [];
         this.sold = item['sold'];
 
         this.tags = [];
-
+        
     }
 
-    async fetchImages() {
-        if (!this.hasImages) {
-            let temp = await communicator.makeRequestByCommand('fetch-trade-images', [this.id]);
-            if (temp.length > 0) {
-                this.images = temp;
-                this.hasImages = true;
-            }
-        }
-    }
+    // async fetchImages() {
+    //     if (!this.hasImages) {
+    //         let temp = await communicator.makeRequestByCommand('fetch-trade-images', [this.id])
+    //         if (temp.length > 0) {
+    //             this.images = temp;
+    //         }
+    //     }
+
+    //     return;
+    // }
 
     getImageSlideShow() {
         let imageSlideShow = [];
@@ -136,42 +142,6 @@ export class Trade_Item {
         return this.date_created;
     }
 
-    // createItemBlock is used to generate the react GUI elements that make up the 
-    // trade item components on the home screen
-    // it takes in nothing
-    // and returns a react GUI element containing all the information of the item
-    createItemBlock() {
-
-        let exchangeTags = [];
-
-        this.exchange.forEach(tag => {
-            exchangeTags.push(
-                <Text style={styles.exchange_tag} key={tag.getID()}>{tag.getName()}</Text>
-            )
-        })
-    
-        return (
-            <TouchableOpacity key={this.id} style={[styles.container]} onPress={() => this.navigation.navigate("detailed_item", {item: this})}>
-                <Text style={styles.header}>{this.item_name}</Text>
-            <View style={styles.innerContainer}>
-                
-                <Image
-                style={{width:150, height: 150, borderRadius:10}}
-                    source={{uri:this.images[0]}}   
-                />
-                
-                <View style={{flexDirection:"column", flex:1,alignSelf: 'center'}}>
-                    <Text style={[styles.wrappedText, {paddingVertical: 10, color: 'gray'}]}>{this.item_description}</Text>
-                    <Text style={styles.wrappedText}>Estimated value: R{this.item_value}</Text>
-                    <Text style={styles.wrappedText}>Item wanted:</Text>
-                    <View style={styles.exchange_tag_container}>{exchangeTags}</View>
-                    <Text style={[styles.wrappedText, styles.green]}>{this.owner.getFullName()}</Text>
-                </View>
-            </View>
-            </TouchableOpacity>
-        );
-    }
-
     // compareTerm is used to comapre the item's name to some searchTerm 
     // it takes in a string
     // and returns true if the item contains thn the serachterm 
@@ -190,7 +160,7 @@ export class Trade_Item {
     // and returns this
     addTag(tag) {
         this.tags.push(tag);
-        return this;
+        return tag;
     }
 
     //getTag is used to retrieve the list of tags
@@ -202,7 +172,11 @@ export class Trade_Item {
 
     addExchangeTag(tag) {
         this.exchange.push(tag);
-        return this;
+        return tag;
+    }
+    
+    getExchangeTags() {
+        return this.exchange;
     }
 
     setSold(sold) {
@@ -213,53 +187,8 @@ export class Trade_Item {
     getSold() {
         return this.sold;
     }
-}
 
-// this contains the styles for the generated react native GUI item  
-const styles = StyleSheet.create({
-    container: {
-        borderRadius: 10,
-        width: "100%",
-        display: 'flex',
-        padding: 5,
-        backgroundColor: "#F5F5F5",
-        marginVertical: 5,    
-    },
-    header: {
-        fontSize: 25,
-        fontWeight: '300',
-        color: "#3CB371",
-        paddingRight: 20,
-        paddingLeft: 20,
-    },
-    innerContainer: {
-        display: 'flex',
-        flex: 1,
-        flexDirection: 'row',
-        
-    },
-    wrappedText: {
-        flexShrink: 1,
-        flexWrap: 'wrap',
-        marginLeft: 10,
-        marginRight: 10
-    },
-    green: {
-        color: "#3CB371",
-    },
-    exchange_tag_container: {
-        display: 'flex',
-        flexWrap: "wrap",
-        flexDirection: "row",
-        marginLeft: 10,
-        marginRight: 10
-    },
-    exchange_tag: {
-        margin: 2,
-        borderWidth: 1,
-        borderColor: "#2E8B57",
-        color: "#2E8B57",
-        borderRadius: 10,
-        paddingHorizontal: 10
+    getImages() {
+        return this.images;
     }
-})
+}

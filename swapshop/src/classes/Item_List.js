@@ -1,7 +1,5 @@
 
-import { communicator } from "./Communicator"
 import { Tag } from "./Tag";
-import { login_user } from "../classes/User_Account";
 
 // the item list class is used a data structure to contain and manage:
 // - all the posted trade item from users
@@ -16,13 +14,14 @@ import { login_user } from "../classes/User_Account";
 // - contructorFunc : the callback function used to create a new instance of the desired object
 
 export class Item_List {
-    constructor(command) {
+    constructor(command, communicator) {
         this.command = command;
         this.json_items = false;
         this.items = [];
         this.loaded = false;
         this.filteredResults =[];
         this.searchTerm;
+        this.communicator = communicator;
     }
 
     // getItems is simply used to return the array of objects stored in the item list
@@ -39,7 +38,7 @@ export class Item_List {
     // it takes in a command name (command) which it passes on to the communicator 
     // it sets the json_item to the results of the communicators request
     async fetchItems() {
-        return this.json_items = await communicator.makeRequestByCommand(this.command);
+        return this.json_items = await this.communicator.makeRequestByCommand(this.command);
     }
 
 
@@ -59,7 +58,7 @@ export class Item_List {
     // addItem is used to create a new object usign the call back constructor function and both add it to the json items and items array
     // as well as make an api call to insert into a database
     async addItem(command, param_values) {
-        let jsonRes = await communicator.makeRequestByCommand(command, param_values);
+        let jsonRes = await this.communicator.makeRequestByCommand(command, param_values);
         if (jsonRes != false) {
             this.json_items.push(jsonRes);
             this.items.push(this.constructorFunc(jsonRes));
@@ -72,7 +71,7 @@ export class Item_List {
     // deleteItem is used to delete to delete an Item from the list of json items and the database
     async deleteItem(command, id) {
         returnValue = false;
-        let jsonRes = await communicator.makeRequestByCommand(command, [id]).then(() => {
+        let jsonRes = await this.communicator.makeRequestByCommand(command, [id]).then(() => {
             if (jsonRes != false) {
                 returnValue = true;
             }
@@ -93,7 +92,7 @@ export class Item_List {
         this.searchTerm = searchterm;
 
             this.items.forEach((item) => {
-                if (item.compareTerm(searchterm)) {
+                if (item.compareTerm(this.searchTerm)) {
                     temp.push(item);
                 }
             });
@@ -155,17 +154,18 @@ export class Item_List {
 //  | filter by tags which takes in a list of tags filters he list of trade ites by the tags they are associated to
 
 export class Trade_item_list extends Item_List {
-    constructor(sold) {
+    constructor(sold, communicator, login_user) {
 
         if (sold) {
-            super("fetch-sold-trade-items")
+            super("fetch-sold-trade-items", communicator)
         } else {
-            super("fetch-trade-items");
+            super("fetch-trade-items", communicator);
         }
         
         this.index = null;
         this.tagsActive = false;
         this.ActiveTags = [];
+        this.login_user = login_user
     }
 
 
@@ -176,10 +176,9 @@ export class Trade_item_list extends Item_List {
         if (index != null) {
             this.index = index;
         } 
-        if (this.index == null) {
-            this.filteredResults.sort((a,b) => compareInterest(a,b));
+        if (index === null) {
+            this.filteredResults.sort((a,b) => compareInterest(a,b, this.login_user));
         }
-
 
         if (this.index == 0) {
             this.filteredResults.sort((a,b) => Date(b.date_created) < Date(a.date_created) ? 1:-1);
@@ -217,12 +216,10 @@ export class Trade_item_list extends Item_List {
     filterByTags(tags) {
         this.ActiveTags = tags;
 
-        console.log("Items in Item list: ", tags);
-
         super.searchItems(this.searchTerm);
 
         if (tags.length == 0) {
-            this.Sort();
+            this.Sort(this.index);
             return this.filteredResults;
         }
 
@@ -241,7 +238,7 @@ export class Trade_item_list extends Item_List {
                 this.filteredResults.splice(i,1);
             }
         }
-        this.Sort();
+        this.Sort(this.index);
         return this.filteredResults;
     }
 
@@ -259,8 +256,8 @@ export class Trade_item_list extends Item_List {
 // It contins the ethods
 //  | getTags which retrieves teh list of tag items
 export class Tag_list extends Item_List {
-    constructor() {
-        super("fetch-tags");
+    constructor(communicator) {
+        super("fetch-tags", communicator);
     }
 
 
@@ -269,9 +266,10 @@ export class Tag_list extends Item_List {
         let names = [];
 
         this.items.forEach((item) => {
-            let tempTagItem = {label: "", value: 0};
+            let tempTagItem = {label: "", value: 0, key: ''};
             tempTagItem['label'] = item.getName();
             tempTagItem['value'] = item;
+            tempTagItem['key'] = item.getID();
             names.push(tempTagItem);
         });
         return names;
@@ -281,11 +279,11 @@ export class Tag_list extends Item_List {
         this.json_items.push(tag);
         let newTag = new Tag(tag)
         this.items.push(newTag);
-        return this;
+        return tag;
     }
 }
 
-export function compareInterest(a,b) {
+export function compareInterest(a,b, login_user) {
     let counta = 0;
     let countb = 0;
 

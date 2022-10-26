@@ -1,24 +1,16 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ScrollView, Text} from 'react-native';
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { sold_trade_items_list, trade_items_list } from "../screens/MainScreen";
-import { user_accounts_item_list } from "../screens/MainScreen";
-import { Trade_item_list } from "../classes/Item_List";
+import { sold_trade_items_list, trade_items_list } from "../helpers/init"
+import { user_accounts_item_list } from "../helpers/init";
 import { Tag } from "../classes/Tag.js";
-import { ScrollView } from "react-native";
 import { Trade_Item } from '../classes/Trade_Item';
+import { ItemBlock } from '../components/ItemBlock';
 
-let global_sold;
-let global_available;
-let global_id;
-let global_search ="";
-let global_tags= [];
-let gNavigation;
-
-function initialiseTradeItem(item) {
+function initialiseTradeItem(item, navigation) {
     let Owner = user_accounts_item_list.findByID(item["owner_id"]);
 
-    let trade_Item = new Trade_Item(item, gNavigation);
+    let trade_Item = new Trade_Item(item, navigation);
     item["tags"].forEach((json_tag) => {
         let tempTag = new Tag(json_tag);
         if (tempTag.exchange == 1) {
@@ -35,126 +27,134 @@ function initialiseTradeItem(item) {
     return trade_Item;
 }
 
-function initialise(setDisplayItems) {
+function initialise(available, sold, id, search, navigation) {
 
     let promises = [];
 
-    if (global_available) {
-        trade_items_list.searchTerm = global_search;
+    if (available) {
+        trade_items_list.searchTerm = search;
         promises.push(trade_items_list.fetchItems());
     }
     
-    if (global_sold) {
-        sold_trade_items_list.searchTerm = global_search;
+    if (sold) {
+        sold_trade_items_list.searchTerm = search;
         promises.push(sold_trade_items_list.fetchItems());
     }
 
-    Promise.all(promises).then(() => {
-        if (global_available) {
-            trade_items_list.fetchImages();
-        }
-        if (global_sold) {
-            sold_trade_items_list.fetchImages();
-        }
-        loadItems(setDisplayItems);
+    return Promise.all(promises).then(async () => {
+        loadItems(available, sold, id, navigation);
     });
 }
 
-async function loadItems(setDisplayItems) {
+function loadItems(available, sold, id, navigation) {
     let tempItems = [];
 
-    console.log("fetched ITems: ", trade_items_list);
-        if (global_available) {
+        if (available) {
             
             trade_items_list.items = [];
             trade_items_list.loadItems((item) => {
-                return initialiseTradeItem(item);   
+                return initialiseTradeItem(item, navigation);   
             });
 
             trade_items_list.getItems().forEach((item) => {
-                if (global_id == null || item.getOwner().getID() == global_id) {
-                    tempItems.push(item.createItemBlock());
+                if (id == null || item.getOwner().getID() == id) {
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
                 }
             })
         }
 
-        if (global_sold) {
+        if (sold) {
             sold_trade_items_list.items = [];
             sold_trade_items_list.loadItems((item) => {
-                return initialiseTradeItem(item);
+                return initialiseTradeItem(item, navigation);
             });
             
 
             sold_trade_items_list.getItems().forEach((item) => {
-                if (global_id == null || item.getOwner().getID() == global_id) {
-                    tempItems.push(item.createItemBlock());
+                if (id == null || item.getOwner().getID() == id) {
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
                 }
             })
         }
-
-        setDisplayItems(tempItems);
 } 
-
 
 const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigation}) => {
 
-    global_sold = sold ? true : false;
-    global_available = available ? true : false;
-    global_id = id ? id : null;
-    gNavigation = navigation
-
-    console.log("Global_sold:", global_sold);
-    console.log("Global available:", global_available);
-    console.log("Global Id:", global_id);
-    console.log("Global searchTerm", global_search);
-    console.log("Global tags", global_tags);
-
     const isFocused = useIsFocused();
     const [displayItems, setDisplayItems] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+
+    const sortAndFilter = () => {
+            let tempItems = [];
+            if (available) {
+                trade_items_list.searchTerm = searchTerm;
+                trade_items_list.index = sortIndex;
+                let filtered = trade_items_list.filterByTags(tags);
+                filtered.forEach(item => {
+                    if (id == null || id == item.getOwner().getID()){
+                        tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
+                    }
+                    
+                })
+            };
+            if (sold) {
+                sold_trade_items_list.searchTerm = searchTerm;
+                sold_trade_items_list.index = sortIndex;
+                let filtered = sold_trade_items_list.filterByTags(tags);
+                filtered.forEach(item => {
+                    if (id == null || id == item.getOwner().getID()){
+                        tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
+                    }
+                    
+                })
+            };
+            setDisplayItems(tempItems); 
+    }
 
     useEffect(() => {
-        initialise(setDisplayItems, tags);
-    }, []);
-
-    useEffect(() => {
+        trade_items_list.index = null;
+        sold_trade_items_list.index = null;
+        initialise(available, sold, id, searchTerm, navigation).then(() => {
+            setLoaded(true);
+            sortAndFilter();
+        })
         
-        console.log("I sense a change");
-        let tempItems = [];
-        if (displayItems.length > 0 && available) {
-            trade_items_list.searchTerm = searchTerm;
-            trade_items_list.index = sortIndex;
-            console.log("filtered results",trade_items_list.filterByTags(tags));
-            console.log("tags passed to Trade list", tags, tags.length)
-            let filtered = trade_items_list.filterByTags(tags);
-            filtered.forEach(item => {
-                tempItems.push(item.createItemBlock());
-            })
-        };
+    }, [isFocused]);
 
-        console.log("temp ITems are:", tempItems);
-        setDisplayItems(tempItems);
-    }, [searchTerm, tags, sortIndex])
+    useEffect(() => {
 
-    return (
-        <ScrollView style={styles.center}>{displayItems}</ScrollView>
-    )
+        if (loaded) {
+            sortAndFilter()  
+        }
+    }, [searchTerm, tags, sortIndex, loaded])
+
+    if (displayItems.length >0 ) {
+        return (<ScrollView nestedScrollEnabled={true} style={styles.center}>{displayItems}</ScrollView>);
+    }
+    
+    return (<Text style={styles.nullContainer}>(Nothing to show)</Text>);
     
 }
 
 const styles = StyleSheet.create({
     center: {
-        width:'90%',
+        width:'100%',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 2,  
         elevation: 5,
-        marginTop:10,
         marginTop: 0,
         marginBottom: 60,
         zIndex: -5,
-        // height: '40%'
+        paddingHorizontal: 10
     },
+    nullContainer: {
+        textAlign: 'center',
+        flex:1, 
+        textAlignVertical:'center',
+        color: 'gray'
+    }
 })
 
 export default Trade_List;

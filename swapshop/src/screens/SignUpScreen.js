@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
+import {StyleSheet, Text, View, Image, TextInput, Button} from 'react-native';
 import React, {useState} from 'react';
 import { Registering_User } from '../classes/User_Account';
 
@@ -54,12 +54,6 @@ const SignUpScreen = ({navigation}) =>{
                         secureTextEntry={true}
                         onChangeText={(password) => onChangePassword(password)}/>
             </View>
-
-            {/*removed this touchable and exported its functionality onto the button that already existed*/}
-
-            {/*<TouchableOpacity style = {styles.loginBtn}>*/}
-            {/*    <Text style = {styles.login_text} onPress={() => register(fullName, username, password, email)}>SIGNUP</Text>*/}
-            {/*</TouchableOpacity>*/}
 
 
             <View style = {styles.loginBtn}>
@@ -134,13 +128,11 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        // backgroundColor: '#8E8259',
         backgroundColor : "white",
         alignItems: 'center',
         justifyContent: 'center',
     },
 
-    //styling the logo
     image:{
         height:250,
         width:250,
@@ -156,9 +148,6 @@ const styles = StyleSheet.create({
         height: 45,
         marginBottom: 20,
         alignItems: "center",
-
-
-
     },
 
     TextInput:{

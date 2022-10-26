@@ -1,4 +1,5 @@
-import {StyleSheet, Switch, Text, View, Image, TextInput, TouchableOpacity,Dimensions} from 'react-native';
+import {StyleSheet,Dimensions,LogBox} from 'react-native';
+import * as helper from "./src/helpers/init";
 import React, {useState} from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from '@react-navigation/stack';
@@ -19,6 +20,10 @@ import theme from './src/components/config/theme';
 const {height, width} = Dimensions.get('window');
 
 const RootStack = createStackNavigator();
+
+LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+  ]);
 
 const App = () =>{
     const [mode, setMode] = useState(false);

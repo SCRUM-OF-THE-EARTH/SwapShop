@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import colors from '../../config/colors';
 import themeContext from '../components/themeContext';
 
@@ -104,12 +104,10 @@ const styles = StyleSheet.create({
   UserName: {
     fontSize: 14,
     fontWeight: "bold",
-    //fontFamily: "Lato-Regular",
   },
   PostTime: {
     fontSize: 12,
     color: colors.black,
-    //fontFamily: "Lato-Regular", 
   },
   MessageText: {
     fontSize: 14,

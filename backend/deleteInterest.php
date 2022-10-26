@@ -7,10 +7,9 @@
 
     $query = "DELETE FROM user_tags WHERE user = $userId AND tags = $tagId";
 
-    $output = array("success"=>0, "results"=>0);
     if ($results = $conn->query($query)) {
-        $output['success'] = 1;
+        setResults(1, NULL);
     }
 
-    echo json_encode($output);
+    printOutput();
 ?>

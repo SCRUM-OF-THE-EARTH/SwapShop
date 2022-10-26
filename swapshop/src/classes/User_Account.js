@@ -1,5 +1,3 @@
-import { communicator } from "../classes/Communicator.js"
-
 // the User_Account class is used to store and manage and account of a user based on the details from 
 // the database
 // it has 5 parameters
@@ -9,7 +7,7 @@ import { communicator } from "../classes/Communicator.js"
 //  | email - the email address of the user (string)
 //  | id - the id of the user account (integer)
 export class User_Account {
-    constructor() {
+    constructor(communicator) {
         this.fname ="";
         this.lname = "";
         this.username = "";
@@ -17,6 +15,7 @@ export class User_Account {
         this.tags = [];
         this.id =0;
         this.photo_url = "";
+        this.communicator = communicator;
     }
 
     // setID is used to set the value of the id
@@ -129,8 +128,9 @@ export class User_Account {
 // the Login_user is a sub class of User_Account that is used to validate a user's input in order to try and
 // log them into an existing account
 export class Login_user extends User_Account {
-    constructor() {
-        super();
+    constructor(communicator) {
+        super(communicator);
+        this.communicator = communicator;
     }
 
     // Login is used to make a request to the server to check the user's details
@@ -138,7 +138,7 @@ export class Login_user extends User_Account {
     // and returns true if the user accoutn exists 
     // and false if the user accoutn does not exist
     async Login(password) {
-        let response = await communicator.makeRequestByCommand("login_account", [this.username, password]);
+        let response = await this.communicator.makeRequestByCommand("login_account", [this.username, password]);
 
         if (!response) {
             return false;
@@ -157,7 +157,7 @@ export class Login_user extends User_Account {
 
     async deleteAccount() {
         params = [this.getID()];
-        return await communicator.makeRequestByCommand("delete-account", params);
+        return await this.communicator.makeRequestByCommand("delete-account", params);
     }
         
 }
@@ -165,8 +165,8 @@ export class Login_user extends User_Account {
 // the Register User is a sub class of User_account responsible for creating and 
 // posting new user accounts
 export class Registering_User extends Login_user {
-    constructor(fullName, username, email) {
-        super();
+    constructor(fullName, username, email, communicator) {
+        super(communicator);
         this.setFullName(fullName)
         .setUsername(username)
         .setEmail(email);
@@ -178,7 +178,7 @@ export class Registering_User extends Login_user {
     // and returns true id the accoutn was created successfully
     // and false if an error occurred
     async register_Account(password) {
-        let response = await communicator.makeRequestByCommand("register_account", [this.getFirstName(), this.getLastName(), this.getUsername(), password, this.getEmail()]);
+        let response = await this.communicator.makeRequestByCommand("register_account", [this.getFirstName(), this.getLastName(), this.getUsername(), password, this.getEmail()]);
     
         if (!response) {
             return false;
@@ -187,6 +187,4 @@ export class Registering_User extends Login_user {
         return true;       
     }
 
-}
-
-export const login_user = new Login_user();
+};

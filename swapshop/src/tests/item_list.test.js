@@ -1,14 +1,17 @@
-import { Item_List, Tag_list, Trade_item_list } from '../classes/Item_List.js';
+import { Tag_list, Trade_item_list } from '../classes/Item_List.js';
 import { Tag } from '../classes/Tag.js';
-import { Trade_Item } from '../classes/Trade_Item.js'
-import { Login_user } from '../classes/User_Account.js';
-import { login_user } from '../classes/User_Account.js';
+import { Trade_Item } from '../classes/Trade_Item.js';
+import { Communicator } from '../classes/Communicator.js';
 import { compareInterest } from '../classes/Item_List';
+import { Login_user } from '../classes/User_Account.js';
 require('jest-fetch-mock').enableMocks()
 fetchMock.dontMock();
 
-const test_item_list = new Trade_item_list();
-const test_tag_list = new Tag_list();
+const communicator = new Communicator("https://sudocode.co.za/SwapShop/backend/");
+const login_user = new Login_user(communicator);;
+
+const test_item_list = new Trade_item_list(false, communicator, login_user);
+const test_tag_list = new Tag_list(communicator);
 waitFetch();
 let test_json_items;
 let testItemId;
@@ -77,6 +80,9 @@ async function waitFetch() {
 
 describe("testing the item_list and its methods", () => {
     test("testing the creation of a new item list", () => {
+
+        test_item_list.login_user = login_user;
+
         return test_item_list.fetchItems('fetch-trade-items').then(() => {
             test_json_items = test_item_list.getJsonItems();
             let loaded = false;
@@ -89,7 +95,7 @@ describe("testing the item_list and its methods", () => {
             for (let key in test_json_items[0]){
                 count++;
             }
-            expect(count).toBe(8);
+            expect(count).toBe(10);
         });
     });
 
@@ -177,31 +183,19 @@ describe("testing the item_list and its methods", () => {
         let sort_list;
 
         test_item_list.items = [];
-        console.log(testItems);
         testItems.forEach(a => {
-            console.log("testItem from json: ", a);
             let tempTrade = new Trade_Item(a);
-            console.log("loading tags: ", a['tags']);
             a['tags'].forEach(t => {
-                console.log("tag :", t);
                 let tempTag = new Tag(t);
-                console.log(tempTag);
                 tempTrade.addTag(tempTag);
             })
-            console.log("temp trade item: ", tempTrade);
             test_item_list.items.push(tempTrade);
         })
 
-        console.log("login user: ", login_user.getInterests());
         sort_list = test_item_list.getItems();
 
+        expect(compareInterest(sort_list[1],sort_list[0], login_user)).toBe(-1);
 
-        // expect(compareInterest(sort_list[0],sort_list[1])).toBe(1);
-        console.log("sortlist item:", sort_list[0])
-        expect(compareInterest(sort_list[1],sort_list[0])).toBe(-1);
-
-
-        console.log("sort list: ", sort_list)
         expect(test_item_list.index).toBe(null);
 
         let sorted = true;
@@ -344,19 +338,19 @@ describe("testing the item_list and its methods", () => {
         expect(test_item_list.filteredResults.length).toBe(1);
     });
 
-    test("testing the item lists ability to fetch images for trade items",() => {
-        return test_item_list.fetchImages().then(() => {
-            test_item_list.getItems().forEach((t) => {
-                if (t.hasImages) {
-                    t.id = `${t.id}`;
-                    let slideshow = t.getImageSlideShow();
-                    slideshow.forEach(slide => {
-                        expect(slide.url == 'https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg');
-                    })
-                }
-            })
-        })
-    })
+    // test("testing the item lists ability to fetch images for trade items",() => {
+    //     return test_item_list.fetchImages().then(() => {
+    //         test_item_list.getItems().forEach((t) => {
+    //             if (t.hasImages) {
+    //                 t.id = `${t.id}`;
+    //                 let slideshow = t.getImageSlideShow();
+    //                 slideshow.forEach(slide => {
+    //                     expect(slide.url == 'https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg');
+    //                 })
+    //             }
+    //         })
+    //     })
+    // })
 
     test("testing the tag list's ability to add tags them to the list of tags and retrieve ", () => {
         test_tag_list.items = [];

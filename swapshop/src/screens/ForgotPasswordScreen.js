@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
+import {StyleSheet, Text, View, Image, TextInput, Button} from 'react-native';
 import React, {useState} from 'react';
 
 // the forgot password screen is the screen where users can enter their email and 

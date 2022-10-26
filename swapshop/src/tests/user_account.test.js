@@ -1,6 +1,6 @@
 import { Login_user, Registering_User, User_Account } from "../classes/User_Account";
-import { communicator } from '../classes/Communicator.js' 
-// import LoginScreen from "../screens/loginScreen";
+import { communicator } from "../helpers/init"
+
 require('jest-fetch-mock').enableMocks()
 fetchMock.dontMock();
 
@@ -19,8 +19,8 @@ let username = generateString(7);
 let password = generateString(7);
 let email = generateString(7);
 
-export const test_Reguser = new Registering_User(fname+" "+lname, username, email);
-const test_LogUser = new Login_user();
+export const test_Reguser = new Registering_User(fname+" "+lname, username, email, communicator);
+const test_LogUser = new Login_user(communicator);
 test_LogUser.setUsername(username)
 
 describe("testing the login, register and user account system", () => {
