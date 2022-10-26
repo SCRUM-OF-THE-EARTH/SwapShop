@@ -1,4 +1,5 @@
-import {StyleSheet, View, Text, Image } from 'react-native';
+import {StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import React, { useState, useEffect } from 'react';
 import Tab from '../components/Tab.js';
 import { login_user, tags_list, communicator } from '../helpers/init';
@@ -70,6 +71,9 @@ const ProfileScreen = ({ navigation }) => {
             <View style={styles.container}>
                 <View style={styles.imageContainer} >
                 {image && <Image source={{uri:image}} style={styles.image}/>}
+                <TouchableOpacity onPress={() => {
+                    pickImage();
+                }} style={styles.editIcon}><Icon size={40} name="brush-outline"></Icon></TouchableOpacity>
                 </View>
 
                 <View style = {styles.details}>
@@ -268,7 +272,15 @@ const styles = StyleSheet.create({
         backgroundColor: "#3CB371",
         height: "100%"
     },
-
+    editIcon: {
+        borderRadius: 50,
+        padding: 5,
+        backgroundColor: "#EBEBEA",
+        transform: [
+            {translateY: -125},
+            {translateX: 60}
+        ]
+    }
 
 })
 

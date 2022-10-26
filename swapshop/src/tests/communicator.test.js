@@ -45,25 +45,25 @@ describe("testing the communicator system", () => {
         });
     })
 
-    test("testing the ability to upload a photo", () => {
-        let image = [{
-            uri: "/test1.jpg",
-            base64: "AAAAAAABAA",
-        },{
-            uri: "/test2.jpg",
-            base64: "BBBBA2CBA"
-        }];
+    // test("testing the ability to upload a photo", () => {
+    //     let image = [{
+    //         uri: "/test1.jpg",
+    //         base64: "AAAAAAABAA",
+    //     },{
+    //         uri: "/test2.jpg",
+    //         base64: "BBBBA2CBA"
+    //     }];
 
-        item_id = 1;
+    //     item_id = 1;
 
 
-        return communicator.makePostRequestForImage(image, item_id, "trade").then(resp => {
-            console.log(resp)
-            resp.forEach(r => {
-                expect(r).toBe("200");
-            })
-        })
+    //     return communicator.makePostRequestForImage(image, item_id, "trade").then(resp => {
+    //         console.log(resp)
+    //         resp.forEach(r => {
+    //             expect(r).toBe("200");
+    //         })
+    //     })
 
         
-    })
+    // })
 })

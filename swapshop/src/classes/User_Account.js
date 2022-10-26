@@ -130,6 +130,7 @@ export class User_Account {
 export class Login_user extends User_Account {
     constructor(communicator) {
         super(communicator);
+        this.communicator = communicator;
     }
 
     // Login is used to make a request to the server to check the user's details

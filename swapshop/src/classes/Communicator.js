@@ -94,7 +94,6 @@ export class Communicator {
                     },
                     body: body
                 }).then(res => {
-                    console.log(res);
                     return res.status;
                 })
                 .catch(e => console.error(e)));

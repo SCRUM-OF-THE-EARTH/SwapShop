@@ -33,16 +33,16 @@ export class Trade_Item {
         
     }
 
-    async fetchImages() {
-        if (!this.hasImages) {
-            let temp = await communicator.makeRequestByCommand('fetch-trade-images', [this.id])
-            if (temp.length > 0) {
-                this.images = temp;
-            }
-        }
+    // async fetchImages() {
+    //     if (!this.hasImages) {
+    //         let temp = await communicator.makeRequestByCommand('fetch-trade-images', [this.id])
+    //         if (temp.length > 0) {
+    //             this.images = temp;
+    //         }
+    //     }
 
-        return;
-    }
+    //     return;
+    // }
 
     getImageSlideShow() {
         let imageSlideShow = [];
