@@ -10,6 +10,7 @@ import Trade_List from '../components/Trade_List.js';
 import { Dimensions } from 'react-native';
 import themeContext from '../components/themeContext';
 
+
 const windowHeight = Dimensions.get('window').height;
 DropDownPicker.setListMode("SCROLLVIEW");
 
@@ -36,8 +37,8 @@ const ProfileScreen = ({ navigation }) => {
         });
         if(!result.cancelled){
             setImage(result.uri);
-            communicator.makePostRequestForImage([result], login_user.getID(), 'profile');  
-            reloadPhoto(); 
+            communicator.makePostRequestForImage([result], login_user.getID(), 'profile');
+            reloadPhoto();
         }
     };
 
@@ -54,7 +55,7 @@ const ProfileScreen = ({ navigation }) => {
                     return;
                 }
             })
-            
+
         });
 
         setImage(login_user.getPhoto());
@@ -69,85 +70,85 @@ const ProfileScreen = ({ navigation }) => {
         return (
             <View style={styles.mainContainer}>
                 <Text style={styles.welcome}>{login_user.getUsername()}</Text>
-            <View style={styles.container}>
-                <View style={styles.imageContainer} >
-                {image && <Image source={{uri:image}} style={styles.image}/>}
-                <TouchableOpacity onPress={() => {
-                    pickImage();
-                }} style={styles.editIcon}><Icon size={40} name="brush-outline"></Icon></TouchableOpacity>
+                <View style={styles.container}>
+                    <View style={styles.imageContainer} >
+                        {image && <Image source={{uri:image}} style={styles.image}/>}
+                        <TouchableOpacity onPress={() => {
+                            pickImage();
+                        }} style={styles.editIcon}><Icon size={40} name="brush-outline"></Icon></TouchableOpacity>
+                    </View>
+
+                    <View style = {styles.details}>
+
+                        <View style={styles.data_container}>
+                            <Image
+                                source={require("../../assets/user.png")}
+                                style={styles.imageDetailU}
+                            />
+                            <Text style={styles.data_field}>{login_user.getFullName()}</Text>
+                        </View>
+
+                        <View style={styles.data_container}>
+                            <Image
+                                source={require("../../assets/email.png")}
+                                style={styles.imageDetailE}
+                            />
+                            <Text style={styles.data_field}>{login_user.getEmail()}</Text>
+                        </View>
+
+
+                        <Text style={styles.label}>My interests: </Text>
+
+                        <View style={styles.drop}>
+                            <DropDownPicker
+                                open={tagMenuOpen}
+                                searchable={true}
+                                multiple={true}
+                                min={0}
+                                max={5}
+                                mode="BADGE"
+                                placeholder="add an interest"
+                                value={interests}
+                                items={tags}
+                                setOpen={setTagMenuOpen}
+                                setValue={setInterests}
+                                setItems={setTags}
+                                itemKey="key"
+                                onChangeValue={(value) => {
+                                    if (activeTags.length > value.length) {
+                                        let difference = activeTags.filter(x => !value.includes(x));
+                                        removeInterest(difference[0]).then(() => {
+                                            setActiveTags(value);
+                                        })
+                                    } else {
+                                        let difference = value.filter(x => !activeTags.includes(x));
+                                        addInterest(difference[0]).then(() => {
+                                            setActiveTags(value);
+                                        })
+                                    }
+                                }}
+                            />
+                        </View>
+                    </View>
+
+                    <Text style={styles.label}>My Items:</Text>
+
+                    { (id != null) ?
+                        <Trade_List
+                            available={true}
+                            sold={true}
+                            id={id}
+                            navigation={navigation}
+                            edit={true}
+                            searchTerm=''
+                            tags={[]}
+                            sortIndex={0}
+                        /> : null }
+
+
+
                 </View>
-
-                <View style = {styles.details}>
-
-                    <View style={styles.data_container}>
-                        <Image
-                            source={require("../../assets/user.png")}
-                            style={styles.imageDetail}
-                        />
-                        <Text style={styles.data_field}>{login_user.getFullName()}</Text>
-                    </View>
-
-                    <View style={styles.data_container}>
-                        <Image
-                            source={require("../../assets/email.png")}
-                            style={styles.imageDetail}
-                        />
-                        <Text style={styles.data_field}>{login_user.getEmail()}</Text>
-                    </View>
-
-
-                    <Text style={styles.label}>My interests: </Text>
-
-                    <View style={styles.drop}>
-                        <DropDownPicker
-                            open={tagMenuOpen}
-                            searchable={true}
-                            multiple={true}
-                            min={0}
-                            max={5}
-                            mode="BADGE"
-                            placeholder="add an interest"
-                            value={interests}
-                            items={tags}
-                            setOpen={setTagMenuOpen}
-                            setValue={setInterests}
-                            setItems={setTags}
-                            itemKey="key"
-                            onChangeValue={(value) => {
-                                if (activeTags.length > value.length) {
-                                    let difference = activeTags.filter(x => !value.includes(x));
-                                    removeInterest(difference[0]).then(() => {
-                                        setActiveTags(value);
-                                    })
-                                } else {
-                                    let difference = value.filter(x => !activeTags.includes(x));
-                                    addInterest(difference[0]).then(() => {
-                                        setActiveTags(value);
-                                    })
-                                }
-                            }}
-                        />
-                    </View>
-                </View>
-
-                <Text style={styles.label}>My Items:</Text>
-
-            { (id != null) ?
-                <Trade_List
-                    available={true}
-                    sold={true}
-                    id={id}   
-                    navigation={navigation}
-                    edit={true}
-                    searchTerm=''
-                    tags={[]}
-                    sortIndex={0}
-                /> : null }
-
-
-                
-            </View>
-            <Tab nav={navigation} activeTab="profile" />
+                <Tab nav={navigation} activeTab="profile" />
             </View>
         )
     }
@@ -157,7 +158,7 @@ const ProfileScreen = ({ navigation }) => {
 async function reloadPhoto() {
     let new_profile = await communicator.makeRequestByCommand('fetch-profile-photo', [login_user.getID()]);
     if (new_profile['photo'] == login_user.getPhoto()) {
-        setTimeout(reloadPhoto, 200);   
+        setTimeout(reloadPhoto, 200);
     } else {
         login_user.setPhoto(new_profile['photo']);
     }
@@ -165,7 +166,7 @@ async function reloadPhoto() {
 
 async function addInterest(tag) {
     let tagId =  tag.id;
-    
+
     let userId = login_user.getID();
     await communicator.makeRequestByCommand("add-interest", [userId, tagId]);
     let interests = login_user.getInterests();
@@ -174,7 +175,7 @@ async function addInterest(tag) {
 
 async function removeInterest(tag) {
     let tagId = tag.id;
-    
+
     let userId = login_user.getID();
     await communicator.makeRequestByCommand('remove-interest', [userId, tagId]);
     let interests = login_user.getInterests();
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
         color: "gray",
         fontSize: 15,
         width: 'auto',
-        padding: 10, 
+        padding: 10,
         textAlign: 'center'
     },
     label: {
@@ -251,10 +252,23 @@ const styles = StyleSheet.create({
         paddingRight:5,
         justifyContent:'center'
     },
-    imageDetail:{
+    imageDetailU:{
         height: 40,
         width: 40,
-        justifyContent: 'center'
+
+        marginStart:-150,
+
+
+
+
+    },
+    imageDetailE:{
+        height: 35,
+        width: 35,
+        marginStart:-125,
+
+
+
     },
     button:{
         padding: 20,
@@ -265,7 +279,7 @@ const styles = StyleSheet.create({
         height: 150,
         width: 150,
         transform:[
-            {translateY:-75} 
+            {translateY:-75}
         ],
         borderRadius:100,
     },
