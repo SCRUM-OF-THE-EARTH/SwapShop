@@ -77,9 +77,7 @@ export class Communicator {
 
 
     async makePostRequestForImage(images, item_id, type) {
-        let response = [];
         let promises = [];
-        console.log("Images:", images)
         images.forEach(image => {
                 let body = new FormData();
                 let fileName =  image.uri.substring(image.uri.lastIndexOf("/")+1);
@@ -88,18 +86,18 @@ export class Communicator {
                 body.append('item_id', item_id);
                 body.append('item_type', type);
 
-                promises.push(fetch(this.postUrl, {
+                promises.push(
+                fetch(this.postUrl, {
                     method: 'POST',
                     headers: {  
                         "content-type": "multipart/form-data",
                     },
                     body: body
                 }).then(res => {
-                    response.push(res)
+                    console.log(res);
+                    return res.status;
                 })
-                .catch(e => {
-                    console.error(error);
-                }));
+                .catch(e => console.error(e)));
         });
         return Promise.all(promises);
     }

@@ -25,6 +25,7 @@ const SortBar = ({setIndex}) => {
                     setItems={setSortItems}
                     placeholder="Sort"
                     style={styles.sortMenu}
+                    zIndex={10}
                     dropDownContainerStyle={styles.dropMenu}
                     onChangeValue={(value) => setIndex(value)}
                 />
@@ -33,13 +34,5 @@ const SortBar = ({setIndex}) => {
 }
 
 const styles = StyleSheet.create({
-    dropMenu: {
-        zIndex: 10,
-        borderWidth: 0,
-        borderBottomWidth: 1,
-   },
-   sortMenu: {
-    borderWidth: 0,
-   }
 });
 export default SortBar;

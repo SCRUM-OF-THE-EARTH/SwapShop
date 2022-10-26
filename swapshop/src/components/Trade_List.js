@@ -129,7 +129,7 @@ const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigatio
     }, [searchTerm, tags, sortIndex, loaded])
 
     if (displayItems.length >0 ) {
-        return (<ScrollView style={styles.center}>{displayItems}</ScrollView>);
+        return (<ScrollView nestedScrollEnabled={true} style={styles.center}>{displayItems}</ScrollView>);
     }
     
     return (<Text style={styles.nullContainer}>(Nothing to show)</Text>);

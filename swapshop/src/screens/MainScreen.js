@@ -99,6 +99,7 @@ const MainScreen = ({navigation}) =>{
                 setOpen={setTagMenuOpen}
                 setValue={setTagValues}
                 setItems={setTags}
+                // zIndex={5}
             />
         </View>
 
@@ -166,13 +167,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
       },
       sortMenu: {
-        borderColor: 'red',
         width: "30%",
         zIndex: 10
     },
     tagMenu: {
-        zIndex: 9,
-        marginVertical: 5
+        // zIndex: 9,
+        // marginVertical: 5
     }
 });
 

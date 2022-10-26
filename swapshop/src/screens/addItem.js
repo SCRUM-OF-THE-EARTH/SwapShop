@@ -152,23 +152,22 @@ const AddItem = ({navigation, route}) => {
         <View style={styles.container}>
             
             <Text style={styles.header}>{item ? "Update an item" : "Post a new item to trade"}</Text>
-            <DropDownPicker
-                addCustomItem={true}
-                containerStyle={styles.tagMenu}
-                open={itemTagsMenuOpen}
-                searchable={true}
-                placeholder="tags for this item"
-                multiple={true}
-                min={0}
-                max={5}
-                mode="BADGE"
-                itemKey="key"
-                value={itemTagValues}
-                items={itemTags}
-                setOpen={setitemTagsMenuOpen}
-                setValue={setItemTagValues}
-                setItems={setItemTags}
-            />
+                <DropDownPicker
+                    addCustomItem={true}
+                    open={itemTagsMenuOpen}
+                    searchable={true}
+                    placeholder="tags for this item"
+                    multiple={true}
+                    min={0}
+                    max={5}
+                    mode="BADGE"
+                    itemKey="key"
+                    value={itemTagValues}
+                    items={itemTags}
+                    setOpen={setitemTagsMenuOpen}
+                    setValue={setItemTagValues}
+                    setItems={setItemTags}
+                />
 
 
             <Text style={{color: 'red', textAlign: 'center'}}>{errorMessage}</Text>
@@ -181,7 +180,6 @@ const AddItem = ({navigation, route}) => {
 
             <DropDownPicker
                 addCustomItem={true}
-                containerStyle={styles.tagMenu}
                 open={tagMenuOpen}
                 searchable={true}
                 placeholder="Add tags for items wanted in exchange"
@@ -195,6 +193,7 @@ const AddItem = ({navigation, route}) => {
                 setOpen={setTagMenuOpen}
                 setValue={setTagValues}
                 setItems={setTags}
+                zIndex={100}
             />
 
 
@@ -402,6 +401,9 @@ const styles = StyleSheet.create({
         width: "90%",
         zIndex: 5,
         position: "relative"
+    },
+    dropContainer: {
+        width: '100%'
     }
 });
 

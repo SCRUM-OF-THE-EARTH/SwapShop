@@ -121,8 +121,6 @@ const ProfileScreen = ({ navigation }) => {
                                     })
                                 }
                             }}
-                            containerStyle={styles.interests}
-                            style={styles.interests}
                         />
                     </View>
                 </View>
@@ -184,7 +182,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "white",
         height: windowHeight - 130,
-        // paddingBottom: 
     },
     interests: {
         zIndex: 9,
@@ -192,7 +189,6 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         alignItems: 'center',
-        // flex: 1,
         marginBottom: -75,
         justifyContent: 'center'
     },
@@ -203,9 +199,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     welcome:{
-        // paddingTop: 40,
-        // paddingBottom: 100,
-        // marginBottom: 80,
         paddingTop: 20,
         paddingBottom: 80,
         alignItems:"center",
@@ -227,8 +220,6 @@ const styles = StyleSheet.create({
     data_field: {
         color: "gray",
         fontSize: 15,
-        // flex: 1,
-        // justifyContent: 'center',
         width: 'auto',
         padding: 10, 
         textAlign: 'center'
@@ -261,11 +252,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     button:{
-
-        // marginTop: 20,
-        // marginBottom: -50,
-        // marginHorizontal:100,
-        // marginLeft:120,
         padding: 20,
 
 
@@ -273,18 +259,15 @@ const styles = StyleSheet.create({
     image:{
         height: 150,
         width: 150,
-        // alignItems: "center",
         transform:[
             {translateY:-75} 
         ],
-        // //overlayColor: "gray",
         borderRadius:100,
-        // borderColor:"white",
     },
     mainContainer: {
         backgroundColor: "#3CB371",
         height: "100%"
-    }
+    },
 
 
 })

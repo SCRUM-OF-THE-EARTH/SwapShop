@@ -1,4 +1,4 @@
-import { communicator } from '../classes/Communicator.js';
+import { communicator } from '../helpers/init';
 function FormDataMock() {
     this.append = jest.fn();
 }
@@ -57,10 +57,13 @@ describe("testing the communicator system", () => {
         item_id = 1;
 
 
-        let resp = communicator.makePostRequestForImage(image, item_id);
-
-        resp.forEach(r => {
-            expect(t.status).toBe("200");
+        return communicator.makePostRequestForImage(image, item_id, "trade").then(resp => {
+            console.log(resp)
+            resp.forEach(r => {
+                expect(r).toBe("200");
+            })
         })
+
+        
     })
 })
