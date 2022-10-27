@@ -4,77 +4,66 @@ import colors from '../../config/colors';
 import { db } from '../firebaseConfig/firebase';
 import { login_user } from '../helpers/init';
 import { customChatRoom } from '../classes/Chat_Rooms';
+import { User_Account } from '../classes/User_Account';
 import themeContext from '../components/themeContext';
-
-// const Messages = [
-//   /*{
-//     id: '1',
-//     userName: user_chat_info.getCurrentUserID(),
-//     userImg: require('../../assets/profile.jpg'),
-//     messageTime: '1 mins ago',
-//     messageText:
-//       'Hey there!',
-//   },*/
-//   /*{
-//     id: '2',
-//     userName: 'John',
-//     userImg: require('../../assets/profile.jpg'),
-//     messageTime: '1 hour ago',
-//     messageText:
-//       'This is a test!',
-//   },
-//   {
-//     id: '3',
-//     userName: 'Val',
-//     userImg: require('../../assets/profile.jpg'),
-//     messageTime: '2 hours ago',
-//     messageText:
-//       'I repeat, this is a test!',
-//   },*/
-// ];
 
 const MessagesScreen = ({navigation}) => {
 
-  const Messages = [
-    // {
-    //   id: '1',
-    //   userName: "Leslie Fabishilaki",
-    //   userImg: require('../../assets/profile.jpg'),
-    //   messageTime: '1 mins ago',
-    //   messageText:
-    //     'Hey there!',
-    // },
-    // {
-    //   id: '2',
-    //   userName: 'Ciaran Otter',
-    //   userImg: require('../../assets/profile.jpg'),
-    //   messageTime: '1 hour ago',
-    //   messageText:
-    //     'This is a test!',
-    // },
-    // {
-    //   id: '3',
-    //   userName: 'Admin account',
-    //   userImg: require('../../assets/profile.jpg'),
-    //   messageTime: '2 hours ago',
-    //   messageText:
-    //     'I repeat, this is a test!',
-    // },
-  ];
+  // initialise message list
+  const Messages = [];
 
+  //the following functions will compare the members' details so as to distinguish them from the current logged in user
+  function uname(variable){
+    const curr = login_user.getUsername();
+
+    const i = variable.find(function(element){
+      return element != curr;
+    });
+
+    return i;
+  }
+
+  function email(variable){
+    const curr = login_user.getEmail();
+    
+    const i = variable.find(function(element){
+      return element != curr;
+    });
+
+    return i;
+  }
+
+  function fname(variable){
+    const curr = login_user.getFullName();
+    
+    const i = variable.find(function(element){
+      return element != curr;
+    });
+
+    return i;
+  }
+  // end of region
+
+  // fetch data from the database and pass it onto the chat rooms class
+  // this will enable us to access the values from the documents in the database
   const unsub = db.collection("chat_rooms").get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       console.log(doc.id, "=>" , doc.data());
-      /*customChatRoom.addRoomName(doc.id);
+      const otherUser = new User_Account();
+      otherUser.setEmail(email([doc.data().members.user1_id, doc.data().members.user2_id]));
+      otherUser.setUsername(uname([doc.data().members.user1_uname, doc.data().members.user2_uname]));
+      otherUser.setFullName(fname([doc.data().members.user1_fname, doc.data().members.user2_fname]));
+      customChatRoom.addRoomName(doc.id);
       customChatRoom.addRoomData(doc.id, doc.data().members);
-      customChatRoom.pushMessages(doc.id,
-        [doc.data().members.user1_name,doc.data().members.user2_name],
-        "2 hours ago",
-        "Hello")*/
+      customChatRoom.pushMessages(otherUser, doc.id,
+        [doc.data().members.user1_fname,doc.data().members.user2_fname],
+        "mins ago",
+        "tap to see chat")
     });
   });
 
-  /*const rooms = customChatRoom.getRoomNames();
+  // fetch data stored in the chat rooms class
+  const rooms = customChatRoom.getRoomNames();
 
   for (let i = 0; i < rooms.length; i++){
     const name = rooms[i]
@@ -87,16 +76,18 @@ const MessagesScreen = ({navigation}) => {
 
       Messages.push(msg);
     }
-  }*/
+  }
 
   const theme = useContext(themeContext);
+  
     return (
       <View style={[styles.container, { backgroundColor: theme.inputColor }]}>
+        <Text style = {[styles.topText]}> CHATS </Text>
         <FlatList 
           data={Messages}
           keyExtractor={item=>item.id}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.Card} onPress={() => navigation.navigate('ChatScreen', {owner: login_user} )}>
+            <TouchableOpacity style={styles.Card} onPress={() => navigation.navigate('ChatScreen', {owner: item.userInfo} )}>
               <View style={styles.UserInfo}>
                 <View style={styles.UserImgWrapper}>
                   <Image style={styles.UserImg} source={item.userImg} />
@@ -126,6 +117,9 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     alignItems: "center",
     backgroundColor: colors.white,
+  },
+  topText: {
+    fontSize: 20,
   },
   Card: {
     width: "100%",

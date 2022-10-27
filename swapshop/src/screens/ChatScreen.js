@@ -22,16 +22,26 @@ const ChatScreen = ({route, navigation}) => {
   const [imageList, setImgaeList] = useState('');
   const item = route.params;
   
-  // get the current users email and name
+  // get the current users email, username and names
   let currUserID = login_user.getEmail();
   let currUserName = login_user.getFullName();
+  let currUserUName = login_user.getUsername();
 
+  // get the other users email, username and names
   let othrUserID = item.owner.getEmail();
   let othrUserName = item.owner.getFullName();
+  let othrUserUName = item.owner.getUsername();
 
-  let users = new Map([
+  // map the names to the users IDs
+  // so we can use it to pass to the database
+  let usersFName = new Map([
     [currUserID, currUserName],
     [othrUserID, othrUserName]
+  ])
+
+  let usersUName = new Map([
+    [currUserID, currUserUName],
+    [othrUserID, othrUserUName]
   ])
 
   let IDs = [currUserID, othrUserID];
@@ -46,8 +56,9 @@ const ChatScreen = ({route, navigation}) => {
   let chat_database = db_tmp;
 
 
-  let pic = 'https://placeimg.com/140/140/any';
+  //let pic = 'https://placeimg.com/140/140/any';
 
+  // function that allows user to pick image from their gallery so that they can send it to user they are chatting with.
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All, 
@@ -63,6 +74,7 @@ const ChatScreen = ({route, navigation}) => {
     }
   };
 
+  // upload the selected image to firebase storage and get URL
   const uploadImage = async () => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -149,14 +161,18 @@ const ChatScreen = ({route, navigation}) => {
       //image,
     }=messages[0];
 
+    // create a hierarchical database system
+    // so as to separate every chat room from one another
     db.collection("chat_rooms").doc(chat_database + "_room")
     .set({
       members:
       {
         user1_id: IDs[0],
         user2_id: IDs[1],
-        user1_name: users.get(IDs[0]),
-        user2_name: users.get(IDs[1]),
+        user1_fname: usersFName.get(IDs[0]),
+        user2_fname: usersFName.get(IDs[1]),
+        user1_uname: usersUName.get(IDs[0]),
+        user2_uname: usersUName.get(IDs[1]),
       }
     })
 
