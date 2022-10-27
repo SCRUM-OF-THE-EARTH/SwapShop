@@ -112,11 +112,7 @@ FN:284,(anonymous_35)
 FNF:36
 FNH:35
 FNDA:18,(anonymous_0)
-<<<<<<< HEAD
-FNDA:11,(anonymous_1)
-=======
 FNDA:15,(anonymous_1)
->>>>>>> eb1ff3971f7ad9a435f7974daad7cbb2055cfaef
 FNDA:2,(anonymous_2)
 FNDA:1,(anonymous_3)
 FNDA:1,(anonymous_4)
@@ -157,11 +153,7 @@ DA:20,18
 DA:21,18
 DA:22,18
 DA:23,18
-<<<<<<< HEAD
-DA:28,11
-=======
 DA:28,15
->>>>>>> eb1ff3971f7ad9a435f7974daad7cbb2055cfaef
 DA:33,2
 DA:40,1
 DA:50,1
@@ -398,32 +390,19 @@ FNDA:21,(anonymous_0)
 FNDA:1,(anonymous_1)
 FNDA:1,(anonymous_2)
 FNDA:1,(anonymous_3)
-<<<<<<< HEAD
-FNDA:16,(anonymous_4)
-FNDA:44,(anonymous_5)
-FNDA:15,(anonymous_6)
-FNDA:33,(anonymous_7)
-FNDA:13,(anonymous_8)
-FNDA:64,(anonymous_9)
+FNDA:14,(anonymous_4)
+FNDA:42,(anonymous_5)
+FNDA:13,(anonymous_6)
+FNDA:31,(anonymous_7)
+FNDA:12,(anonymous_8)
+FNDA:63,(anonymous_9)
 FNDA:17,(anonymous_10)
 FNDA:12,(anonymous_11)
-FNDA:10,(anonymous_12)
-FNDA:28,(anonymous_13)
-=======
-FNDA:15,(anonymous_4)
-FNDA:43,(anonymous_5)
-FNDA:10,(anonymous_6)
-FNDA:28,(anonymous_7)
-FNDA:14,(anonymous_8)
-FNDA:65,(anonymous_9)
-FNDA:17,(anonymous_10)
-FNDA:12,(anonymous_11)
-FNDA:14,(anonymous_12)
-FNDA:32,(anonymous_13)
->>>>>>> eb1ff3971f7ad9a435f7974daad7cbb2055cfaef
+FNDA:12,(anonymous_12)
+FNDA:30,(anonymous_13)
 FNDA:1,(anonymous_14)
-FNDA:22,(anonymous_15)
-FNDA:24,(anonymous_16)
+FNDA:21,(anonymous_15)
+FNDA:23,(anonymous_16)
 FNDA:50,(anonymous_17)
 FNDA:4,(anonymous_18)
 FNDA:21,(anonymous_19)
@@ -451,43 +430,25 @@ DA:45,1
 DA:47,1
 DA:48,1
 DA:50,1
-<<<<<<< HEAD
-DA:56,16
-DA:57,16
-DA:62,44
-DA:69,15
-DA:70,15
-DA:75,33
-DA:82,13
-DA:83,13
-DA:88,64
+DA:56,14
+DA:57,14
+DA:62,42
+DA:69,13
+DA:70,13
+DA:75,31
+DA:82,12
+DA:83,12
+DA:88,63
 DA:95,17
 DA:96,17
 DA:101,12
-DA:108,10
-DA:109,10
-DA:114,28
-=======
-DA:56,15
-DA:57,15
-DA:62,43
-DA:69,10
-DA:70,10
-DA:75,28
-DA:82,14
-DA:83,14
-DA:88,65
-DA:95,17
-DA:96,17
-DA:101,12
-DA:108,14
-DA:109,14
-DA:114,32
->>>>>>> eb1ff3971f7ad9a435f7974daad7cbb2055cfaef
+DA:108,12
+DA:109,12
+DA:114,30
 DA:119,1
-DA:126,22
-DA:127,22
-DA:134,24
+DA:126,21
+DA:127,21
+DA:134,23
 DA:142,50
 DA:143,50
 DA:144,38
