@@ -2,11 +2,9 @@ import React, { useEffect, useContext } from 'react';
 import { View, Text, ScrollView, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import colors from '../../config/colors';
 import { db } from '../firebaseConfig/firebase';
-import { user_chat_info } from '../classes/User_Chats';
-import { login_user } from '../classes/User_Account';
+import { login_user } from '../helpers/init';
 import { customChatRoom } from '../classes/Chat_Rooms';
 import themeContext from '../components/themeContext';
-
 
 // const Messages = [
 //   /*{
@@ -38,40 +36,58 @@ import themeContext from '../components/themeContext';
 const MessagesScreen = ({navigation}) => {
 
   const Messages = [
-    {
-      id: '1',
-      userName: "Leslie Fabishilaki",
-      userImg: require('../../assets/profile.jpg'),
-      messageTime: '1 mins ago',
-      messageText:
-        'Hey there!',
-    },
-    {
-      id: '2',
-      userName: 'Ciaran Otter',
-      userImg: require('../../assets/profile.jpg'),
-      messageTime: '1 hour ago',
-      messageText:
-        'This is a test!',
-    },
-    {
-      id: '3',
-      userName: 'Admin account',
-      userImg: require('../../assets/profile.jpg'),
-      messageTime: '2 hours ago',
-      messageText:
-        'I repeat, this is a test!',
-    },
+    // {
+    //   id: '1',
+    //   userName: "Leslie Fabishilaki",
+    //   userImg: require('../../assets/profile.jpg'),
+    //   messageTime: '1 mins ago',
+    //   messageText:
+    //     'Hey there!',
+    // },
+    // {
+    //   id: '2',
+    //   userName: 'Ciaran Otter',
+    //   userImg: require('../../assets/profile.jpg'),
+    //   messageTime: '1 hour ago',
+    //   messageText:
+    //     'This is a test!',
+    // },
+    // {
+    //   id: '3',
+    //   userName: 'Admin account',
+    //   userImg: require('../../assets/profile.jpg'),
+    //   messageTime: '2 hours ago',
+    //   messageText:
+    //     'I repeat, this is a test!',
+    // },
   ];
 
   const unsub = db.collection("chat_rooms").get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       console.log(doc.id, "=>" , doc.data());
-      //customChatRoom.insertActiveRooms(doc.id, doc.data());
-      //customChatRoom.insertRoom(doc.id);
-      //customChatRoom.pushMessages(doc.id, doc.data().members.user1_name);
+      /*customChatRoom.addRoomName(doc.id);
+      customChatRoom.addRoomData(doc.id, doc.data().members);
+      customChatRoom.pushMessages(doc.id,
+        [doc.data().members.user1_name,doc.data().members.user2_name],
+        "2 hours ago",
+        "Hello")*/
     });
   });
+
+  /*const rooms = customChatRoom.getRoomNames();
+
+  for (let i = 0; i < rooms.length; i++){
+    const name = rooms[i]
+    const currUser = login_user.getUsername().toUpperCase();
+
+    if (name.includes(currUser)){
+      const roomMsgs = customChatRoom.getMessages();
+
+      const msg = roomMsgs.get(name);
+
+      Messages.push(msg);
+    }
+  }*/
 
   const theme = useContext(themeContext);
     return (

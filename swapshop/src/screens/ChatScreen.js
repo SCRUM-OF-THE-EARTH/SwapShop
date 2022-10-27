@@ -9,8 +9,7 @@ import * as Permissions from 'expo-permissions';
 import colors from "../../config/colors";
 //import { collection, addDoc, query, orderBy, onSnapshot, QuerySnapshot, doc, getDoc } from "firebase/firestore";
 import { db, firebase } from "../firebaseConfig/firebase";
-import { login_user } from "../classes/User_Account"; 
-import { user_chat_info } from "../classes/User_Chats";
+import { login_user } from "../helpers/init";
 import themeContext from '../components/themeContext';
 
 // create a chat screen UI
