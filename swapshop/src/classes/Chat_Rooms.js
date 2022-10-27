@@ -9,7 +9,7 @@ export class Chat_Rooms{
         this.rooms_names = [];
         this.room_data = new Map();
         this.messages = new Map();
-        this.otherUsers = [];
+        //this.otherUsers = [];
     }
 
     //add a chat room name, fetched from the database
