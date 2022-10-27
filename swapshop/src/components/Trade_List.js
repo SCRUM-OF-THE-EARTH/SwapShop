@@ -58,7 +58,7 @@ function loadItems(available, sold, id, navigation) {
 
             trade_items_list.getItems().forEach((item) => {
                 if (id == null || item.getOwner().getID() == id) {
-                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item} navigation={navigation}/>);
                 }
             })
         }
@@ -72,7 +72,7 @@ function loadItems(available, sold, id, navigation) {
 
             sold_trade_items_list.getItems().forEach((item) => {
                 if (id == null || item.getOwner().getID() == id) {
-                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item} navigation={navigation}/>);
                 }
             })
         }
@@ -94,7 +94,7 @@ const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigatio
                     filtered = trade_items_list.filterByOwnerId(id);
                 }
                 filtered.forEach(item => {
-                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item} navigation={navigation}/>);
                 })
             };
             if (sold) {
@@ -102,10 +102,10 @@ const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigatio
                 sold_trade_items_list.index = sortIndex;
                 let filtered = sold_trade_items_list.filterByTags(tags);
                 if (id != null) {
-                    filtered = trade_items_list.filterByOwnerId(id);
+                    filtered = sold_trade_items_list.filterByOwnerId(id);
                 }
                 filtered.forEach(item => {
-                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item} navigation={navigation}/>);
                 })
             };
             setDisplayItems(tempItems); 

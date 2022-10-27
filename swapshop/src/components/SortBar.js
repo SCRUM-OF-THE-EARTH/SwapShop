@@ -1,5 +1,5 @@
 import React, {useState, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import themeContext from '../components/themeContext';
 
@@ -25,15 +25,10 @@ const SortBar = ({setIndex}) => {
                     setValue={setSortValue}
                     setItems={setSortItems}
                     placeholder="Sort"
-                    style={styles.sortMenu}
-                    zIndex={10}
-                    dropDownContainerStyle={styles.dropMenu}
                     onChangeValue={(value) => setIndex(value)}
+                    zIndex={500}
                 />
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-});
 export default SortBar;

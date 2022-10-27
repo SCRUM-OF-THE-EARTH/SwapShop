@@ -129,7 +129,7 @@ const Detailed_Trade_item = ({route, navigation}) => {
                         <TouchableOpacity style={[styles.center_icon, styles.icon_button]} onPress={() => {
                             if (soldStatus == 1) {
                                 item.updateSoldStatus(communicator, '0').then(() => {
-                                    setSoldStatus(item.sold);
+                                    setSoldStatus(0);
                                 })
                                 
                             } else {

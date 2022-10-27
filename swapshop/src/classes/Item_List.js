@@ -233,7 +233,8 @@ export class Trade_item_list extends Item_List {
 
 
     filterByOwnerId(id) {
-        this.filteredResults.filter((item) => item.getOwner().getID() == id)
+        console.log(this.filteredResults);
+        this.filteredResults = this.filteredResults.filter((item) => item.getOwner().getID() == id)
         return this.filteredResults;
     }
 }
