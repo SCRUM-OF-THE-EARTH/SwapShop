@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">64.1% </span>
+                <span class="strong">97.43% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>25/39</span>
+                <span class='fraction'>38/39</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">90% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/10</span>
+                <span class='fraction'>9/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">65.78% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>25/38</span>
+                <span class='fraction'>38/38</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -181,9 +181,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -249,31 +249,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -355,32 +355,32 @@ export class Communicator {
 &nbsp;
 &nbsp;
 &nbsp;
-<span class="fstat-no" title="function not covered" >    as</span>ync makePostRequestForImage(images, item_id, type) {
-        let promises = <span class="cstat-no" title="statement not covered" >[];</span>
-<span class="cstat-no" title="statement not covered" >            images.forEach(<span class="fstat-no" title="function not covered" >im</span>age =&gt; {</span>
-                let body = <span class="cstat-no" title="statement not covered" >new FormData();</span>
-                let fileName =  <span class="cstat-no" title="statement not covered" >image.uri.substring(image.uri.lastIndexOf("/")+1);</span>
-<span class="cstat-no" title="statement not covered" >                body.append('image_content', image.base64);</span>
-<span class="cstat-no" title="statement not covered" >                body.append('image_file', fileName);</span>
-<span class="cstat-no" title="statement not covered" >                body.append('item_id', item_id);</span>
-<span class="cstat-no" title="statement not covered" >                body.append('item_type', type);</span>
+    async makePostRequestForImage(images, item_id, type) {
+        let promises = [];
+            images.forEach(image =&gt; {
+                let body = new FormData();
+                let fileName =  image.uri.substring(image.uri.lastIndexOf("/")+1);
+                body.append('image_content', image.base64);
+                body.append('image_file', fileName);
+                body.append('item_id', item_id);
+                body.append('item_type', type);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >                console.log("imgae body:",body);</span>
+                console.log("imgae body:",body);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >                promises.push(</span>
+                promises.push(
                 fetch(this.postUrl, {
                     method: 'POST',
                     headers: {  
                         "content-type": "multipart/form-data",
                     },
                     body: body
-                }).then(<span class="fstat-no" title="function not covered" >re</span>s =&gt; {
-<span class="cstat-no" title="statement not covered" >                    console.log(res);</span>
-<span class="cstat-no" title="statement not covered" >                    return res.status;</span>
+                }).then(res =&gt; {
+                    console.log(res);
+                    return res.status;
                 }));
             
         })
-<span class="cstat-no" title="statement not covered" >        return Promise.all(promises);</span>
+        return Promise.all(promises);
     }
 }
 &nbsp;
@@ -391,7 +391,7 @@ export class Communicator {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-10-27T16:07:41.285Z
+                at 2022-10-27T17:56:34.391Z
             </div>
         <script src="../prettify.js"></script>
         <script>

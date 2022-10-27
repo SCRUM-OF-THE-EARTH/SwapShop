@@ -3,12 +3,13 @@ import { Tag } from '../classes/Tag.js';
 import { Trade_Item } from '../classes/Trade_Item.js';
 import { Communicator } from '../classes/Communicator.js';
 import { compareInterest } from '../classes/Item_List';
-import { Login_user } from '../classes/User_Account.js';
+import { Login_user, User_Account } from '../classes/User_Account.js';
+import { trade_items_list } from '../helpers/init.js';
 require('jest-fetch-mock').enableMocks()
 fetchMock.dontMock();
 
 const communicator = new Communicator("https://sudocode.co.za/SwapShop/backend/");
-const login_user = new Login_user(communicator);;
+const login_user = new Login_user(communicator);
 
 const test_item_list = new Trade_item_list(false, communicator, login_user);
 const test_tag_list = new Tag_list(communicator);
@@ -21,7 +22,8 @@ let testItems =[
       item_name: "a test1",
       item_value: "200",
       item_description: "test item",
-      id: '1', 
+      id: '1',
+      owner_id: '1',
       date_created: "2022-10-12",
       tags: [{name: "taga", date_created:"2022-10-12", id: 1, exchange: 0}]
     }, 
@@ -30,6 +32,7 @@ let testItems =[
         item_value: "250",
         item_description: "test item",
         id: '2', 
+        owner_id: '2',
         date_created: "2022-09-12",
         tags: [{name: "taga", date_created:"2022-10-12", id: 1, exchange: 0}, {name: "tagb", date_created:"2022-10-12", id: 2, exchange: 0}]
     }
@@ -55,7 +58,11 @@ async function waitFetch() {
 
     test_item_list.json_items = json_items;
     test_item_list.loadItems((item) => {
-        let Owner = item["owner_id"];
+        let Owner = new User_Account();
+        Owner.setID(item["owner_id"]);
+
+        console.log("Owner is:", Owner);
+        
 
         let trade_Item = new Trade_Item(item);
         item["tags"].forEach((json_tag) => {
@@ -102,6 +109,9 @@ describe("testing the item_list and its methods", () => {
     test("Given I am a logged in user when I open the main screen then a list of trade items will be displayed that I will be able to scroll through.", () => {
         test_item_list.loadItems((item) => {
             let trade_Item = new Trade_Item(item);
+            let Owner = new User_Account();
+            Owner.setID(item['owner_id']);
+            trade_Item.setOwner(Owner);
             return trade_Item;
         });
 
@@ -196,6 +206,8 @@ describe("testing the item_list and its methods", () => {
         sort_list = test_item_list.getItems();
 
         expect(compareInterest(sort_list[1],sort_list[0], login_user)).toBe(-1);
+        expect(compareInterest(sort_list[0],sort_list[1], login_user)).toBe(1);
+        expect(compareInterest(sort_list[1],sort_list[1], login_user)).toBe(0);
 
         expect(test_item_list.index).toBe(null);
 
@@ -336,20 +348,6 @@ describe("testing the item_list and its methods", () => {
         expect(test_item_list.filteredResults.length).toBe(1);
     });
 
-    // test("testing the item lists ability to fetch images for trade items",() => {
-    //     return test_item_list.fetchImages().then(() => {
-    //         test_item_list.getItems().forEach((t) => {
-    //             if (t.hasImages) {
-    //                 t.id = `${t.id}`;
-    //                 let slideshow = t.getImageSlideShow();
-    //                 slideshow.forEach(slide => {
-    //                     expect(slide.url == 'https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg');
-    //                 })
-    //             }
-    //         })
-    //     })
-    // })
-
     test("testing the tag list's ability to add tags them to the list of tags and retrieve ", () => {
         test_tag_list.items = [];
         test_tag_list.json_items = [];
@@ -368,6 +366,22 @@ describe("testing the item_list and its methods", () => {
             // expect(droptags[iter]['value']['exchange']).toBe(tempTags[iter]['exchange']);
             expect(droptags[iter]['value']['id']).toBe(tempTags[iter]['id']);
         }
+    });
+
+    it("Given that I am using the app, when I post an item to trade then I should be able to see a backlog of all the items I had posted.", () => {
+        let items = test_item_list.getItems();
+        console.log("items in list: ", items)
+        items.forEach((item) => {
+            test_item_list.filteredResults = items;
+            let ownerId = item.getOwner().getID();
+            let filtered = trade_items_list.filterByOwnerId(ownerId);
+            filtered.forEach((f) => {
+                expect(f.getOwner().getID()).toBe(ownerId);
+            })
+        })
+        
+
+        
     })
 
     

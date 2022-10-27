@@ -91,23 +91,17 @@ describe("testing the login, register and user account system", () => {
         expect(user_account.setID(1)).toBe(user_account);
         expect(user_account.getID()).toBe(1);
 
-        try {
-            user_account.setFullName("test");
-        } catch (err) {
-            expect(err.message).toBe("0 can not set the full name of a user with 1, method requires 2 names (first and last)")
-        }
+        expect(user_account.setPhoto("test_Photo_Uri.jpg")).toBe(user_account);
+        expect(user_account.getPhoto()).toBe("test_Photo_Uri.jpg");
 
-        try {
-            user_account.setFullName("test test test");
-        } catch (err) {
-            expect(err.message).toBe("0 can not set the full name of a user with 3, method requires 2 names (first and last)")
-        }
+        user_account.setFullName("test");
+        expect(user_account.error).toBe("a first and last name, seperated by a space, is required");
+        
+        user_account.error = false;
 
-        try {
-            user_account.setUsername("test with spaces");
-        } catch (err) {
-            expect(err.message).toBe("1 username can not contain spaces")
-        }
+        user_account.setFullName("test test test");
+        expect(user_account.error).toBe("a first and last name, seperated by a space, is required")
+
 
         expect(user_account.setFisrtName("test")).toBe(user_account);
         expect(user_account.getFirstName()).toBe("test");
@@ -124,7 +118,7 @@ describe("testing the login, register and user account system", () => {
         expect(user_account.getEmail()).toBe("test");
     });
 
-    test("testing the user accounts ability to delete an account", ()=> {
+    test("testing the user accounts ability to delete an account", () => {
         return test_LogUser.deleteAccount().then((res) => {
             expect(res).toBe(0);
         })

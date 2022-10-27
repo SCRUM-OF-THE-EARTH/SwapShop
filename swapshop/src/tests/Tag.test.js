@@ -17,7 +17,7 @@ function generateString(length){
     return results;
 }
 
-describe("testing the Tag class and its methods", () => {
+describe("Given that I am using the app, when I want to post an item then I should also be able to create a tag that I can use to do the searching.", () => {
 
     test("testing the creation of a new tag", () => {
         test_Tag = new Tag(Test_josn_item);

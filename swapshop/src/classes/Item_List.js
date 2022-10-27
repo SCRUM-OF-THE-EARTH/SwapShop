@@ -242,13 +242,10 @@ export class Trade_item_list extends Item_List {
         return this.filteredResults;
     }
 
-    fetchImages() { 
-        let promises = [];
-        this.items.forEach((item) => {
-            promises.push(item.fetchImages());
-        })
 
-        return Promise.all(promises)
+    filterByOwnerId(id) {
+        this.filteredResults.filter((item) => item.getOwner().getID() == id)
+        return this.filteredResults;
     }
 }
 

@@ -38,16 +38,12 @@ export class Trade_Item {
         
     }
 
-    // async fetchImages() {
-    //     if (!this.hasImages) {
-    //         let temp = await communicator.makeRequestByCommand('fetch-trade-images', [this.id])
-    //         if (temp.length > 0) {
-    //             this.images = temp;
-    //         }
-    //     }
-
-    //     return;
-    // }
+    async updateSoldStatus(communicator, status) {
+        await communicator.makeRequestByCommand("update-sold-status", [item.id, status])
+        this.sold = status;
+        return this; 
+        
+    }
 
     getImageSlideShow() {
         let imageSlideShow = [];

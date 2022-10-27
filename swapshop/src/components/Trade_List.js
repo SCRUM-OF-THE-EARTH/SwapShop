@@ -90,22 +90,22 @@ const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigatio
                 trade_items_list.searchTerm = searchTerm;
                 trade_items_list.index = sortIndex;
                 let filtered = trade_items_list.filterByTags(tags);
+                if (id != null) {
+                    filtered = trade_items_list.filterByOwnerId(id);
+                }
                 filtered.forEach(item => {
-                    if (id == null || id == item.getOwner().getID()){
-                        tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
-                    }
-                    
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
                 })
             };
             if (sold) {
                 sold_trade_items_list.searchTerm = searchTerm;
                 sold_trade_items_list.index = sortIndex;
                 let filtered = sold_trade_items_list.filterByTags(tags);
+                if (id != null) {
+                    filtered = trade_items_list.filterByOwnerId(id);
+                }
                 filtered.forEach(item => {
-                    if (id == null || id == item.getOwner().getID()){
-                        tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
-                    }
-                    
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
                 })
             };
             setDisplayItems(tempItems); 

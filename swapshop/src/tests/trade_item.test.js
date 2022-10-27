@@ -82,31 +82,7 @@ describe("testing the trade item class", () => {
     
         item_id = 1;
 
-        let promises = [];
-            images.forEach(image => {
-                let body = new FormData();
-                let fileName =  image.uri.substring(image.uri.lastIndexOf("/")+1);
-                body.append('image_content', image.base64);
-                body.append('image_file', fileName);
-                body.append('item_id', item_id);
-                body.append('item_type', "trade");
-
-                promises.push(
-                    fetch(communicator.postUrl, {
-                        method: 'POST',
-                        headers: {  
-                            "content-type": "multipart/form-data",
-                        },
-                        body: body
-                    }).then(res => {
-                        console.log(res);
-                        return res.status;
-                    })
-                );
-            
-        });
-
-        return Promise.all(promises);
+        return communicator.makePostRequestForImage(images, item_id, "trade");
     })
 
     // test("testing the ability to fetch an image from the server", () => {
@@ -117,13 +93,13 @@ describe("testing the trade item class", () => {
     //     })
     // });
 
-    test("testing the ability to create and retrieve an image sldeshow", () => {
+    test("Given that I am using the app, when I am redirected to the main page, then I should be able to see product posts attached with an image of how the product looks like.", () => {
         let slildeshow = test_item.getImageSlideShow();
         expect(slildeshow.length).toBe(1);
         expect(slildeshow[0].url).toBe('https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg');
     })
     
-    test("Given that I am using the app, when I make a post then I should be able state the item I want to be exchanged and I should  also see that option on the feed.", () => {
+    test("Given that I am using the app, when I make a post then I should be able state the item I want to be exchanged as a tag and I should  also see that option on the feed.", () => {
         let TestTag = new Tag(test_tag_json);
 
         test_item.addExchangeTag(TestTag);
@@ -140,6 +116,25 @@ describe("testing the trade item class", () => {
         expect(tags[0].date_created).toBe("2022-10-12");
         expect(tags[0].id).toBe("1");
 
+    })
+
+    test("Given that I am using the app, when I post a trade item, then it should be linked to a tag that can help identify that item and similar or related items when I search for it with that tag.", () => {
+        let TestTag = new Tag(test_tag_json);
+        let Test_Tag = {id: 0, name: 'tags_name', item: 88}
+        
+        test_item.addTag(TestTag);
+        let tags = test_item.getTags();
+        expect(tags.length).toBe(1);
+        expect(tags[0].getID()).toBe("1");
+        expect(tags[0].getName()).toBe("Test");
+        
+        let dropItem = tags[0].getTagValue();
+
+        expect(dropItem.label).toBe("Test");
+        expect(dropItem.value).toBe(tags[0]);
+
+        expect(tags[0].date_created).toBe("2022-10-12");
+        expect(tags[0].id).toBe("1"); 
     })
 
     test("testing the comapring terms function relating to the search system", () => {
@@ -202,13 +197,16 @@ describe("testing the trade item class", () => {
         //     expect(test_item.setExchangeItem(Exchange)).toBe(test_item);
         //     expect(test_item.getExchangeItem()).toBe(Exchange);
         // }
+    });
 
-        let Test_Tag = {id: 0, name: 'tags_name', item: 88}
-        let Test_Tag_2 = {id: 1, name: 'tag2_name', item: 85};
-        expect(test_item.addTag(Test_Tag)).toBe(Test_Tag);
-        expect(test_item.getTags()).toStrictEqual([Test_Tag]);
-        expect(test_item.addTag(Test_Tag_2)).toBe(Test_Tag_2);
-        expect(test_item.getTags()).toStrictEqual([Test_Tag, Test_Tag_2]);
+    test("Given that I am a using the app, when I have managed to successfully trade an item then I should be able to close the item so that I do not receive further queries about it. ", () => {
+        test_item.updateSoldStatus(communicator, "0").then(() => {
+            expect(test_item.sold).toBe(0);
+            test_item.updateSoldStatus(communicator, "1").then(() => {
+                expect(test_item.sold).toBe(1);
+            })
+        test
+        })
         
     });
 })
