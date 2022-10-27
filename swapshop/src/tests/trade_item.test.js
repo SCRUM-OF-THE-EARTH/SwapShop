@@ -1,3 +1,9 @@
+function FormDataMock() {
+    this.append = jest.fn();
+}
+  
+global.FormData = FormDataMock
+
 import { Trade_Item } from "../classes/Trade_Item";
 import 'react-native';
 import { test_Reguser } from './user_account.test.js';
@@ -68,6 +74,41 @@ describe("testing the trade item class", () => {
         })
     });
 
+    test("Given that I am using the app, when I make a post about the product I want to trade with an image(s), then the post and its photo should appear on the posts/main feed.", () => {
+        let images = [{
+            uri: "/test1.jpg",
+            base64: "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAOTXL0Y4OHwAAAABJRU5ErkJggg=="
+        }];
+    
+        item_id = 1;
+
+        let promises = [];
+            images.forEach(image => {
+                let body = new FormData();
+                let fileName =  image.uri.substring(image.uri.lastIndexOf("/")+1);
+                body.append('image_content', image.base64);
+                body.append('image_file', fileName);
+                body.append('item_id', item_id);
+                body.append('item_type', "trade");
+
+                promises.push(
+                    fetch(communicator.postUrl, {
+                        method: 'POST',
+                        headers: {  
+                            "content-type": "multipart/form-data",
+                        },
+                        body: body
+                    }).then(res => {
+                        console.log(res);
+                        return res.status;
+                    })
+                );
+            
+        });
+
+        return Promise.all(promises);
+    })
+
     // test("testing the ability to fetch an image from the server", () => {
     //     return test_item.fetchImages().then(() => {
     //         expect(test_item.hasImages).toBe(true);
@@ -82,7 +123,7 @@ describe("testing the trade item class", () => {
         expect(slildeshow[0].url).toBe('https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg');
     })
     
-    test("testing the ability to add exchange items and drop down tag item", () => {
+    test("Given that I am using the app, when I make a post then I should be able state the item I want to be exchanged and I should  also see that option on the feed.", () => {
         let TestTag = new Tag(test_tag_json);
 
         test_item.addExchangeTag(TestTag);
@@ -119,7 +160,7 @@ describe("testing the trade item class", () => {
         expect(test_item.compareTerm(wrong_string)).toBe(false);
     })
 
-    test("testing the setting ability of trade item class", () => {
+    test("Given that I am using the app, when I want to make a new post, then I should be given the option to make further detailed description about the product I want to trade, as well as a way for me to be contacted.", () => {
         let Name
         for (let i = 0; i < Math.floor((Math.random()+1)*10); i++) {
             Name = generateString(7);

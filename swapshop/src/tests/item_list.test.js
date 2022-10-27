@@ -321,11 +321,8 @@ describe("testing the item_list and its methods", () => {
         });
 
         expect(sorted).toBe(true);
-    });
 
-    test("testing filter by tag", () => {
         test_item_list.filterByTags([]);
-        // test_item_list.filteredResults = test_item_list.getItems()
 
         expect(test_item_list.filteredResults.length).toBe(2);
 

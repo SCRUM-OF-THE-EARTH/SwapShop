@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">65.78% </span>
+                <span class="strong">64.1% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>25/38</span>
+                <span class='fraction'>25/39</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/11</span>
+                <span class='fraction'>6/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">67.56% </span>
+                <span class="strong">65.78% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>25/37</span>
+                <span class='fraction'>25/38</span>
             </div>
         
             
@@ -167,7 +167,10 @@
 <a name='L102'></a><a href='#L102'>102</a>
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -257,6 +260,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -264,8 +269,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -351,13 +357,15 @@ export class Communicator {
 &nbsp;
 <span class="fstat-no" title="function not covered" >    as</span>ync makePostRequestForImage(images, item_id, type) {
         let promises = <span class="cstat-no" title="statement not covered" >[];</span>
-<span class="cstat-no" title="statement not covered" >        images.forEach(<span class="fstat-no" title="function not covered" >im</span>age =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            images.forEach(<span class="fstat-no" title="function not covered" >im</span>age =&gt; {</span>
                 let body = <span class="cstat-no" title="statement not covered" >new FormData();</span>
                 let fileName =  <span class="cstat-no" title="statement not covered" >image.uri.substring(image.uri.lastIndexOf("/")+1);</span>
 <span class="cstat-no" title="statement not covered" >                body.append('image_content', image.base64);</span>
 <span class="cstat-no" title="statement not covered" >                body.append('image_file', fileName);</span>
 <span class="cstat-no" title="statement not covered" >                body.append('item_id', item_id);</span>
 <span class="cstat-no" title="statement not covered" >                body.append('item_type', type);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                console.log("imgae body:",body);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >                promises.push(</span>
                 fetch(this.postUrl, {
@@ -367,10 +375,11 @@ export class Communicator {
                     },
                     body: body
                 }).then(<span class="fstat-no" title="function not covered" >re</span>s =&gt; {
+<span class="cstat-no" title="statement not covered" >                    console.log(res);</span>
 <span class="cstat-no" title="statement not covered" >                    return res.status;</span>
-                })
-                .catch(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >console.error(e))</span>);
-        });
+                }));
+            
+        })
 <span class="cstat-no" title="statement not covered" >        return Promise.all(promises);</span>
     }
 }
@@ -382,7 +391,7 @@ export class Communicator {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-10-27T12:04:15.843Z
+                at 2022-10-27T15:56:16.957Z
             </div>
         <script src="../prettify.js"></script>
         <script>
