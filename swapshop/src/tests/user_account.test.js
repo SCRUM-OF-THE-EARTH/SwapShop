@@ -20,35 +20,51 @@ let password = generateString(7);
 let email = generateString(7);
 
 export const test_Reguser = new Registering_User(fname+" "+lname, username, email, communicator);
-const test_LogUser = new Login_user(communicator);
-test_LogUser.setUsername(username)
+let test_LogUser;
 
 describe("testing the login, register and user account system", () => {
-    test("as a registering user when I input my details they will be saved into the system", () => {
+
+    test("Given I am an unregistered user, when I enter my full name, a valid username, a valid password and my email address then the app will save my details and create a new account for me.", () => {
         expect(test_Reguser.getFirstName()).toBe(fname)
         expect(test_Reguser.getLastName()).toBe(lname);
         expect(test_Reguser.getUsername()).toBe(username);
         expect(test_Reguser.getEmail()).toBe(email);
-    })
 
-    test("as a registering user when I input my detals I can register a new account", () => {
         return test_Reguser.register_Account(password).then(data => {
             expect(data).toBe(true);
         });
     })
 
-    test("as a registering user when I input an already existing username a new account will not be created", () => {
-        return test_Reguser.register_Account(password).then(data => {
-            expect(data).toBe(false);
-        })
-    })
+    test("Given I am an unregistered user, when I enter my full name and email and an invalid username or invalid password then the system will not create a new account for me.", () => {
 
-    test("as a logining in user when I input my username and password my details will be saved", () => {
-        expect(test_LogUser.getUsername()).toBe(username);   
+        let New_test_Reguser;
+
+        New_test_Reguser = new Registering_User("", username, email, communicator);
+        expect(New_test_Reguser.getError()).toBe("please enter a first and last name");
+
+        New_test_Reguser = new Registering_User(fname+" "+lname, "", email, communicator);
+        expect(New_test_Reguser.getError()).toBe("Username can not be empty");
+
+        New_test_Reguser = new Registering_User(fname+" "+lname, username, email, communicator);
+
+        responses = [];
+        responses.push(New_test_Reguser.register_Account("").then(reg_user => {
+            expect(reg_user.getError()).toBe("password can not be empty");
+        }));
+
+        responses.push(New_test_Reguser.register_Account(password).then(data => {
+            expect(data.getError()).toBe("sorry. Something went wrong");
+        }));
+
+        return Promise.all(responses);
     });
 
-    test("as a loggining in user when I input my username and password I can fetch my detila from the database and log into the app", () => {
+    test("Given I am a registered user when I enter my username and password then the app will retrieve my details, save them in the app and take me to the main screen.", () => {
         
+        test_LogUser = new Login_user(communicator);
+        test_LogUser.setUsername(username)
+        expect(test_LogUser.getUsername()).toBe(username);
+
         return test_LogUser.Login(password).then((data) => {
             expect(data).toBe(true);
             expect(test_LogUser.getFirstName()).toBe(fname);
@@ -57,23 +73,17 @@ describe("testing the login, register and user account system", () => {
         });
     });
 
-    test("as a logging in user when I input incorrect password I will not be logged in", () => {
+    test("Given I am a registered user when I enter an invalid username or password then the app will not retrieve my details, will not log me into the main screen and will display an error.", () => {
         
-        let wrong_password = generateString();
-        return test_LogUser.Login(wrong_password).then((data) => {
-            expect(data).toBe(false);
-        })
+        let wrong_password = generateString(10);
+        let Promises = [];
 
+        Promises.push(test_LogUser.Login(wrong_password).then((data) => {
+            expect(test_LogUser.getError()).toBe("sorry. Something went wrong");
+            expect(data).toBe(false);
+        }));
+        return Promise.all(Promises);
     });
-
-    test("as a logging in user when I input an incorrect username I will not bew logged into ther system", () => {
-        let wrong_username = generateString();
-        test_LogUser.setUsername(wrong_username);
-
-        return test_LogUser.Login(password).then(data => {
-            expect(data).toBe(false);
-        })
-    })
 
     test("testing the user accounts class functions", ()=> {
         let user_account = new User_Account();

@@ -2,6 +2,7 @@ import { Trade_Item } from "../classes/Trade_Item";
 import 'react-native';
 import { test_Reguser } from './user_account.test.js';
 import { Tag } from "../classes/Tag.js";
+import { communicator } from '../helpers/init';
 
 function generateString(length){
     let results = Math.random().toString(36).substring(2,length);
@@ -32,18 +33,39 @@ export let test_item;
 
 describe("testing the trade item class", () => {
 
-    test("testing contruction of new trade item", () => {
-        test_item = new Trade_Item(test_item_obj);
-        test_item.setOwner(test_Reguser);
-        let date = new Date();
-        expect(test_item.setDateCreated(date)).toBe(test_item);
-        expect(test_item.getName()).toBe(test_item_obj["item_name"]);
-        expect(test_item.getValue()).toBe(test_item_obj["item_value"]);
-        expect(test_item.getDescription()).toBe(test_item_obj["description"]);
-        expect(test_item.getID()).toBe(test_item_obj["id"]);
-        expect(test_item.getOwner()).toBe(test_Reguser);
-        // expect(test_item.getExchangeItem()).toBe("test exchange");
-        expect(test_item.getDateCreated()).toBe(date);
+    test("Given I am a user and I am Logged in, when I enter the name, estimate value and description of an item I would like to trade then the details of my item will be saved and posted on the main page's list of trading items", () => {
+
+        let Promises = [];
+
+        for (let i = 0; i < 10; i++) {
+            let testName = generateString(10);
+            let test_item_value = Math.random();
+            let testDescription = generateString(100);
+
+            Promises.push(communicator.makeRequestByCommand("add-trade-item", [`${testName}`,`${test_item_value}`, `${testDescription}`, `${test_Reguser.getID()}`]));
+
+            test_item_obj['item_name'] = testName;
+            test_item_obj['item_value'] = test_item_value;
+            test_item_obj['description'] = testDescription;
+
+
+            test_item = new Trade_Item(test_item_obj);
+            test_item.setOwner(test_Reguser);
+            let date = new Date();
+            expect(test_item.setDateCreated(date)).toBe(test_item);
+            expect(test_item.getName()).toBe(test_item_obj["item_name"]);
+            expect(test_item.getValue()).toBe(test_item_obj["item_value"]);
+            expect(test_item.getDescription()).toBe(test_item_obj["description"]);
+            expect(test_item.getID()).toBe(test_item_obj["id"]);
+            expect(test_item.getOwner()).toBe(test_Reguser);
+            expect(test_item.getDateCreated()).toBe(date);
+        }
+        
+        return Promise.all(Promises).then(posted => {
+            posted.forEach(item => {
+                expect(item).not.toBe(0);
+            })
+        })
     });
 
     // test("testing the ability to fetch an image from the server", () => {

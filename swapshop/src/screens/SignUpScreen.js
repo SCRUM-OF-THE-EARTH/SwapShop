@@ -81,37 +81,12 @@ const SignUpScreen = ({navigation}) =>{
 
 function register(fullName, username, password, email, navigation, onChangeError) {
 
-    if (fullName == "") {
-        onChangeError("please enter a first and last name")
-        return
-    }
-
-    if (username == "") {
-        onChangeError("Username can not be empty");
-        return
-    }
-
-    if (password == "") {
-        onChangeError("Password can not be blank");
+    let new_user;
+    new_user = new Registering_User(fullName, username, email);
+    if (new_user.error) {
+        onChangeError(new_user.error);
         return;
     }
-
-    let new_user;
-    try {
-        new_user = new Registering_User(fullName, username, email);
-    } catch (err) {
-        let errorCode = err.message.charAt(0)
-        if (errorCode == "0") {
-            onChangeError("Please enter a valid first and last name")
-        }
-
-        if (errorCode == "1") {
-            onChangeError("username can not contain spaces")
-        }
-
-        return 
-    }
-
 
     let success = new_user.register_Account(password);
     

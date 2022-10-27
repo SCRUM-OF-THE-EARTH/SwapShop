@@ -99,20 +99,21 @@ describe("testing the item_list and its methods", () => {
         });
     });
 
-    test("testing the item lists load items method", () => {
+    test("Given I am a logged in user when I open the main screen then a list of trade items will be displayed that I will be able to scroll through.", () => {
         test_item_list.loadItems((item) => {
             let trade_Item = new Trade_Item(item);
             return trade_Item;
         });
 
-        let Test_loaded_item = new Trade_Item(test_json_items[0]);
-        
-        let comparator = test_item_list.getItems()[0]
 
-        expect(comparator.getName()).toBe(Test_loaded_item.getName());
-        expect(comparator.getID()).toBe(Test_loaded_item.getID());
-        expect(comparator.getDescription()).toBe(Test_loaded_item.getDescription());
-        expect(comparator.getValue()).toBe(Test_loaded_item.getValue());
+        test_item_list.getItems().forEach((comparator, i) => {
+            let Test_loaded_item = new Trade_Item(test_json_items[i]);
+
+            expect(comparator.getName()).toBe(Test_loaded_item.getName());
+            expect(comparator.getID()).toBe(Test_loaded_item.getID());
+            expect(comparator.getDescription()).toBe(Test_loaded_item.getDescription());
+            expect(comparator.getValue()).toBe(Test_loaded_item.getValue());
+        });
     })
 
     test("testing find by ID", () => {
@@ -159,7 +160,7 @@ describe("testing the item_list and its methods", () => {
         })
     })
 
-    test("testing search", () => {
+    test("given I am a logged in user when I type a search term into the search bar then the app will display a of items filtered by similarities between the item name and the search term.", () => {
         let items = test_item_list.getItems();
 
         test_item_list.searchItems("");
