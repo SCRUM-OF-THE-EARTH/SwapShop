@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import themeContext from './src/components/themeContext';
 import theme from './src/components/config/theme';
+import registerNNPushToken from 'native-notify';
 
 const {height, width} = Dimensions.get('window');
 
@@ -27,7 +28,7 @@ LogBox.ignoreLogs([
 
 const App = () =>{
     const [mode, setMode] = useState(false);
-
+    registerNNPushToken(4557, 'emqys7tmf4UIZdRXe1dhJF');
     useEffect(() => {
         let eventListener = EventRegister.addEventListener(
             "changeTheme",
@@ -44,7 +45,7 @@ const App = () =>{
         <themeContext.Provider value={mode === true ? theme.dark : theme.light}>
          <NavigationContainer>
             <RootStack.Navigator screenOptions={{headerShown:false}}>
-            
+
                 <RootStack.Screen name = "SignInScreen" component = {SignInScreen}/>
                 <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
                 <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
