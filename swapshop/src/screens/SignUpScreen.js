@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, Image, TextInput, Button} from 'react-native';
 import React, {useState, useContext} from 'react';
 import themeContext from '../components/themeContext';
 import { Registering_User } from '../classes/User_Account';
+import { communicator } from "../helpers/init";
 
 // this is the the dign up creen for the app 
 // th user will enter a usename, full name, passwor dnad email
@@ -82,7 +83,7 @@ const SignUpScreen = ({navigation}) =>{
 function register(fullName, username, password, email, navigation, onChangeError) {
 
     let new_user;
-    new_user = new Registering_User(fullName, username, email);
+    new_user = new Registering_User(fullName, username, email, communicator);
     if (new_user.error) {
         onChangeError(new_user.error);
         return;
@@ -91,10 +92,10 @@ function register(fullName, username, password, email, navigation, onChangeError
     let success = new_user.register_Account(password);
     
 
-    if (success) {
+    if (success == true) {
         navigation.navigate('SignInScreen');
     } else {
-        onChangeError("sorry. Something went wrong")
+        onChangeError(new_user.getError())
     }
  }
 

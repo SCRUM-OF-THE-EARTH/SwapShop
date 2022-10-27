@@ -285,7 +285,7 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
             } else {
                 let temp = item.getTags();
                 temp.splice(foundIndex, 1);
-                item.exchange = temp;
+                item.tags = temp;
             }
         })
 
@@ -349,8 +349,6 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
 // the styles for the add items screen
 const styles = StyleSheet.create({
     container: {
-        margin: 20,
-        marginVertical: 50,
         alignSelf: 'center',
         alignContent: 'center',
         // justifyContent: 'center',
@@ -393,7 +391,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         backgroundColor: "#3CB371",
         margin: 2,
-        top:'85%',
+        top:'90%',
         position: 'absolute'
     },
 

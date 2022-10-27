@@ -35,7 +35,7 @@ export class Trade_Item {
     }
 
     async updateSoldStatus(communicator, status) {
-        await communicator.makeRequestByCommand("update-sold-status", [item.id, status])
+        await communicator.makeRequestByCommand("update-sold-status", [this.id, status])
         this.sold = status;
         return this; 
         
