@@ -335,6 +335,7 @@ async function AddNewItem(name, description, value, tags, setError, navigation, 
         })
 
         if (image != "") {
+            console.log("Item Id is:", item_id);
             await communicator.makePostRequestForImage(image, item_id, "trade");
         }
         navigation.navigate('MainScreen');

@@ -71,7 +71,7 @@ const MainScreen = ({navigation}) =>{
     // let screen = (<View style={[styles.container, { backgroundColor: theme.background }]}>
     let screen = (<View style={[styles.container]}>
         <View style={[styles.search_Bar]}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', zIndex: 50, paddingBottom: 10, width: "100%"}}>
                 <TextInput 
                 //  { backgroundColor: theme.inputColor }
                     style={[styles.TextInput]} 
@@ -82,13 +82,14 @@ const MainScreen = ({navigation}) =>{
                 <View style={styles.sortMenu}>
                     <SortBar
                         setIndex={setSortIndex}
+                        zIndex={50}
                      />
                 </View>
             </View>
 
             <DropDownPicker
             // , { backgroundColor: theme.inputColor }]
-                style={[styles.tagMenu]}
+                // style={[styles.tagMenu]}
                 open={tagMenuOpen}
                 searchable={true}
                 placeholder="filter by tag"
@@ -102,7 +103,7 @@ const MainScreen = ({navigation}) =>{
                 setOpen={setTagMenuOpen}
                 setValue={setTagValues}
                 setItems={setTags}
-                // zIndex={5}
+                zIndex={20}
             />
         </View>
 
@@ -160,23 +161,19 @@ const styles = StyleSheet.create({
       },
 
       TextInput:{
-        padding: 5,
+        padding: 10,
         paddingHorizontal:20,
         color:"gray",
         alignSelf:'center',
         backgroundColor:"#F5F5F5",
-        borderRadius:50,
+        borderRadius:10,
         width: '65%',
-        marginHorizontal: 10,
+        marginHorizontal: 5,
       },
       sortMenu: {
         width: "30%",
         zIndex: 10
     },
-    tagMenu: {
-        // zIndex: 9,
-        // marginVertical: 5
-    }
 });
 
 export default MainScreen;

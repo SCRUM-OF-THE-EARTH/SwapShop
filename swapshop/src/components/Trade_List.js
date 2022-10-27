@@ -58,7 +58,7 @@ function loadItems(available, sold, id, navigation) {
 
             trade_items_list.getItems().forEach((item) => {
                 if (id == null || item.getOwner().getID() == id) {
-                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item} navigation={navigation}/>);
                 }
             })
         }
@@ -72,7 +72,7 @@ function loadItems(available, sold, id, navigation) {
 
             sold_trade_items_list.getItems().forEach((item) => {
                 if (id == null || item.getOwner().getID() == id) {
-                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item} navigation={navigation}/>);
                 }
             })
         }
@@ -90,22 +90,22 @@ const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigatio
                 trade_items_list.searchTerm = searchTerm;
                 trade_items_list.index = sortIndex;
                 let filtered = trade_items_list.filterByTags(tags);
+                if (id != null) {
+                    filtered = trade_items_list.filterByOwnerId(id);
+                }
                 filtered.forEach(item => {
-                    if (id == null || id == item.getOwner().getID()){
-                        tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
-                    }
-                    
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item} navigation={navigation}/>);
                 })
             };
             if (sold) {
                 sold_trade_items_list.searchTerm = searchTerm;
                 sold_trade_items_list.index = sortIndex;
                 let filtered = sold_trade_items_list.filterByTags(tags);
+                if (id != null) {
+                    filtered = sold_trade_items_list.filterByOwnerId(id);
+                }
                 filtered.forEach(item => {
-                    if (id == null || id == item.getOwner().getID()){
-                        tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item}/>);
-                    }
-                    
+                    tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item} navigation={navigation}/>);
                 })
             };
             setDisplayItems(tempItems); 

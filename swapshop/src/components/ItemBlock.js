@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useState } from 'react';
 
-export const ItemBlock = ({item}) => {
+export const ItemBlock = ({item, navigation}) => {
     const [soldStatus, setSoldStatus] = useState(item.sold);
 
     let exchangeTags = [];
@@ -13,7 +13,7 @@ export const ItemBlock = ({item}) => {
         })
         
         return (
-            <TouchableOpacity key={`${item.id}-touchable-container`} style={styles.container} onPress={() => item.navigation.navigate("detailed_item", {item: item})}>
+            <TouchableOpacity key={`${item.id}-touchable-container`} style={styles.container} onPress={() => navigation.navigate("detailed_item", {item: item})}>
                 <View key={`${item.id}-title_container`} style={styles.title_container}>
                     <Text key={`${item.id}-header`}  style={styles.header}>{item.item_name}</Text>
                     { soldStatus == 0 ? <Text key={`${item.id}-available-tag`} style={[styles.availability_tag, {borderColor: '#A3E0BF', color: '#A3E0BF'}]}>AVAILABLE</Text> : <Text key={`${item.id}-available-tag`} style={[styles.availability_tag,  {borderColor: 'gray', color: 'gray'}]}>SOLD</Text> }

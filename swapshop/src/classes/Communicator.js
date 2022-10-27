@@ -78,13 +78,15 @@ export class Communicator {
 
     async makePostRequestForImage(images, item_id, type) {
         let promises = [];
-        images.forEach(image => {
+            images.forEach(image => {
                 let body = new FormData();
                 let fileName =  image.uri.substring(image.uri.lastIndexOf("/")+1);
                 body.append('image_content', image.base64);
                 body.append('image_file', fileName);
                 body.append('item_id', item_id);
                 body.append('item_type', type);
+
+                console.log("imgae body:",body);
 
                 promises.push(
                 fetch(this.postUrl, {
@@ -94,10 +96,11 @@ export class Communicator {
                     },
                     body: body
                 }).then(res => {
+                    console.log(res);
                     return res.status;
-                })
-                .catch(e => console.error(e)));
-        });
+                }));
+            
+        })
         return Promise.all(promises);
     }
 }

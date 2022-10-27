@@ -128,13 +128,14 @@ const Detailed_Trade_item = ({route, navigation}) => {
                     <View style={styles.button_container}>
                         <TouchableOpacity style={[styles.center_icon, styles.icon_button]} onPress={() => {
                             if (soldStatus == 1) {
-                                communicator.makeRequestByCommand("update-sold-status", [item.id, '0']).then(() => {
+                                item.updateSoldStatus(communicator, '0').then(() => {
                                     setSoldStatus(0);
                                 })
+                                
                             } else {
-                                communicator.makeRequestByCommand("update-sold-status", [item.id, '1']).then(() => {
-                                    setSoldStatus(1)
-                                })
+                                item.updateSoldStatus(communicator, '1').then(() => {
+                                    setSoldStatus(1);
+                                });
                             }
                         }}>
                             <Icon color="#044B7F" style={{padding:10}} size={30} name={soldStatus == 0 ? "square-outline" : "checkbox-outline" }></Icon>

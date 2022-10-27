@@ -16,6 +16,7 @@ export class User_Account {
         this.id =0;
         this.photo_url = "";
         this.communicator = communicator;
+        this.error = false;
     }
 
     // setID is used to set the value of the id
@@ -51,9 +52,14 @@ export class User_Account {
     // takes in a string (that must contain a space)
     // and returns this
     setFullName(fullName) {
+
+        if (fullName === "") {
+            return this.setError("please enter a first and last name");
+        }
+
         let names = fullName.split(" ");
         if (names.length != 2 || (names[0] == "" || names[1] == "")){
-            throw Error(`0 can not set the full name of a user with ${names.length}, method requires 2 names (first and last)`);
+            return this.setError("a first and last name, seperated by a space, is required");
         }
 
         this.fname = names[0];
@@ -81,8 +87,13 @@ export class User_Account {
     // it takes in a string 
     // and returns this
     setUsername(user) {
+
+        if (user == "") {
+            return this.setError("Username can not be empty");
+        }
+
         if (user.includes(' ')){
-            throw Error("1 username can not contain spaces");
+            return this.setError("1 username can not contain spaces");
         }
         this.username = user;
         return this;
@@ -123,6 +134,15 @@ export class User_Account {
     getPhoto() {
         return this.photo_url;
     }
+
+    setError(error) {
+        this.error = error;
+        return this;
+    }
+
+    getError() {
+        return this.error;
+    }
 }
 
 // the Login_user is a sub class of User_Account that is used to validate a user's input in order to try and
@@ -130,7 +150,6 @@ export class User_Account {
 export class Login_user extends User_Account {
     constructor(communicator) {
         super(communicator);
-        this.communicator = communicator;
     }
 
     // Login is used to make a request to the server to check the user's details
@@ -138,9 +157,12 @@ export class Login_user extends User_Account {
     // and returns true if the user accoutn exists 
     // and false if the user accoutn does not exist
     async Login(password) {
-        let response = await this.communicator.makeRequestByCommand("login_account", [this.username, password]);
+        let response = false;
 
+        response = await this.communicator.makeRequestByCommand("login_account", [this.username, password]);
+        
         if (!response) {
+            this.setError("sorry. Something went wrong");
             return false;
         }
         
@@ -166,11 +188,11 @@ export class Login_user extends User_Account {
 // posting new user accounts
 export class Registering_User extends Login_user {
     constructor(fullName, username, email, communicator) {
+
         super(communicator);
         this.setFullName(fullName)
         .setUsername(username)
         .setEmail(email);
-
     }
 
     // register_Account is used to post the system while also validtaing the users details
@@ -178,10 +200,14 @@ export class Registering_User extends Login_user {
     // and returns true id the accoutn was created successfully
     // and false if an error occurred
     async register_Account(password) {
+
+        if (password == "") {
+            return this.setError("password can not be empty");
+        }
         let response = await this.communicator.makeRequestByCommand("register_account", [this.getFirstName(), this.getLastName(), this.getUsername(), password, this.getEmail()]);
     
         if (!response) {
-            return false;
+            return this.setError("sorry. Something went wrong");
         }
         this.setID(response["id"]);
         return true;       
