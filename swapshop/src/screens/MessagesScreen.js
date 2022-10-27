@@ -5,6 +5,7 @@ import { db } from '../firebaseConfig/firebase';
 import { login_user } from '../helpers/init';
 import { customChatRoom } from '../classes/Chat_Rooms';
 import { User_Account } from '../classes/User_Account';
+import Tab from "../components/Tab"
 import themeContext from '../components/themeContext';
 
 const MessagesScreen = ({navigation}) => {
@@ -82,7 +83,6 @@ const MessagesScreen = ({navigation}) => {
   
     return (
       <View style={[styles.container, { backgroundColor: theme.inputColor }]}>
-        <Text style = {[styles.topText]}> CHATS </Text>
         <FlatList 
           data={Messages}
           keyExtractor={item=>item.id}
@@ -103,6 +103,10 @@ const MessagesScreen = ({navigation}) => {
             </TouchableOpacity>
           )}
         />
+        
+        
+        <Tab nav={navigation} activeTab="message"/>
+        
       </View>
     );
 };
@@ -112,9 +116,9 @@ export default MessagesScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
-    paddingLeft: 20,
-    paddingRight: 20,
+    // paddingTop: 50,
+    // paddingLeft: 20,
+    // paddingRight: 20,
     alignItems: "center",
     backgroundColor: colors.white,
   },
