@@ -22,4 +22,4 @@ if (!firebase.apps.length){
 // get the firebase firestore database and export it
 const db = firebase.firestore();
 
-export {db};
+export {db, firebase};

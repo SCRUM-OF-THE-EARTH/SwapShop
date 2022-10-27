@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { View, Text,StyleSheet, Button } from 'react-native';
 import Slideshow from 'react-native-image-slider-show';
 import { color } from 'react-native-reanimated';
+import { ScrollView } from 'react-native';
 
 //export const ownerID = 0;
 
@@ -38,7 +39,7 @@ const Detailed_Trade_item = ({route, navigation}) => {
 
     // render the item 
     return (
-        <View>
+        <ScrollView>
             <View style={styles.container}>
             <View style={styles.imageWheel}>
             <Slideshow style={styles.images} dataSource={images}/>
@@ -80,7 +81,7 @@ const Detailed_Trade_item = ({route, navigation}) => {
 
 
         </View>
-        </View>
+        </ScrollView>
         
     )
 }

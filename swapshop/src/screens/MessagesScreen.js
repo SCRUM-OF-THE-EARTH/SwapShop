@@ -1,42 +1,83 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import colors from '../../config/colors';
+import { db } from '../firebaseConfig/firebase';
+import { user_chat_info } from '../classes/User_Chats';
+import { login_user } from '../classes/User_Account';
+import { customChatRoom } from '../classes/Chat_Rooms';
 
-const Messages = [
-  {
-    id: '1',
-    userName: 'Jane',
-    userImg: require('../../assets/profile.jpg'),
-    messageTime: '4 mins ago',
-    messageText:
-      'Hey there!',
-  },
-  {
-    id: '2',
-    userName: 'John',
-    userImg: require('../../assets/profile.jpg'),
-    messageTime: '1 hour ago',
-    messageText:
-      'This is a test!',
-  },
-  {
-    id: '3',
-    userName: 'Val',
-    userImg: require('../../assets/profile.jpg'),
-    messageTime: '2 hours ago',
-    messageText:
-      'I repeat, this is a test!',
-  },
-];
+// const Messages = [
+//   /*{
+//     id: '1',
+//     userName: user_chat_info.getCurrentUserID(),
+//     userImg: require('../../assets/profile.jpg'),
+//     messageTime: '1 mins ago',
+//     messageText:
+//       'Hey there!',
+//   },*/
+//   /*{
+//     id: '2',
+//     userName: 'John',
+//     userImg: require('../../assets/profile.jpg'),
+//     messageTime: '1 hour ago',
+//     messageText:
+//       'This is a test!',
+//   },
+//   {
+//     id: '3',
+//     userName: 'Val',
+//     userImg: require('../../assets/profile.jpg'),
+//     messageTime: '2 hours ago',
+//     messageText:
+//       'I repeat, this is a test!',
+//   },*/
+// ];
 
 const MessagesScreen = ({navigation}) => {
+
+  const Messages = [
+    {
+      id: '1',
+      userName: "Leslie Fabishilaki",
+      userImg: require('../../assets/profile.jpg'),
+      messageTime: '1 mins ago',
+      messageText:
+        'Hey there!',
+    },
+    {
+      id: '2',
+      userName: 'Ciaran Otter',
+      userImg: require('../../assets/profile.jpg'),
+      messageTime: '1 hour ago',
+      messageText:
+        'This is a test!',
+    },
+    {
+      id: '3',
+      userName: 'Admin account',
+      userImg: require('../../assets/profile.jpg'),
+      messageTime: '2 hours ago',
+      messageText:
+        'I repeat, this is a test!',
+    },
+  ];
+
+  const unsub = db.collection("chat_rooms").get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, "=>" , doc.data());
+      //customChatRoom.insertActiveRooms(doc.id, doc.data());
+      //customChatRoom.insertRoom(doc.id);
+      //customChatRoom.pushMessages(doc.id, doc.data().members.user1_name);
+    });
+  });
+
     return (
       <View style={styles.container}>
         <FlatList 
           data={Messages}
           keyExtractor={item=>item.id}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.Card} onPress={() => navigation.navigate('ChatScreen')}>
+            <TouchableOpacity style={styles.Card} onPress={() => navigation.navigate('ChatScreen', {owner: login_user} )}>
               <View style={styles.UserInfo}>
                 <View style={styles.UserImgWrapper}>
                   <Image style={styles.UserImg} source={item.userImg} />
