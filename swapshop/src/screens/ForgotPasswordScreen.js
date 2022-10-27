@@ -1,6 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, Text, View, Image, TextInput, Button} from 'react-native';
+import React, {useState, useContext} from 'react';
+import themeContext from '../components/themeContext';
 
 // the forgot password screen is the screen where users can enter their email and 
 // the system will begin the reset password process

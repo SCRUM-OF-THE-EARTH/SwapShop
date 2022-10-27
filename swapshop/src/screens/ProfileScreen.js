@@ -1,17 +1,21 @@
-import { StyleSheet, View, Text } from 'react-native';
-import { useState, useEffect } from 'react';
-import Tab from '../components/Tab.js';
-import { login_user } from '../classes/User_Account';
-import { useIsFocused } from "@react-navigation/native";
-import { tags_list, trade_items_list } from "./MainScreen.js";
-import DropDownPicker from 'react-native-dropdown-picker';
-import { communicator } from '../classes/Communicator.js';
-import { LightSpeedOutLeft, set } from 'react-native-reanimated';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import React, { useState, useEffect, useContext } from 'react';
+import Tab from '../components/Tab.js';
+import { login_user, tags_list, communicator } from '../helpers/init';
+import { useIsFocused } from "@react-navigation/native";
+import DropDownPicker from 'react-native-dropdown-picker';
+import * as ImagePicker from 'expo-image-picker';
+import Trade_List from '../components/Trade_List.js';
+import { Dimensions } from 'react-native';
+import themeContext from '../components/themeContext';
+
+
+const windowHeight = Dimensions.get('window').height;
+DropDownPicker.setListMode("SCROLLVIEW");
 
 const ProfileScreen = ({ navigation }) => {
-
+    const theme = useContext(themeContext);
     const isFocused = useIsFocused();
     const [loaded, setLoaded] = useState(false);
     const [tagMenuOpen, setTagMenuOpen] = useState(false);
@@ -19,63 +23,131 @@ const ProfileScreen = ({ navigation }) => {
     const [tags, setTags] = useState([]);
     const [interests, setInterests] = useState([]);
     const [activeTags, setActiveTags] = useState([]);
+    const [image, setImage] = useState(null);
+    const [id, setID] = useState(null);
+
+    const pickImage = async() =>{
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            base64: true,
+            aspect: [4, 3],
+            quality: 1,
+
+        });
+        if(!result.cancelled){
+            setImage(result.uri);
+            communicator.makePostRequestForImage([result], login_user.getID(), 'profile');
+            reloadPhoto();
+        }
+    };
 
     useEffect(() => {
         let tempTags = tags_list.getTags();
         let tempInterests = [];
+        setInterests([]);
+        setActiveTags([]);
 
         login_user.getInterests().forEach(tag_id => {
-            let t = tags_list.findByID(tag_id);
-            tempTags.forEach((a, index) => {
+            tempTags.forEach((a) => {
                 if (a.value.id == tag_id) {
-                    tempTags.splice(index, 1);
+                    tempInterests.push(a.value);
                     return;
                 }
             })
-            tempInterests.push(t);
+
         });
-        
+
+        setImage(login_user.getPhoto());
         setTags(tempTags);
         setInterests(tempInterests);
-        setActiveTags(loadInterests(tempInterests, setInterests, loadInterests, setActiveTags, tags, setTags));
+        setActiveTags(tempInterests);
+        setID(login_user.getID())
         setLoaded(true);
     }, [isFocused]);
 
     if (loaded) {
         return (
-            <View style={styles.container}>
+            <View style={styles.mainContainer}>
+                <Text style={styles.welcome}>{login_user.getUsername()}</Text>
+                <View style={styles.container}>
+                    <View style={styles.imageContainer} >
+                        {image && <Image source={{uri:image}} style={styles.image}/>}
+                        <TouchableOpacity onPress={() => {
+                            pickImage();
+                        }} style={styles.editIcon}><Icon size={40} name="brush-outline"></Icon></TouchableOpacity>
+                    </View>
 
-                <Text style={styles.welcome}>
-                  My profile
-                </Text>
+                    <View style = {styles.details}>
+
+                        <View style={styles.data_container}>
+                            <Image
+                                source={require("../../assets/user.png")}
+                                style={styles.imageDetailU}
+                            />
+                            <Text style={styles.data_field}>{login_user.getFullName()}</Text>
+                        </View>
+
+                        <View style={styles.data_container}>
+                            <Image
+                                source={require("../../assets/email.png")}
+                                style={styles.imageDetailE}
+                            />
+                            <Text style={styles.data_field}>{login_user.getEmail()}</Text>
+                        </View>
 
 
-                <View style = {styles.details}>
-                    <Text style={styles.label}>full names:</Text>
-                    <Text style={styles.data_field}>{login_user.getFullName()}</Text>
-                    <Text style={styles.label}>username: </Text>
-                    <Text style={styles.data_field}>{login_user.getUsername()}</Text>
-                    <Text style={styles.label}>email address:</Text>
-                    <Text style={styles.data_field}>{login_user.getEmail()}</Text>
+                        <Text style={styles.label}>My interests: </Text>
 
-                    <Text style={styles.label}>My interest:</Text>
-                    <DropDownPicker
-                        open={tagMenuOpen}
-                        searchable={true}
-                        placeholder="add an interest"
-                        value={tagValues}
-                        items={tags}
-                        setOpen={setTagMenuOpen}
-                        setValue={setTagValues}
-                        setItems={setTags}
-                        onChangeValue={(value) => {
-                            setInterests(updateInterest(value, setTagValues, interests, setTags, tags));
-                            setActiveTags(loadInterests(interests, setInterests, loadInterests, setActiveTags, tags, setTags));
-                        }}
-                    />
+                        <View style={styles.drop}>
+                            <DropDownPicker
+                                open={tagMenuOpen}
+                                searchable={true}
+                                multiple={true}
+                                min={0}
+                                max={5}
+                                mode="BADGE"
+                                placeholder="add an interest"
+                                value={interests}
+                                items={tags}
+                                setOpen={setTagMenuOpen}
+                                setValue={setInterests}
+                                setItems={setTags}
+                                itemKey="key"
+                                onChangeValue={(value) => {
+                                    if (activeTags.length > value.length) {
+                                        let difference = activeTags.filter(x => !value.includes(x));
+                                        removeInterest(difference[0]).then(() => {
+                                            setActiveTags(value);
+                                        })
+                                    } else {
+                                        let difference = value.filter(x => !activeTags.includes(x));
+                                        addInterest(difference[0]).then(() => {
+                                            setActiveTags(value);
+                                        })
+                                    }
+                                }}
+                            />
+                        </View>
+                    </View>
+
+                    <Text style={styles.label}>My Items:</Text>
+
+                    { (id != null) ?
+                        <Trade_List
+                            available={true}
+                            sold={true}
+                            id={id}
+                            navigation={navigation}
+                            edit={true}
+                            searchTerm=''
+                            tags={[]}
+                            sortIndex={0}
+                        /> : null }
+
+
+
                 </View>
-                <View style = {styles.tags}>{activeTags}</View>
-
                 <Tab nav={navigation} activeTab="profile" />
             </View>
         )
@@ -83,116 +155,86 @@ const ProfileScreen = ({ navigation }) => {
 
 }
 
-function updateInterest(tag, setTagValues, interests, setTags, tags) {
-
-    let tempInterests = interests;
-    if (tag == null) {
-        return tempInterests;
+async function reloadPhoto() {
+    let new_profile = await communicator.makeRequestByCommand('fetch-profile-photo', [login_user.getID()]);
+    if (new_profile['photo'] == login_user.getPhoto()) {
+        setTimeout(reloadPhoto, 200);
+    } else {
+        login_user.setPhoto(new_profile['photo']);
     }
-
-    let tagId = tag["id"];
-    let userId = login_user.getID();
-
-    communicator.makeRequestByCommand("add-interest", [userId, tagId]);
-
-    tags.forEach((t, index) => {
-        if (t.value.id == tagId) {
-            tags.splice(index, 1);
-            return;
-        }
-    });
-    tempInterests.push(tag);
-    let updatedUserInterests = [];
-    tempInterests.forEach(t => {
-        updatedUserInterests.push(t.getID());
-    })
-
-    login_user.setInterests(updatedUserInterests);
-    setTagValues(null);
-    setTags(tags);
-
-    return tempInterests;
 }
 
-function removeInterest(tag, interest, tags, setTags) {
-    let tagId = tag.getID();
+async function addInterest(tag) {
+    let tagId =  tag.id;
+
     let userId = login_user.getID();
-    let addTag;
+    await communicator.makeRequestByCommand("add-interest", [userId, tagId]);
+    let interests = login_user.getInterests();
+    interests.push(tagId);
+}
 
-    let newInterests = [];
-    
-    interest.forEach((i, index) => {
-        if (i.getID() == tagId) {
-            addTag = i;
-            interest.splice(index, 1);
-        } else {
-            newInterests.push(i.getID());
-        }
-    });
+async function removeInterest(tag) {
+    let tagId = tag.id;
 
-    communicator.makeRequestByCommand('remove-interest', [userId, tagId]);
+    let userId = login_user.getID();
+    await communicator.makeRequestByCommand('remove-interest', [userId, tagId]);
+    let interests = login_user.getInterests();
 
-    tags.push(addTag.getTagValue());
-
-    setTags(tags);
+    let newInterests = interests.filter(x => x != tagId)
     login_user.setInterests(newInterests);
-
-    return interest;
-    
-}
-
-function loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags) {
-    let tempInterestComps = [];
-    interest.forEach(t => {
-        tempInterestComps.push(
-            <View style={styles.tag_container} key={t.getID()}><Text>{t.getName()}</Text><TouchableOpacity  style={styles.close} onPress={() => {
-                setInterests(removeInterest(t, interest, tags, setTags));
-                setActiveTags(loadInterests(interest, setInterests, loadInterests, setActiveTags, tags, setTags));
-            }}><Icon size={20} name="close-circle-outline" /></TouchableOpacity></View>
-        );
-    })
-
-    return tempInterestComps;
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%'
+        backgroundColor: "white",
+        height: windowHeight - 130,
     },
-    details:{
-        marginHorizontal: 90,
+    interests: {
+        zIndex: 9,
+        marginVertical: 10
+    },
+    imageContainer: {
+        alignItems: 'center',
+        marginBottom: -75,
+        justifyContent: 'center'
+    },
+    data_container: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     welcome:{
-        paddingTop: 40,
-        paddingBottom: 10,
-        marginBottom: 20,
+        paddingTop: 20,
+        paddingBottom: 80,
         alignItems:"center",
         fontSize: 40,
-        backgroundColor: "#3CB371",
         color: 'white',
         fontWeight:"700",
         textAlign:"center",
-
+    },
+    details: {
+        alignContent: 'center',
+        justifyContent: 'center'
     },
     tags:{
-        marginVertical: 20,
-        marginHorizontal: 20,
         display: 'flex',
         flexWrap: 'wrap',
         flexDirection: 'row',
-        justifyContent: 'center'
-
+        justifyContent: 'center',
     },
     data_field: {
-        marginLeft: 20,
-        color: "#3CB371",
-        fontSize: 22,
-        fontWeight: '400'
+        color: "gray",
+        fontSize: 15,
+        width: 'auto',
+        padding: 10,
+        textAlign: 'center'
     },
     label: {
-        paddingTop: 10,
         fontSize: 16,
-        color: 'gray'
+        color: "#3CB371",
+        padding: 10,
+        fontWeight: '300'
     },
     tag_container: {
         display: 'flex',
@@ -206,10 +248,53 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     close: {
-        // padding: 5,
         paddingLeft: 10,
         paddingRight:5,
         justifyContent:'center'
+    },
+    imageDetailU:{
+        height: 40,
+        width: 40,
+
+        marginStart:-150,
+
+
+
+
+    },
+    imageDetailE:{
+        height: 35,
+        width: 35,
+        marginStart:-125,
+
+
+
+    },
+    button:{
+        padding: 20,
+
+
+    },
+    image:{
+        height: 150,
+        width: 150,
+        transform:[
+            {translateY:-75}
+        ],
+        borderRadius:100,
+    },
+    mainContainer: {
+        backgroundColor: "#3CB371",
+        height: "100%"
+    },
+    editIcon: {
+        borderRadius: 50,
+        padding: 5,
+        backgroundColor: "#EBEBEA",
+        transform: [
+            {translateY: -125},
+            {translateX: 60}
+        ]
     }
 
 })

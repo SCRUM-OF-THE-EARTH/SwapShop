@@ -1,4 +1,5 @@
-import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity,Dimensions} from 'react-native';
+import {StyleSheet,Dimensions,LogBox} from 'react-native';
+import * as helper from "./src/helpers/init";
 import React, {useState} from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from '@react-navigation/stack';
@@ -11,16 +12,39 @@ import MainScreen from "./src/screens/MainScreen";
 import ChatScreen from './src/screens/ChatScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import MessageScreen from './src/screens/MessagesScreen'
+import { useEffect } from 'react';
+import { EventRegister } from 'react-native-event-listeners';
+import themeContext from './src/components/themeContext';
+import theme from './src/components/config/theme';
 
 const {height, width} = Dimensions.get('window');
 
 const RootStack = createStackNavigator();
 
+LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+  ]);
+
 const App = () =>{
+    const [mode, setMode] = useState(false);
+
+    useEffect(() => {
+        let eventListener = EventRegister.addEventListener(
+            "changeTheme",
+            (data) => {
+                setMode(data);
+            }
+        );
+        return () => {
+            EventRegister.removeEventListener(eventListener);
+        };
+    });
     return(
 
-        <NavigationContainer>
+        <themeContext.Provider value={mode === true ? theme.dark : theme.light}>
+         <NavigationContainer>
             <RootStack.Navigator screenOptions={{headerShown:false}}>
+            
                 <RootStack.Screen name = "SignInScreen" component = {SignInScreen}/>
                 <RootStack.Screen name = "SignUpScreen" component = {SignUpScreen}/>
                 <RootStack.Screen name = "MainScreen" component = {MainScreen}/>
@@ -32,6 +56,8 @@ const App = () =>{
                 <RootStack.Screen name = "MessageScreen" component={MessageScreen} />
             </RootStack.Navigator>
         </NavigationContainer>
+        </themeContext.Provider>
+
     );
 };
 

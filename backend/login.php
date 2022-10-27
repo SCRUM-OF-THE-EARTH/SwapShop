@@ -20,9 +20,6 @@
     // construct a query to check if the username exists in the database
     $query = "SELECT COUNT(*) AS exist FROM user_login_details WHERE username='$username'";
 
-    // create the output array with initail values
-    $output = array("success"=>0, "results"=>0);
-
     // check if the query returns a result
     if ($result = $conn->query($query)) {
         $row = $result->fetch_assoc();
@@ -30,13 +27,12 @@
         if ($row["exist"] == 1){
             $results = checkLogin($username, $password, $conn);
             if ($results != 0) {
-                $output['success'] = 1;
+                setResults(1, $results);
             }
-            $output["results"] = $results;
         }
     }
 
-    echo json_encode($output);
+    printOutput();
 
     // this function is used to check that only 1 instance of a username with an associated password exists
     // it takes in 3 parameters:

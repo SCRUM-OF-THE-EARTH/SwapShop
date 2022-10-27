@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, {useState, useEffect, useCallback, useLayoutEffect} from 'react';
+import React, {useState, useEffect, useCallback, useContext} from 'react';
 import {View, ScrollView, Text, Button, StyleSheet, Image} from 'react-native';
 import {Bubble, GiftedChat, Send, Actions} from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,6 +11,7 @@ import colors from "../../config/colors";
 import { db, firebase } from "../firebaseConfig/firebase";
 import { login_user } from "../classes/User_Account"; 
 import { user_chat_info } from "../classes/User_Chats";
+import themeContext from '../components/themeContext';
 
 // create a chat screen UI
 // so the user can be redirected to this page when, they choose the option to contact the client.
@@ -45,7 +46,7 @@ const ChatScreen = ({route, navigation}) => {
 
   let chat_database = db_tmp;
 
-  
+
   let pic = 'https://placeimg.com/140/140/any';
 
   const pickImage = async () => {

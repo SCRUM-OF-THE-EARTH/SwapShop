@@ -1,10 +1,6 @@
-import React from "react";
 import { Trade_Item } from "../classes/Trade_Item";
-import { User_Account } from "../classes/User_Account";
 import 'react-native';
-import renderer from "react-test-renderer";
 import { test_Reguser } from './user_account.test.js';
-import { communicator } from "../classes/Communicator";
 import { Tag } from "../classes/Tag.js";
 
 function generateString(length){
@@ -50,13 +46,13 @@ describe("testing the trade item class", () => {
         expect(test_item.getDateCreated()).toBe(date);
     });
 
-    test("testing the ability to fetch an image from the server", () => {
-        return test_item.fetchImages().then(() => {
-            expect(test_item.hasImages).toBe(true);
-            expect(test_item.images.length).toBe(1);
-            expect(test_item.images[0]).toBe('https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg');
-        })
-    });
+    // test("testing the ability to fetch an image from the server", () => {
+    //     return test_item.fetchImages().then(() => {
+    //         expect(test_item.hasImages).toBe(true);
+    //         expect(test_item.images.length).toBe(1);
+    //         expect(test_item.images[0]).toBe('https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg');
+    //     })
+    // });
 
     test("testing the ability to create and retrieve an image sldeshow", () => {
         let slildeshow = test_item.getImageSlideShow();
@@ -146,16 +142,10 @@ describe("testing the trade item class", () => {
 
         let Test_Tag = {id: 0, name: 'tags_name', item: 88}
         let Test_Tag_2 = {id: 1, name: 'tag2_name', item: 85};
-        expect(test_item.addTag(Test_Tag)).toBe(test_item);
+        expect(test_item.addTag(Test_Tag)).toBe(Test_Tag);
         expect(test_item.getTags()).toStrictEqual([Test_Tag]);
-        expect(test_item.addTag(Test_Tag_2)).toBe(test_item);
+        expect(test_item.addTag(Test_Tag_2)).toBe(Test_Tag_2);
         expect(test_item.getTags()).toStrictEqual([Test_Tag, Test_Tag_2]);
         
     });
-
-    test("testing the return of the item generator", () => {
-        const tree = renderer.create(test_item.createItemBlock()).toJSON();
-        expect(tree.children.length).toBe(2);
-    })
-
 })

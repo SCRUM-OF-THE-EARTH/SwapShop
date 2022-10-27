@@ -8,10 +8,9 @@
     include('conf.php');
 
     // SELECT query to be executed 
-    $query = "SELECT * FROM trade_items;";
+    $query = "SELECT * FROM trade_items WHERE sold = 0;";
 
     // setup the return array
-    $output = array("success"=>0, "results"=>0);
     $tradeItems = array();
 
     // check if the query was successful or not 
@@ -19,11 +18,18 @@
         while ($row = $results->fetch_assoc()) {
             $item_id = $row['id'];
             $tags = array();
-            $trade_item = array("id"=>0, "item_name"=>"name", "owner_id"=>0, "description"=>"desc", "item_value"=>0, "date_created"=>0, "tags"=>0, "exchange_item"=>0);
+            $photos = array();
+            $trade_item = array("id"=>0, "item_name"=>"name", "owner_id"=>0, "description"=>"desc", "item_value"=>0, "date_created"=>0, "tags"=>0, "exchange_item"=>0, "sold"=>0, 'images' => 0);
 
-            if ($sub_results = $conn->query("SELECT tags.id, tags.name, tags.date_created, item_tags.exchange FROM item_tags INNER JOIN tags ON item_tags.tag = tags.id AND item_tags.item = $item_id;")) {
+            if ($sub_results = $conn->query("SELECT tags.id, tags.name, tags.date_created, item_tags.exchange FROM item_tags INNER JOIN tags ON item_tags.tag = tags.id AND item_tags.item = $item_id")) {
                 while ($tag_row = $sub_results->fetch_assoc()) {
                     $tags[] = $tag_row;
+                }
+            }
+
+            if ($sub_results = $conn->query("SELECT image_url FROM trade_images WHERE trade_id = $item_id")){
+                while ($photo_row = $sub_results->fetch_assoc()) {
+                    $photos[] = $photo_row['image_url'];
                 }
             }
 
@@ -35,14 +41,14 @@
             $tradeItem['date_created'] = $row['date_created'];
             $tradeItem['tags'] = $tags;
             $tradeItem['exchange_item'] = $row['exchange_item'];
+            $tradeItem['sold'] = $row['sold'];
+            $tradeItem['images'] = $photos;
 
             $tradeItems[] = $tradeItem;
         }
-        $output['success'] = 1;
-        $output['results'] = $tradeItems;
+        setResults(1, $tradeItems);
     }
 
-    // return a json formatted array
-    echo json_encode($output);
+    printOutput();
 
 ?>

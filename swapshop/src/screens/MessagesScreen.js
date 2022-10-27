@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { View, Text, ScrollView, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import colors from '../../config/colors';
 import { db } from '../firebaseConfig/firebase';
 import { user_chat_info } from '../classes/User_Chats';
 import { login_user } from '../classes/User_Account';
 import { customChatRoom } from '../classes/Chat_Rooms';
+import themeContext from '../components/themeContext';
+
 
 // const Messages = [
 //   /*{
@@ -71,8 +73,9 @@ const MessagesScreen = ({navigation}) => {
     });
   });
 
+  const theme = useContext(themeContext);
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: theme.inputColor }]}>
         <FlatList 
           data={Messages}
           keyExtractor={item=>item.id}
@@ -142,12 +145,10 @@ const styles = StyleSheet.create({
   UserName: {
     fontSize: 14,
     fontWeight: "bold",
-    //fontFamily: "Lato-Regular",
   },
   PostTime: {
     fontSize: 12,
     color: colors.black,
-    //fontFamily: "Lato-Regular", 
   },
   MessageText: {
     fontSize: 14,

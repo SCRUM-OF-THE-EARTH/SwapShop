@@ -24,9 +24,6 @@
 
     // construct an insert query
     $query = "INSERT INTO trade_items (item_name, description, item_value, owner_id, date_created) VALUE ('$name', '$description',$value, $id, CURDATE());";
-    
-    // initialise the array that is going to be outputed
-    $output = array("success"=>0, "results"=>0);
 
     // check if the query returns a result
     if ($results = $conn->query($query)) {
@@ -47,15 +44,13 @@
                 }
             }
             $temp['tags'] = $tags;
-
-            $output['success'] = 1;
-            $output['results'] = $temp;
+            setResults(1, $temp);
 
             $query = "INSERT INTO trade_images (trade_id, image_id) VALUES ($item_id, 4)";
             $conn->query($query);
         }
     }
 
-    echo json_encode($output);
+    printOutput();
 
 ?>

@@ -12,6 +12,19 @@
     $password = "AdRBuz3yyYGy35jFxKU8";
     $db = "ciarantwo";
 
+    $output = array("success"=>0, "results"=>0);
+
+    function setResults($success, $results) {
+        global $output;
+        $output['success'] = $success;
+        $output['results'] = $results;
+    }
+
+    function printOutput() {
+        global $output;
+        echo json_encode($output);
+    }
+
     // creating the connection
     $conn = new mysqli($host, $username, $password, $db);
 
