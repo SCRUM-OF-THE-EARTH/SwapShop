@@ -15,19 +15,15 @@ import theme from '../components/config/theme';
 //const theme = useContext(themeContext);
 export class Trade_Item {
     
-    constructor(item, navigation) {
+    constructor(item) {
         this.item_name = item['item_name'];
         this.item_value = item['item_value'];
         this.owner = false;
         this.item_description = item['description'];
         this.id = item['id'];
-        this.hasImages = false;
-        this.navigation = navigation;
-        this.exchangeItem = "";
+        this.images = ['https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg'];
         if (item['images']) {
             this.images = item['images'];
-        } else {
-            this.images = ['https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg'];
         }
         
         this.date_created = item['date_created'];

@@ -18,7 +18,6 @@ export class Item_List {
         this.command = command;
         this.json_items = false;
         this.items = [];
-        this.loaded = false;
         this.filteredResults =[];
         this.searchTerm;
         this.communicator = communicator;
@@ -70,18 +69,10 @@ export class Item_List {
 
     // deleteItem is used to delete to delete an Item from the list of json items and the database
     async deleteItem(command, id) {
-        returnValue = false;
-        let jsonRes = await this.communicator.makeRequestByCommand(command, [id]).then(() => {
-            if (jsonRes != false) {
-                returnValue = true;
-            }
-        })
-        
-        if (returnValue) {
-            this.removeItemByID(id);
-        }
+        let jsonRes = await this.communicator.makeRequestByCommand(command, [id])
 
-        return returnValue;
+        this.removeItemByID(id);
+        return jsonRes;
     }
 
     // search items is used to refine the list of items presented by a search term
@@ -163,7 +154,6 @@ export class Trade_item_list extends Item_List {
         }
         
         this.index = null;
-        this.tagsActive = false;
         this.ActiveTags = [];
         this.login_user = login_user
     }
@@ -203,7 +193,6 @@ export class Trade_item_list extends Item_List {
 
     // this searh Term is used to overwrite the super searchItem method
     searchItems(searchterm) {
-        this.tagActive = true;
         this.searchTerm = searchterm;
         super.searchItems(searchterm);
         // this.filterByTags(this.ActiveTags);

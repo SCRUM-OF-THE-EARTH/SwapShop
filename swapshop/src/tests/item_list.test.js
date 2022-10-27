@@ -61,9 +61,6 @@ async function waitFetch() {
         let Owner = new User_Account();
         Owner.setID(item["owner_id"]);
 
-        console.log("Owner is:", Owner);
-        
-
         let trade_Item = new Trade_Item(item);
         item["tags"].forEach((json_tag) => {
             let tempTag = new Tag(json_tag);
@@ -75,9 +72,7 @@ async function waitFetch() {
                
         })
 
-        if (Owner != false) {
-            trade_Item.setOwner(Owner);
-        }
+        trade_Item.setOwner(Owner);
         return trade_Item;
     })
     user.setUsername('admin');
@@ -165,7 +160,7 @@ describe("testing the item_list and its methods", () => {
 
     test("testing deleting an item", () => {
         return test_item_list.deleteItem('delete-trade-item', testItemId).then(res => {
-            expect(res).toBe(true);
+            expect(res).not.toBe(false);
             expect(test_item_list.findByID(testItemId)).toBe(false);
         })
     })
@@ -204,10 +199,17 @@ describe("testing the item_list and its methods", () => {
         })
 
         sort_list = test_item_list.getItems();
-
         expect(compareInterest(sort_list[1],sort_list[0], login_user)).toBe(-1);
         expect(compareInterest(sort_list[0],sort_list[1], login_user)).toBe(1);
         expect(compareInterest(sort_list[1],sort_list[1], login_user)).toBe(0);
+
+        test_item_list.login_user = login_user;
+
+        sort_list = test_item_list.getItems();
+
+        console.log("sort list2:", sort_list[1]);
+        console.log("sort list 1:", sort_list[0]);
+        console.log("login_user", login_user.getInterests());
 
         expect(test_item_list.index).toBe(null);
 
@@ -235,7 +237,8 @@ describe("testing the item_list and its methods", () => {
 
         expect(sorted).toBe(false);
 
-        sort_list = test_item_list.Sort();
+        test_item_list.filteredResults = test_item_list.getItems();
+        sort_list = test_item_list.Sort(null);
         expect(test_item_list.index).toBe(null);
 
         sorted = true;
@@ -246,7 +249,7 @@ describe("testing the item_list and its methods", () => {
             let count = 0;
             item.getTags().forEach((tag) => {
                 login_user.getInterests().forEach(i => {
-                    if (tag.getID() == i.getID()) {
+                    if (tag.getID() == i) {
                         count++;
                     }
                 })
@@ -370,7 +373,11 @@ describe("testing the item_list and its methods", () => {
 
     it("Given that I am using the app, when I post an item to trade then I should be able to see a backlog of all the items I had posted.", () => {
         let items = test_item_list.getItems();
-        console.log("items in list: ", items)
+        items.forEach(item => {
+            let Owner = new User_Account();
+            Owner.setID(Math.floor(Math.random()*2))
+            item.setOwner(Owner);
+        })
         items.forEach((item) => {
             test_item_list.filteredResults = items;
             let ownerId = item.getOwner().getID();
@@ -379,9 +386,6 @@ describe("testing the item_list and its methods", () => {
                 expect(f.getOwner().getID()).toBe(ownerId);
             })
         })
-        
-
-        
     })
 
     
