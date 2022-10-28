@@ -58,7 +58,7 @@ const MessagesScreen = ({navigation}) => {
       customChatRoom.addRoomData(doc.id, doc.data().members);
       customChatRoom.pushMessages(otherUser, doc.id,
         [doc.data().members.user1_fname,doc.data().members.user2_fname],
-        "mins ago",
+        "",
         "tap to see chat")
     });
   });
