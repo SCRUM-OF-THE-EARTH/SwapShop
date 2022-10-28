@@ -75,7 +75,9 @@ const MessagesScreen = ({navigation}) => {
 
       const msg = roomMsgs.get(name);
 
-      Messages.push(msg);
+      if(Messages.includes(msg) === false){
+        Messages.push(msg);
+      }
     }
   }
 
