@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
-import { useState } from 'react';
-
+import { useState, useEffect, useContext } from 'react';
+import themeContext from '../components/themeContext';
 export const ItemBlock = ({item, navigation}) => {
     const [soldStatus, setSoldStatus] = useState(item.sold);
-
+    const theme = useContext(themeContext);
     let exchangeTags = [];
 
         item.exchange.forEach(tag => {
@@ -13,9 +13,9 @@ export const ItemBlock = ({item, navigation}) => {
         })
         
         return (
-            <TouchableOpacity key={`${item.id}-touchable-container`} style={styles.container} onPress={() => navigation.navigate("detailed_item", {item: item})}>
-                <View key={`${item.id}-title_container`} style={styles.title_container}>
-                    <Text key={`${item.id}-header`}  style={styles.header}>{item.item_name}</Text>
+            <TouchableOpacity key={`${item.id}-touchable-container`} style={[styles.container, { backgroundColor: theme.inputColor }]} onPress={() => navigation.navigate("detailed_item", {item: item})}>
+                <View key={`${item.id}-title_container`} style={[styles.title_container, { backgroundColor: theme.inputColor }]}>
+                    <Text key={`${item.id}-header`} style={[styles.header, { color: theme.Itemdetails }]}>{item.item_name}</Text>
                     { soldStatus == 0 ? <Text key={`${item.id}-available-tag`} style={[styles.availability_tag, {borderColor: '#A3E0BF', color: '#A3E0BF'}]}>AVAILABLE</Text> : <Text key={`${item.id}-available-tag`} style={[styles.availability_tag,  {borderColor: 'gray', color: 'gray'}]}>SOLD</Text> }
                     
                 </View>
@@ -29,8 +29,8 @@ export const ItemBlock = ({item, navigation}) => {
                 
                 <View key={`${item.id}-detail-container`} style={{flexDirection:"column", flex:1,alignSelf: 'center'}}>
                     <Text key={`${item.id}-description`}  style={[styles.wrappedText, {paddingVertical: 10, color: 'gray'}]}>{item.item_description}</Text>
-                    <Text key={`${item.id}-value`}  style={styles.wrappedText}>Estimated value: R{item.item_value}</Text>
-                    <Text key={`${item.id}-wanted-title`} style={styles.wrappedText}>Item wanted:</Text>
+                        <Text key={`${item.id}-value`} style={[styles.wrappedText, { color: theme.Itemdetails }]}>Estimated value: R{item.item_value}</Text>
+                        <Text key={`${item.id}-wanted-title`} style={[styles.wrappedText, { color: theme.Itemdetails }]}>Item wanted:</Text>
                     <View key={`${item.id}-tag-container`} style={styles.exchange_tag_container}>{exchangeTags}</View>
                     <Text key={`${item.id}-owner`} style={[styles.wrappedText, styles.green]}>{item.owner.getFullName()}</Text>
                 </View>

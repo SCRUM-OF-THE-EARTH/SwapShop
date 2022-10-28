@@ -8,6 +8,7 @@ const theme = {
         mainItem: "#589774",
         detailedItem: "#1E5C3A",
         details: "#000000",
+        Itemdetails: "#000000",
         profileColor: "#3CB371" ,
         profSecColor: "#F5F5F5",
     },
@@ -21,6 +22,7 @@ const theme = {
         detailedItem: "#F5F5F5",
         details: "#b5c4bb",
         profileColor: "#589774" ,
+        Itemdetails: "#1E5C3A",
         profSecColor: "#6a8576",
     },
 }
