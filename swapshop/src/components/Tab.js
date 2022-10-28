@@ -4,13 +4,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Dimensions } from 'react-native';
 import themeContext from '../components/themeContext';
 
+// the tab component is used to switch between pages in the app and is displayed at the bottom of the page
 const Tab = ({nav, activeTab}) => {
-    const theme = useContext(themeContext);
-    const navigation= nav;
-    const aTab = activeTab;
+    const theme = useContext(themeContext); // the theme 
+    const navigation= nav; // the navigator use dto switc pages
+    const aTab = activeTab; // the actuve tab corresponding the acative screen
 
     const windowWidth = Dimensions.get('window').width;
 
+    // the tab GUI component
     return (
     <View style={[styles.container]}>
             <View style={[styles.back_Bar, { backgroundColor: theme.background }]}></View>
@@ -23,6 +25,8 @@ const Tab = ({nav, activeTab}) => {
     )
 }
 
+
+// styles for te tab
 let styles = StyleSheet.create({
     container: {
         display: 'flex', 

@@ -1,17 +1,22 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useState, useEffect, useContext } from 'react';
 import themeContext from '../components/themeContext';
+
+// Item block is used to to display an item in the trade list of item
+// it contians all the face values of the detaisl of the trade items as well as a navigation system to change to the detailed
+// Item page
 export const ItemBlock = ({item, navigation}) => {
-    const [soldStatus, setSoldStatus] = useState(item.sold);
-    const theme = useContext(themeContext);
-    let exchangeTags = [];
+    const [soldStatus, setSoldStatus] = useState(item.sold); // the sold statu sof the trade item
+    const theme = useContext(themeContext); // the theme of the app
+    let exchangeTags = []; //  the list of tags for exchange to be displayed in the item block
 
         item.exchange.forEach(tag => {
             exchangeTags.push(
-                <Text style={styles.exchange_tag} key={`${tag.getID()}-${item.id}-tag`}>{tag.getName()}</Text>
+                <Text style={styles.exchange_tag} key={`${tag.getID()}-${item.id}-tag`}>{tag.getName()}</Text> // creating the GUI component for the item's tags
             )
         })
         
+        // the item block displayed from the item
         return (
             <TouchableOpacity key={`${item.id}-touchable-container`} style={[styles.container, { backgroundColor: theme.inputColor }]} onPress={() => navigation.navigate("detailed_item", {item: item})}>
                 <View key={`${item.id}-title_container`} style={[styles.title_container, { backgroundColor: theme.inputColor }]}>
@@ -39,6 +44,7 @@ export const ItemBlock = ({item, navigation}) => {
         );
 }
 
+// styles for the item block
 const styles = StyleSheet.create({
 
     container: {

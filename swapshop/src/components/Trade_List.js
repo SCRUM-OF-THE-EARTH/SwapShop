@@ -7,6 +7,10 @@ import { Tag } from "../classes/Tag.js";
 import { Trade_Item } from '../classes/Trade_Item';
 import { ItemBlock } from '../components/ItemBlock';
 
+// the trade item list is a list of item blocks based on the trade items used in the app
+
+//initialtradeItem is a function used as a call back for the item list to load a json object into a trade object
+//
 function initialiseTradeItem(item, navigation) {
     let Owner = user_accounts_item_list.findByID(item["owner_id"]);
 
@@ -27,16 +31,18 @@ function initialiseTradeItem(item, navigation) {
     return trade_Item;
 }
 
+// iniitialise is used to select the specified items from the database  based f the parameters set 
+// by the component
 function initialise(available, sold, id, search, navigation) {
 
     let promises = [];
 
-    if (available) {
+    if (available) { // selects the show all the available items
         trade_items_list.searchTerm = search;
         promises.push(trade_items_list.fetchItems());
     }
     
-    if (sold) {
+    if (sold) { // selects to show all the sold items
         sold_trade_items_list.searchTerm = search;
         promises.push(sold_trade_items_list.fetchItems());
     }
@@ -46,10 +52,11 @@ function initialise(available, sold, id, search, navigation) {
     });
 }
 
+// loadItems is used to load a itme from an object into a GUI component
 function loadItems(available, sold, id, navigation) {
     let tempItems = [];
 
-        if (available) {
+        if (available) { // loading the available items
             
             trade_items_list.items = [];
             trade_items_list.loadItems((item) => {
@@ -63,7 +70,7 @@ function loadItems(available, sold, id, navigation) {
             })
         }
 
-        if (sold) {
+        if (sold) { // loading the sold items 
             sold_trade_items_list.items = [];
             sold_trade_items_list.loadItems((item) => {
                 return initialiseTradeItem(item, navigation);
@@ -111,7 +118,7 @@ const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigatio
             setDisplayItems(tempItems); 
     }
 
-    useEffect(() => {
+    useEffect(() => { // loading the items initially when the item is in focus
         trade_items_list.index = null;
         sold_trade_items_list.index = null;
         initialise(available, sold, id, searchTerm, navigation).then(() => {
@@ -121,21 +128,22 @@ const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigatio
         
     }, [isFocused]);
 
-    useEffect(() => {
+    useEffect(() => { // relaoding the items when a parmarter such as the search term is changed
 
         if (loaded) {
             sortAndFilter()  
         }
     }, [searchTerm, tags, sortIndex, loaded])
 
-    if (displayItems.length >0 ) {
+    if (displayItems.length >0 ) { // displaying the trade item blocks if there are any to show
         return (<ScrollView nestedScrollEnabled={true} style={styles.center}>{displayItems}</ScrollView>);
     }
     
-    return (<Text style={styles.nullContainer}>(Nothing to show)</Text>);
+    return (<Text style={styles.nullContainer}>(Nothing to show)</Text>); // display a message if there are none to show
     
 }
 
+// styles for the Trade_list
 const styles = StyleSheet.create({
     center: {
         width:'100%',
