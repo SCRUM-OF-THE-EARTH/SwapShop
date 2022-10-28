@@ -28,7 +28,6 @@ LogBox.ignoreLogs([
 
 const App = () =>{
     const [mode, setMode] = useState(false);
-    registerNNPushToken(4557, 'emqys7tmf4UIZdRXe1dhJF');
     useEffect(() => {
         let eventListener = EventRegister.addEventListener(
             "changeTheme",

@@ -163,6 +163,7 @@ const AddItem = ({navigation, route}) => {
                     max={5}
                     mode="BADGE"
                     itemKey="key"
+                style={{ backgroundColor: theme.sec }}
                     value={itemTagValues}
                     items={itemTags}
                     setOpen={setitemTagsMenuOpen}
@@ -172,11 +173,11 @@ const AddItem = ({navigation, route}) => {
 
 
             <Text style={{color: 'red', textAlign: 'center'}}>{errorMessage}</Text>
-            <TextInput style={styles.TextInput} placeholder="name of item"
+            <TextInput style={[styles.TextInput, { backgroundColor: theme.sec }]} placeholder="name of item"
                        onChangeText={(name) => onNameChange(name)} value={name}/>
-            <TextInput style={[styles.TextInput, {paddingVertical: 20}]} type="textarea" placeholder="description"
+            <TextInput style={[styles.TextInput, { paddingVertical: 20 }, { backgroundColor: theme.sec }]} type="textarea" placeholder="description"
                        multiline={true} onChangeText={(description) => onDescChange(description)} value={description}/>
-            <TextInput style={styles.TextInput} placeholder="estimate for value of item"
+            <TextInput style={[styles.TextInput, { backgroundColor: theme.sec }]} placeholder="estimate for value of item"
                     onChangeText={(value) => onValueChange(value)} value={value}/>
 
             <DropDownPicker

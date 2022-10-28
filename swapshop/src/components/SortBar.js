@@ -14,7 +14,7 @@ const SortBar = ({setIndex}) => {
         {label: "Name: A to Z", value: 3},
         {label: "Name: Z to A", value: 4},
     ]); 
-
+    const theme = useContext(themeContext);
     return(
         <View>
         <DropDownPicker
@@ -25,6 +25,7 @@ const SortBar = ({setIndex}) => {
                     setValue={setSortValue}
                     setItems={setSortItems}
                     placeholder="Sort"
+                style={{ backgroundColor: theme.inputColor }}
                     onChangeValue={(value) => setIndex(value)}
                     zIndex={500}
                 />

@@ -76,6 +76,8 @@ export class Communicator {
 
 
 
+    // makePostRequestForImage takes in a list of image objects , an item id and a type (either "trade" or "profile") and makes a POST fetch request to the server to save an image to an associated
+    // item object
     async makePostRequestForImage(images, item_id, type) {
         let promises = [];
             images.forEach(image => {

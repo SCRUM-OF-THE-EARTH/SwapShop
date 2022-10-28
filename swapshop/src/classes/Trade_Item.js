@@ -34,6 +34,9 @@ export class Trade_Item {
         
     }
 
+    // updateSoldStatus is used to upodate the sold status of the item for 1 to 0 or 0 to 1
+    // it takes in a communicator and a status (1 ro 0)
+    // and returns this object
     async updateSoldStatus(communicator, status) {
         await communicator.makeRequestByCommand("update-sold-status", [this.id, status])
         this.sold = status;
@@ -41,6 +44,9 @@ export class Trade_Item {
         
     }
 
+    // getImageSlideshw is used to get the list of  images in a form that is suitable for the slideshow in react
+    // it takes in nothing
+    // and returns the list of images in slideshow form
     getImageSlideShow() {
         let imageSlideShow = [];
 
@@ -49,6 +55,7 @@ export class Trade_Item {
         })
         return imageSlideShow;
     }
+
     // setName is used to set the item_name value 
     // it takes in a string 
     // and returns this 
@@ -162,24 +169,29 @@ export class Trade_Item {
         return this.tags;
     }
 
+    // addExchangeTag is used to add a tag to the list of item exchange tags
     addExchangeTag(tag) {
         this.exchange.push(tag);
         return tag;
     }
     
+    // getExchangeTags is used to get a list of exchange tags
     getExchangeTags() {
         return this.exchange;
     }
 
+    // setSold is used to set the sold status of the object
     setSold(sold) {
         this.sold = sold;
         return this;
     }
 
+    // getSold is used to get the sold status of the object
     getSold() {
         return this.sold;
     }
 
+    // getImages is used to get the raw list of images
     getImages() {
         return this.images;
     }

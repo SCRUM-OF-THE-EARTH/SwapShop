@@ -116,30 +116,35 @@ export class User_Account {
         return this.email;
     }
 
+    //setInterests is used to set the list of user interests to "tags"
     setInterests(tags) {
         this.tags = tags
         return this; 
     }
 
+    // getInterests is used to get the list of exchange tags
     getInterests() {
         return this.tags;
     }
     
-
+    // setPhoto is used to set the user profile photo
     setPhoto(photo) {
         this.photo_url = photo;
         return this;
     }
 
+    // getPhoto is used to get the user profile photo
     getPhoto() {
         return this.photo_url;
     }
 
+    // is used to set the error message of the class
     setError(error) {
         this.error = error;
         return this;
     }
 
+    // getError is used to get teh error
     getError() {
         return this.error;
     }
@@ -177,6 +182,8 @@ export class Login_user extends User_Account {
         return true;
     }
 
+
+    // deleteAccount is used to delete an account from the database
     async deleteAccount() {
         params = [this.getID()];
         return await this.communicator.makeRequestByCommand("delete-account", params);

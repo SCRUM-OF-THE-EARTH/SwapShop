@@ -232,6 +232,8 @@ export class Trade_item_list extends Item_List {
     }
 
 
+    // filterByOwnerId take in an id integer and filters the list of object presented to the user by this id
+    // it returns this filtered list
     filterByOwnerId(id) {
         this.filteredResults = this.filteredResults.filter((item) => item.getOwner().getID() == id)
         return this.filteredResults;
@@ -261,6 +263,8 @@ export class Tag_list extends Item_List {
         return names;
     }
 
+    // addTag takes in a tag object and adds it to the list of tags items for this item
+    // it returns the tag it took in
     addTag(tag) {
         this.json_items.push(tag);
         let newTag = new Tag(tag)
@@ -269,6 +273,12 @@ export class Tag_list extends Item_List {
     }
 }
 
+
+// comapreInterest is used to find the difference in tags between ibjects based on the active users interests
+// it takes in two item objects and the login user 
+// and returns 1 if there are more matching interests in item a and the login user 
+// -1 if there are more matching interests in item b and login user
+// or 0 if the matching tags are the same
 export function compareInterest(a,b, login_user) {
     let counta = 0;
     let countb = 0;
