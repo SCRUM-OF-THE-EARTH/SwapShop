@@ -233,13 +233,10 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     exchangeTag: {
-        // borderWidth: 1,
         borderRadius: 10,
         paddingHorizontal: 20,
         paddingVertical: 5,
         margin: 5,
-        // borderColor: "#85D6A9",
-        // color: "#85D6A9",
         color: 'white',
         backgroundColor: "#ECA398"
     },

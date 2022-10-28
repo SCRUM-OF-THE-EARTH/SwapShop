@@ -124,4 +124,12 @@ describe("testing the login, register and user account system", () => {
         })
     });
 
+    test("Given that I am using the app, when I click on the profile edit button then I should be allowed to select a new photo which should be uploaded to my profile.", () => {
+        for (let i =0; i < 30; i++) {
+            let testUrl = generateString(2*i);
+            test_LogUser.setPhoto(testUrl);
+            expect(test_LogUser.getPhoto()).toBe(testUrl);
+        }
+    })
+
 })

@@ -17,9 +17,9 @@ function generateString(length){
     return results;
 }
 
-describe("Given that I am using the app, when I want to post an item then I should also be able to create a tag that I can use to do the searching.", () => {
+describe("testing the tags system and its mehods", () => {
 
-    test("testing the creation of a new tag", () => {
+    test("Given that I am using the app, when I want to post an item then I should also be able to create a tag that I can use to do the searching.", () => {
         test_Tag = new Tag(Test_josn_item);
         expect(test_Tag.getName()).toBe(Test_josn_item['name']);
         expect(test_Tag.date_created).toBe(Test_josn_item['date_created']);

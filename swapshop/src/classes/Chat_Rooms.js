@@ -9,7 +9,6 @@ export class Chat_Rooms{
         this.rooms_names = [];
         this.room_data = new Map();
         this.messages = new Map();
-        //this.otherUsers = [];
     }
 
     //add a chat room name, fetched from the database
@@ -51,6 +50,8 @@ export class Chat_Rooms{
         if(this.messages.has(_id) === false){
             this.messages.set(_id, message);
         }
+
+        console.log("messages:",this.messages)
     }
 
     // fetch the message list

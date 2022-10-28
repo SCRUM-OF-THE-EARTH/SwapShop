@@ -131,15 +131,17 @@ describe("testing the item_list and its methods", () => {
         })
     });
 
-    test("testing adding an item", () => {
+    test("Given I am a user and I am Logged in, when I enter the name, estimate value and description of an item I would like to trade then the details of my item will be saved and posted on the main page's list of trading items", () => {
         let name = "testItem";
         let desc = "test description"
         let value = '1.1';
         let id = '0';
         let exchange = 'exchange';
+        let promises = [];
 
         let params = [name, desc, value, id, exchange];
-        return test_item_list.addItem('add-trade-item', params).then(() =>{
+
+        promises.push(test_item_list.addItem('add-trade-item', params).then(() =>{
             let test_new_item = test_item_list.getJsonItems();
             test_new_item = test_new_item[test_new_item.length-1];
             testItemId = test_new_item['id'];
@@ -147,25 +149,29 @@ describe("testing the item_list and its methods", () => {
             expect(test_new_item['item_value']).toBe(value);
             expect(test_new_item['description']).toBe(desc);
             // expect(test_new_item['exchange_item']).toBe(exchange);
-        })
-    });
+        }));
 
-    test("testing adding an invalid item item", () => {
         params = "invalid params";
 
-        return test_item_list.addItem('add-trade-item', params).then((res) =>{
+        
+
+        promises.push(test_item_list.addItem('add-trade-item', params).then((res) =>{
             expect(res).toBe(false);
-        })
+        }));
+
+        
+
+        return Promise.all(promises);
     });
 
-    test("testing deleting an item", () => {
+    test("Given I am using the app when I select the delete option in an item I posted then the item should be deleted from the Item list", () => {
         return test_item_list.deleteItem('delete-trade-item', testItemId).then(res => {
             expect(res).not.toBe(false);
             expect(test_item_list.findByID(testItemId)).toBe(false);
         })
     })
 
-    test("given I am a logged in user when I type a search term into the search bar then the app will display a of items filtered by similarities between the item name and the search term.", () => {
+    test("Given I am a logged in user when I type a search term into the search bar then the app will display a of items filtered by similarities between the item name and the search term.", () => {
         let items = test_item_list.getItems();
 
         test_item_list.searchItems("");
@@ -206,10 +212,6 @@ describe("testing the item_list and its methods", () => {
         test_item_list.login_user = login_user;
 
         sort_list = test_item_list.getItems();
-
-        console.log("sort list2:", sort_list[1]);
-        console.log("sort list 1:", sort_list[0]);
-        console.log("login_user", login_user.getInterests());
 
         expect(test_item_list.index).toBe(null);
 

@@ -86,8 +86,6 @@ export class Communicator {
                 body.append('item_id', item_id);
                 body.append('item_type', type);
 
-                console.log("imgae body:",body);
-
                 promises.push(
                 fetch(this.postUrl, {
                     method: 'POST',
@@ -96,7 +94,6 @@ export class Communicator {
                     },
                     body: body
                 }).then(res => {
-                    console.log(res);
                     return res.status;
                 }));
             

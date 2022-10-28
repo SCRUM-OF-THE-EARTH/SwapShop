@@ -19,13 +19,14 @@ function generateString(length){
     return results;
 }
 
+let value = Math.random();
+
 const test_item_obj = {
     item_name: "test_item",
-    item_value: Math.random(),
+    item_value: value,
     owner: test_Reguser,
     description: "description of the test Item",
     id: "1",
-    exchange_item: "test exchange"
 }
 
 const test_tag_json = {
@@ -78,20 +79,17 @@ describe("testing the trade item class", () => {
         let images = [{
             uri: "/test1.jpg",
             base64: "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAOTXL0Y4OHwAAAABJRU5ErkJggg=="
-        }];
+        }, 
+        {
+            uri: "/test2.jpg",
+            base64: "iVBORw0KGgoAAAANSUAAAAAAAAAAAAUEHhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAOTXL0Y4OHwAAAABJRU5ErkJggg=="
+        }
+    ];
     
         item_id = 1;
 
         return communicator.makePostRequestForImage(images, item_id, "trade");
     })
-
-    // test("testing the ability to fetch an image from the server", () => {
-    //     return test_item.fetchImages().then(() => {
-    //         expect(test_item.hasImages).toBe(true);
-    //         expect(test_item.images.length).toBe(1);
-    //         expect(test_item.images[0]).toBe('https://sudocode.co.za/SwapShop/assets/images/filler_image.jpg');
-    //     })
-    // });
 
     test("Given that I am using the app, when I am redirected to the main page, then I should be able to see product posts attached with an image of how the product looks like.", () => {
         let slildeshow = test_item.getImageSlideShow();
@@ -137,24 +135,6 @@ describe("testing the trade item class", () => {
         expect(tags[0].id).toBe("1"); 
     })
 
-    test("testing the comapring terms function relating to the search system", () => {
-
-        let name = test_item.getName();
-        expect(test_item.compareTerm("")).toBe(true)
-        for (let i = 0; i < name.length; i++) {
-            expect(test_item.compareTerm(name.charAt(i))).toBe(true);
-        }
-
-        let build = "";
-        for (let i =0; i < name.length; i++) {
-            build += name.charAt(i);
-            expect(test_item.compareTerm(build)).toBe(true);
-        }
-
-        let wrong_string = generateString(name.length);
-        expect(test_item.compareTerm(wrong_string)).toBe(false);
-    })
-
     test("Given that I am using the app, when I want to make a new post, then I should be given the option to make further detailed description about the product I want to trade, as well as a way for me to be contacted.", () => {
         let Name
         for (let i = 0; i < Math.floor((Math.random()+1)*10); i++) {
@@ -190,13 +170,6 @@ describe("testing the trade item class", () => {
             expect(test_item.setDateCreated(date)).toBe(test_item);
             expect(test_item.getDateCreated()).toBe(date);
         }
-
-        // let Exchange;
-        // for (let i =0; i < Math.floor((Math.random()+1)*10); i++) {
-        //     Exchange = generateString(Math.floor(Math.random()*50));
-        //     expect(test_item.setExchangeItem(Exchange)).toBe(test_item);
-        //     expect(test_item.getExchangeItem()).toBe(Exchange);
-        // }
     });
 
     test("Given that I am a using the app, when I have managed to successfully trade an item then I should be able to close the item so that I do not receive further queries about it. ", () => {
