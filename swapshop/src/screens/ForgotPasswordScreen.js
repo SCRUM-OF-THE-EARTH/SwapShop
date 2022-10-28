@@ -31,26 +31,10 @@ const ForgotPasswordScreen = ({navigation}) =>{
 
            </View>
 
-
-        {/*<View style={styles.forgot_button}>*/}
-        {/*    <Button*/}
-        {/*        title="RESET PASSWORD"*/}
-        {/*        color= "#2E8B57"*/}
-        {/*        onPress={() => navigation.navigate('SignInScreen')}*/}
-
-        {/*    />*/}
-
-       {/*//to be deleted*/}
             <View style={styles.forgot_button}>
                 <Button
                     title="RESET PASSWORD"
                     color= "#2E8B57"
-
-                    // onPress={() => navigation.navigate('addItem')}
-
-                    // onPress={() => navigation.navigate('addItemScreen')}
-
-
                 />
 
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react';
-import { View, Text, ScrollView, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import colors from '../../config/colors';
 import { db } from '../firebaseConfig/firebase';
 import { login_user } from '../helpers/init';
@@ -118,9 +118,6 @@ export default MessagesScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingTop: 50,
-    // paddingLeft: 20,
-    // paddingRight: 20,
     alignItems: "center",
     backgroundColor: colors.white,
   },

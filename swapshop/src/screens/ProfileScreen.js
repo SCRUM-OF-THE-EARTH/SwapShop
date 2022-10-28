@@ -19,7 +19,6 @@ const ProfileScreen = ({ navigation }) => {
     const isFocused = useIsFocused();
     const [loaded, setLoaded] = useState(false);
     const [tagMenuOpen, setTagMenuOpen] = useState(false);
-    const [tagValues, setTagValues] = useState(null);
     const [tags, setTags] = useState([]);
     const [interests, setInterests] = useState([]);
     const [activeTags, setActiveTags] = useState([]);
@@ -285,7 +284,6 @@ const styles = StyleSheet.create({
         borderRadius:100,
     },
     mainContainer: {
-     //   backgroundColor: "#3CB371",
         height: "100%"
     },
     editIcon: {

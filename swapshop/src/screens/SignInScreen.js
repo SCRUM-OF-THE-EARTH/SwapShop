@@ -58,7 +58,6 @@ const SignInScreen = ({navigation}) => {
 
             <View style={[styles.loginBtn, { backgroundColor: theme.sec }]} >
                 <Button
-                    // style={{color:theme.color}}
                     title="LOG IN"
                     color="#3CB371"
                     onPress = {() => Login(username, password, navigation, onChangeError)}
@@ -105,7 +104,6 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        //  backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
 
@@ -121,7 +119,6 @@ const styles = StyleSheet.create({
     },
 
     inputView :{
-        // backgroundColor:"#F5F5F5",
         borderRadius:50,
         width:"70%",
         height: 45,

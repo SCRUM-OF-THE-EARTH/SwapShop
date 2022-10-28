@@ -68,12 +68,10 @@ const MainScreen = ({navigation}) =>{
     // this is used to refresh the list of items on the main screen when the
     // changes between this screen adn another screen or vice versa
 
-    // let screen = (<View style={[styles.container, { backgroundColor: theme.background }]}>
     let screen = (<View style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={[styles.search_Bar, { backgroundColor: theme.profileColor }]}>
             <View style={{flexDirection: 'row', zIndex: 50, paddingBottom: 10, width: "100%"}}>
                 <TextInput 
-                //  { backgroundColor: theme.inputColor }
                     style={[styles.TextInput, { backgroundColor: theme.inputColor }]}
                     placeholderTextColor="#3CB371" 
                     placeholder="search" 
@@ -88,7 +86,6 @@ const MainScreen = ({navigation}) =>{
             </View>
 
             <DropDownPicker
-            // , { backgroundColor: theme.inputColor }]
                 style={[styles.tagMenu, { backgroundColor: theme.inputColor }]}
                 open={tagMenuOpen}
                 searchable={true}

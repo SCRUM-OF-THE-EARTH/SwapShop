@@ -5,10 +5,6 @@ import { login_user, communicator } from '../helpers/init';
 import Icon from 'react-native-vector-icons/Ionicons';
 import themeContext from '../components/themeContext';
 
-//export const ownerID = 0;
-
-
-
 const confirmSubmit = (item, navigation) => {
     Alert.alert(
         "Confirm delete",
@@ -69,9 +65,6 @@ const Detailed_Trade_item = ({route, navigation}) => {
         )
     })
 
-    //ownerID = item.getOwner().getID();
-
-    // render the item 
     return (
         <ScrollView style={{ backgroundColor: theme.background }}>
             <View style={[styles.container, { backgroundColor: theme.background }]}>
