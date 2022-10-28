@@ -360,7 +360,17 @@
 <a name='L295'></a><a href='#L295'>295</a>
 <a name='L296'></a><a href='#L296'>296</a>
 <a name='L297'></a><a href='#L297'>297</a>
-<a name='L298'></a><a href='#L298'>298</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L298'></a><a href='#L298'>298</a>
+<a name='L299'></a><a href='#L299'>299</a>
+<a name='L300'></a><a href='#L300'>300</a>
+<a name='L301'></a><a href='#L301'>301</a>
+<a name='L302'></a><a href='#L302'>302</a>
+<a name='L303'></a><a href='#L303'>303</a>
+<a name='L304'></a><a href='#L304'>304</a>
+<a name='L305'></a><a href='#L305'>305</a>
+<a name='L306'></a><a href='#L306'>306</a>
+<a name='L307'></a><a href='#L307'>307</a>
+<a name='L308'></a><a href='#L308'>308</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -387,11 +397,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<<<<<<< HEAD
-<span class="cline-any cline-yes">11x</span>
-=======
 <span class="cline-any cline-yes">15x</span>
->>>>>>> e39892926fa310808aa6eb9a01addae90f9aec21
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -599,6 +605,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -628,10 +636,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -895,6 +911,8 @@ export class Trade_item_list extends Item_List {
     }
 &nbsp;
 &nbsp;
+    // filterByOwnerId take in an id integer and filters the list of object presented to the user by this id
+    // it returns this filtered list
     filterByOwnerId(id) {
         this.filteredResults = this.filteredResults.filter(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item.getOwner().getID() == id)</span>
         return this.filteredResults;
@@ -924,6 +942,8 @@ export class Tag_list extends Item_List {
         return names;
     }
 &nbsp;
+    // addTag takes in a tag object and adds it to the list of tags items for this item
+    // it returns the tag it took in
     addTag(tag) {
         this.json_items.push(tag);
         let newTag = new Tag(tag)
@@ -932,6 +952,12 @@ export class Tag_list extends Item_List {
     }
 }
 &nbsp;
+&nbsp;
+// comapreInterest is used to find the difference in tags between ibjects based on the active users interests
+// it takes in two item objects and the login user 
+// and returns 1 if there are more matching interests in item a and the login user 
+// -1 if there are more matching interests in item b and login user
+// or 0 if the matching tags are the same
 export function compareInterest(a,b, login_user) {
     let counta = 0;
     let countb = 0;
@@ -967,6 +993,7 @@ export function compareInterest(a,b, login_user) {
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 at 2022-10-28T05:59:10.578Z
 =======
                 at 2022-10-28T06:11:23.371Z
@@ -974,6 +1001,9 @@ export function compareInterest(a,b, login_user) {
 =======
                 at 2022-10-28T06:24:41.276Z
 >>>>>>> 83ac41374fc1e2f5fbd281643e5d4c183a32ae60
+=======
+                at 2022-10-28T06:58:28.667Z
+>>>>>>> 387cf252a5a63650cecafee0360fe3b046989bd6
             </div>
         <script src="../prettify.js"></script>
         <script>
