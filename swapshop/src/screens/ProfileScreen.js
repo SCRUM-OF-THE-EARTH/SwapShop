@@ -68,9 +68,9 @@ const ProfileScreen = ({ navigation }) => {
 
     if (loaded) {
         return (
-            <View style={styles.mainContainer}>
+            <View style={[styles.mainContainer, { backgroundColor: theme.profileColor }]}>
                 <Text style={styles.welcome}>{login_user.getUsername()}</Text>
-                <View style={styles.container}>
+                <View style={[styles.container, { backgroundColor: theme.profSecColor }]}>
                     <View style={styles.imageContainer} >
                         {image && <Image source={{uri:image}} style={styles.image}/>}
                         <TouchableOpacity onPress={() => {
@@ -85,7 +85,7 @@ const ProfileScreen = ({ navigation }) => {
                                 source={require("../../assets/user.png")}
                                 style={styles.imageDetailU}
                             />
-                            <Text style={styles.data_field}>{login_user.getFullName()}</Text>
+                            <Text style={[styles.data_field, { color: theme.details }]}>{login_user.getFullName()}</Text>
                         </View>
 
                         <View style={styles.data_container}>
@@ -93,14 +93,15 @@ const ProfileScreen = ({ navigation }) => {
                                 source={require("../../assets/email.png")}
                                 style={styles.imageDetailE}
                             />
-                            <Text style={styles.data_field}>{login_user.getEmail()}</Text>
+                            <Text style={[styles.data_field, { color: theme.details }]}>{login_user.getEmail()}</Text>
                         </View>
 
 
-                        <Text style={styles.label}>My interests: </Text>
+                        <Text style={[styles.label, { color: theme.color }]}>My interests: </Text>
 
                         <View style={styles.drop}>
                             <DropDownPicker
+                                style={{ backgroundColor: theme.inputColor }}
                                 open={tagMenuOpen}
                                 searchable={true}
                                 multiple={true}
@@ -131,7 +132,7 @@ const ProfileScreen = ({ navigation }) => {
                         </View>
                     </View>
 
-                    <Text style={styles.label}>My Items:</Text>
+                    <Text style={[styles.label, { color: theme.color }]}>My Items:</Text>
 
                     { (id != null) ?
                         <Trade_List
@@ -284,7 +285,7 @@ const styles = StyleSheet.create({
         borderRadius:100,
     },
     mainContainer: {
-        backgroundColor: "#3CB371",
+     //   backgroundColor: "#3CB371",
         height: "100%"
     },
     editIcon: {

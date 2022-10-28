@@ -8,6 +8,8 @@ const theme = {
         mainItem: "#589774",
         detailedItem: "#1E5C3A",
         details: "#000000",
+        profileColor: "#3CB371" ,
+        profSecColor: "#F5F5F5",
     },
     dark: {
         theme: "dark",
@@ -18,6 +20,8 @@ const theme = {
         mainItem: "#6a8576",
         detailedItem: "#F5F5F5",
         details: "#b5c4bb",
+        profileColor: "#589774" ,
+        profSecColor: "#6a8576",
     },
 }
 

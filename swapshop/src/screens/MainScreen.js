@@ -56,7 +56,7 @@ const MainScreen = ({navigation}) =>{
     const [tags, setTags] = useState([]);
     const [sortIndex, setSortIndex] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-    // const theme = useContext(themeContext);
+     const theme = useContext(themeContext);
 
     // this function is run when a tracked value is changed
     // specifivally it is used to fetch and reload the list 
@@ -69,12 +69,12 @@ const MainScreen = ({navigation}) =>{
     // changes between this screen adn another screen or vice versa
 
     // let screen = (<View style={[styles.container, { backgroundColor: theme.background }]}>
-    let screen = (<View style={[styles.container]}>
+    let screen = (<View style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={[styles.search_Bar]}>
             <View style={{flexDirection: 'row', zIndex: 50, paddingBottom: 10, width: "100%"}}>
                 <TextInput 
                 //  { backgroundColor: theme.inputColor }
-                    style={[styles.TextInput]} 
+                    style={[styles.TextInput, { backgroundColor: theme.inputColor }]}
                     placeholderTextColor="#3CB371" 
                     placeholder="search" 
                     onChangeText={(value => setSearchTerm(value))}
@@ -89,7 +89,7 @@ const MainScreen = ({navigation}) =>{
 
             <DropDownPicker
             // , { backgroundColor: theme.inputColor }]
-                // style={[styles.tagMenu]}
+                style={[styles.tagMenu, { backgroundColor: theme.inputColor }]}
                 open={tagMenuOpen}
                 searchable={true}
                 placeholder="filter by tag"
