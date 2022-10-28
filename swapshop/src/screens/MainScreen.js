@@ -70,7 +70,7 @@ const MainScreen = ({navigation}) =>{
 
     // let screen = (<View style={[styles.container, { backgroundColor: theme.background }]}>
     let screen = (<View style={[styles.container, { backgroundColor: theme.background }]}>
-        <View style={[styles.search_Bar]}>
+        <View style={[styles.search_Bar, { backgroundColor: theme.profileColor }]}>
             <View style={{flexDirection: 'row', zIndex: 50, paddingBottom: 10, width: "100%"}}>
                 <TextInput 
                 //  { backgroundColor: theme.inputColor }
