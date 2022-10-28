@@ -38,7 +38,7 @@ const confirmSubmit = (item, navigation) => {
 }
 
 const Detailed_Trade_item = ({route, navigation}) => {
-
+    const theme = useContext(themeContext);
     // retrieve the item passed through the navigation
     const { item } = route.params;
 
@@ -73,42 +73,42 @@ const Detailed_Trade_item = ({route, navigation}) => {
 
     // render the item 
     return (
-        <ScrollView>
-            <View style={styles.container}>
+        <ScrollView style={{ backgroundColor: theme.background }}>
+            <View style={[styles.container, { backgroundColor: theme.background }]}>
             <View style={styles.imageWheel}>
             <Slideshow style={styles.images} dataSource={images}/>
             </View>
             
-            <View style={styles.detailContainer}>
+                <View style={[styles.detailContainer, { backgroundColor: theme.background }]}>
 
-                <View style={styles.title_container}>
-                    <Text style={styles.nameTitle}>{item.getName()}</Text>
+                <View style={[styles.title_container]}>
+                        <Text style={[styles.nameTitle , { color: theme.detailedItem }]}>{item.getName()}</Text>
                     { soldStatus == 0 ? <Text style={[styles.availability_tag, {borderColor: '#A3E0BF', color: '#A3E0BF'}]}>AVAILABLE</Text> : <Text style={[styles.availability_tag,  {borderColor: 'gray', color: 'gray'}]}>SOLD</Text> }
                     
                 </View>
 
                 <View style={styles.descContainer}>
-                    <Text style={{color: "#1E5C3A", fontSize: 18, fontWeight:'400'}}>Description:</Text>
-                    <Text style={styles.description}>{item.getDescription()}</Text>
+                        <Text style={{ color: theme.detailedItem, fontSize: 18, fontWeight:'400'}}>Description:</Text>
+                        <Text style={[styles.description, { color: theme.details }]}>{item.getDescription()}</Text>
                 </View>
                 <View style={styles.descContainer}>
-                    <Text style={{color: "#1E5C3A", fontSize: 18, fontWeight:'400'}}>Estimated value: </Text>
-                    <Text style={styles.description}>R{item.getValue()}</Text>
+                        <Text style={{ color: theme.detailedItem, fontSize: 18, fontWeight:'400'}}>Estimated value: </Text>
+                        <Text style={[styles.description, { color: theme.details }]}>R{item.getValue()}</Text>
                 </View>
 
                 <View style={styles.descContainer}>
-                    <Text style={{color: "#1E5C3A", fontSize: 18, fontWeight:'400'}}>Tags for this item: </Text>
+                        <Text style={{ color: theme.detailedItem, fontSize: 18, fontWeight:'400'}}>Tags for this item: </Text>
                     <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>{itemTags}</View>
                 </View>
 
                 <View style={styles.descContainer}>
-                    <Text style={{color: "#1E5C3A", fontSize: 18, fontWeight:'400'}}>Item wanted in exchange: </Text>
+                        <Text style={{ color: theme.detailedItem, fontSize: 18, fontWeight:'400'}}>Item wanted in exchange: </Text>
                     <View style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>{exchangeTags}</View>
                 </View>
 
                 <View style={styles.descContainer}>
-                    <Text style={{color: "#1E5C3A", fontSize: 18, fontWeight:'400'}}>Posted by: </Text>
-                    <Text style={styles.description}>{item.getOwner().getFullName()}</Text>
+                        <Text style={{ color: theme.detailedItem, fontSize: 18, fontWeight:'400'}}>Posted by: </Text>
+                        <Text style={[styles.description, { color: theme.details }]}>{item.getOwner().getFullName()}</Text>
                 </View>
                 
                 { (item.getOwner().getID() == login_user.getID()) ? 
@@ -125,7 +125,7 @@ const Detailed_Trade_item = ({route, navigation}) => {
         </View>
 
         { (item.getOwner().getID() == login_user.getID()) ? 
-                    <View style={styles.button_container}>
+                <View style={[styles.button_container, { backgroundColor: theme.background }]}>
                         <TouchableOpacity style={[styles.center_icon, styles.icon_button]} onPress={() => {
                             if (soldStatus == 1) {
                                 item.updateSoldStatus(communicator, '0').then(() => {
