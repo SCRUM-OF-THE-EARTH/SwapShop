@@ -389,10 +389,17 @@ FNDA:1,(anonymous_2)
 FNDA:1,(anonymous_3)
 FNDA:15,(anonymous_4)
 FNDA:41,(anonymous_5)
+<<<<<<< HEAD
 FNDA:13,(anonymous_6)
 FNDA:29,(anonymous_7)
 FNDA:14,(anonymous_8)
 FNDA:52,(anonymous_9)
+=======
+FNDA:10,(anonymous_6)
+FNDA:26,(anonymous_7)
+FNDA:13,(anonymous_8)
+FNDA:51,(anonymous_9)
+>>>>>>> 1b9dcb10cdadd38f2b6a024d51096fb8e0446e64
 FNDA:16,(anonymous_10)
 FNDA:12,(anonymous_11)
 FNDA:14,(anonymous_12)
@@ -430,12 +437,21 @@ DA:56,1
 DA:63,15
 DA:64,15
 DA:69,41
+<<<<<<< HEAD
 DA:76,13
 DA:77,13
 DA:82,29
 DA:89,14
 DA:90,14
 DA:95,52
+=======
+DA:76,10
+DA:77,10
+DA:82,26
+DA:89,13
+DA:90,13
+DA:95,51
+>>>>>>> 1b9dcb10cdadd38f2b6a024d51096fb8e0446e64
 DA:102,16
 DA:103,16
 DA:108,12
