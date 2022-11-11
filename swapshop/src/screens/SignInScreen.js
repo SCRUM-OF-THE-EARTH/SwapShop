@@ -1,7 +1,7 @@
 import {StyleSheet, Switch, Text, View, Image, TextInput, TouchableOpacity, Button } from 'react-native';
 import React, {useState, useContext} from 'react';
 import { login_user } from '../helpers/init';
-import {EventRegister} from 'react-native-event-listeners' ;
+
 import themeContext from '../components/themeContext';
 // defining a new login user for the sign in screen
 
@@ -15,10 +15,7 @@ const SignInScreen = ({navigation}) => {
     const [username, onChangeUsername] = useState(''); // the username of the user
     const [password, onChangePassword] = useState(''); // the password of the user
     const [errorMessage, onChangeError] = useState(''); // the error message that is displayed
-    const [mode, setMode] = useState(false);
-    const toggleSwitch = (value) => { setMode(value);
-        EventRegister.emit("changeTheme", value);
-    };
+    
     const theme = useContext(themeContext);
     // this is the GUI component for the sign in screen
     return(
@@ -73,10 +70,7 @@ const SignInScreen = ({navigation}) => {
                     onPress = {() => navigation.navigate('SignUpScreen')}
                 />
             </View>
-            <Switch style = {styles.switch}
-                    onValueChange={toggleSwitch}
-                    value={mode}
-            ></Switch>
+            
         </View>
     );
 }
@@ -172,10 +166,7 @@ const styles = StyleSheet.create({
         color: "black",
 
     },
-    switch:{
-        marginBottom:-100,
-        marginLeft:300
-    },
+    
 
 
 });
