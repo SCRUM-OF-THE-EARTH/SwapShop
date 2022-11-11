@@ -21,24 +21,24 @@ const AddItem = ({navigation, route}) => {
     const [value, onValueChange] = useState(''); // the float value of the new item
     const [errorMessage, onChangeError] = useState(''); // the error message displayed
     const [image, setImage] = useState(null); //the uploaded image.
-    const [imageList, setImgaeList] = useState(''); // the item the poster wants in exchange
+    const [imageList, setImgaeList] = useState(''); // the list of images objects used to update the database
 
-    const [itemTagsMenuOpen, setitemTagsMenuOpen] = useState(false);
-    const [itemTagValues, setItemTagValues] = useState([]);
-    const [itemTags, setItemTags] = useState([]);
+    const [itemTagsMenuOpen, setitemTagsMenuOpen] = useState(false); // the open state of the a tagsMenu
+    const [itemTagValues, setItemTagValues] = useState([]); // the values for the tags
+    const [itemTags, setItemTags] = useState([]); // the items displayed in the tags drop down for the new item
 
     const [tagMenuOpen, setTagMenuOpen] = useState(false); // set the drop down menu for sorting to closed 
-    const [tagValues, setTagValues] = useState([]);
-    const [tags, setTags] = useState([]);
+    const [tagValues, setTagValues] = useState([]); // the values of the wanted in exchange tags
+    const [tags, setTags] = useState([]); // the tags to be displayed for the wanted in exchange drop down
 
 
-    useEffect(() => {
-        let allTags = tags_list.getTags();
+    useEffect(() => { // reload the cmponents data when this component is in focus
+        let allTags = tags_list.getTags(); // get the tags list
         setTags(allTags);
 
         setItemTags(allTags);
 
-        if (item ) {
+        if (item ) { // if an item hs been passed to the component to be edited then load the item data into the add item page
             let tempTags = [];
             let tempExcTags = [];
 
@@ -78,11 +78,145 @@ const AddItem = ({navigation, route}) => {
 
     }, [isFocused]);
 
-    const pickImage = async ({navigate}) => {
+
+    //  check required fields is used to validate the user input.
+    //  if there is an issue the app will display an appropriate error to the user
+    const checkRequiredFields = () => {
+        if (name == "" || description == "" || value == "" ) {
+            onChangeError("Please fill in all the fields");
+            return false;
+        }
+        if (isNaN(value)) {
+            onChangeError("value should be given in rands");
+            return false;
+        }
+        return true;
+    }
+
+    // addNewItem is used to create a new trade item which is then added to the list of trade items
+    // if the item is successfully created the app will return to the home page
+    // if not it will display an error
+    const AddNewItem = async () => {
+        if (!checkRequiredFields()) {
+            return;
+        }
+
+        await itemTagValues.forEach(async (tag, index) => {
+            if (typeof tag.id == 'undefined') {
+                tag = tag.toLowerCase();
+                communicator.makeRequestByCommand("add-Tag", [tag]).then(newTag => {
+                    let addTag = tags_list.addTag(newTag);
+                    itemTagValues.splice(index, 1, addTag);
+                })
+                
+            } 
+        })
+
+        await tagValues.forEach(async (tag, index) => {
+            if (typeof tag.id == 'undefined') {
+                tag = tag.toLowerCase();
+                let newTag = await communicator.makeRequestByCommand("add-Tag", [tag]);
+                let addTag = tags_list.addTag(newTag);
+                tagValues.splice(index, 1, addTag);
+            }
+        });
+
+
+        let owner_id = login_user.getID();
+        
+        communicator.makeRequestByCommand('add-trade-item', [name,description, value, owner_id]).then(async (trade_item) => {
+            let item_id = trade_item['id'];
+            await itemTagValues.forEach(async tag => {
+                await communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, '0']); 
+            })
+            await tagValues.forEach(async tag => {
+                await communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, '1']);
+            })
+
+            if (imageList != "") {
+                console.log("Item Id is:", item_id);
+                await communicator.makePostRequestForImage(imageList, item_id, "trade");
+            }
+            navigation.navigate('MainScreen');
+        })
+
+            
+
+            
+    }
+
+    //update item is used to update an item that has been passed to the component
+    // if the item was successfully updated then the app returns to the homescreen
+    // else the component will display an error to the user 
+    const UpdateItem = async () => {
+        if (!checkRequiredFields()) {
+            return;
+        }
+
+        await communicator.makeRequestByCommand("update-trade-item", [item.getID(),name,description, value]);
+
+        tagValues.forEach(async tag => {
+            let tagIn = false;
+            let foundIndex = 0;
+            item.getExchange().forEach((iTag, index) => {
+                if (tag.id == iTag.getID()) {
+                    tagIn = true;
+                    foundIndex = index
+                    return;
+                }
+            })
+
+            if (!tagIn) {
+                await communicator.makeRequestByCommand('add-item-tag', [item.getID(), tag.id, '1']); 
+            } else {
+                let temp = item.getExchange();
+                temp.splice(foundIndex, 1);
+                item.exchange = temp;
+            }
+        });
+
+        itemTagValues.forEach(async tag => {
+            let tagIn = false;
+            let foundIndex = 0;
+            item.getTags().forEach((iTag, index) => {
+                if (tag.id == iTag.getID()) {
+                    tagIn = true;
+                    foundIndex = index
+                    return;
+                }
+            })
+
+            if (!tagIn) {
+                await communicator.makeRequestByCommand('add-item-tag', [item.getID(), tag.id, '0']); 
+            } else {
+                let temp = item.getTags();
+                temp.splice(foundIndex, 1);
+                item.tags = temp;
+            }
+        })
+
+        item.getExchange().forEach(async tag => {
+            await communicator.makeRequestByCommand('delete-item-tag', [item.getID(), tag.id])
+        })
+
+        item.getTags().forEach(async tag => {
+            await communicator.makeRequestByCommand('delete-item-tag', [item.getID(), tag.id])
+        });
+
+        if (imageList != "") {
+            let item_id = item.getID();
+            console.log("Item Id is:", item_id);
+            await communicator.makePostRequestForImage(imageList, item_id, "trade");
+        }
+
+        navigation.navigate("MainScreen");
+        return;
+    }
+
+    const pickImage = async ({navigate}) => { // pickImage is used to open the user's  gallery and retireive an image/images 
 
         ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            // allowsEditing: true,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsMultipleSelection: true,
             aspect: [4, 3],
             quality: 0.2,
@@ -114,7 +248,7 @@ const AddItem = ({navigation, route}) => {
         
     };
 
-    const takePicture = async () => {
+    const takePicture = async () => { // take Picture is used to open the user's camera and select a photo they take through the app
 
         await Promise.all([
             Permissions.askAsync(Permissions.CAMERA),
@@ -151,8 +285,9 @@ const AddItem = ({navigation, route}) => {
     return (
 
         <View style={[styles.container, { backgroundColor: theme.background }]}>
-            
-            <Text style={styles.header}>{item ? "Update an item" : "Post a new item to trade"}</Text>
+
+            <Text style={{color: 'red', textAlign: 'center'}}>{errorMessage}</Text>
+
                 <DropDownPicker
                     addCustomItem={true}
                     open={itemTagsMenuOpen}
@@ -163,7 +298,11 @@ const AddItem = ({navigation, route}) => {
                     max={5}
                     mode="BADGE"
                     itemKey="key"
-                style={{ backgroundColor: theme.sec }}
+                    listMode="SCROLLVIEW"
+                    style={{ backgroundColor: theme.inputColor, borderColor: 'gray', marginBottom: 5}}
+                    placeholderStyle={{color: 'gray'}}
+                    containerStyle={{paddingHorizontal: 20,  alignSelf:'center' }}
+                    dropDownContainerStyle={{alignSelf:'center', backgroundColor: theme.inputColor, borderColor: 'gray'}}
                     value={itemTagValues}
                     items={itemTags}
                     setOpen={setitemTagsMenuOpen}
@@ -172,16 +311,22 @@ const AddItem = ({navigation, route}) => {
                 />
 
 
-            <Text style={{color: 'red', textAlign: 'center'}}>{errorMessage}</Text>
-            <TextInput style={[styles.TextInput, { backgroundColor: theme.sec }]} placeholder="name of item"
+            
+            <TextInput style={[styles.TextInput, { backgroundColor: theme.inputColor }]} placeholder="name of item"
                        onChangeText={(name) => onNameChange(name)} value={name}/>
-            <TextInput style={[styles.TextInput, { paddingVertical: 20 }, { backgroundColor: theme.sec }]} type="textarea" placeholder="description"
+            <TextInput style={[styles.TextInput, { paddingVertical: 20 }, { backgroundColor: theme.inputColor }]} type="textarea" placeholder="description"
                        multiline={true} onChangeText={(description) => onDescChange(description)} value={description}/>
-            <TextInput style={[styles.TextInput, { backgroundColor: theme.sec }]} placeholder="estimate for value of item"
+            <TextInput style={[styles.TextInput, { backgroundColor: theme.inputColor }]} placeholder="estimate for value of item"
                     onChangeText={(value) => onValueChange(value)} value={value}/>
 
             <DropDownPicker
-                style={{ backgroundColor: theme.sec }}
+                style={{ backgroundColor: theme.inputColor, borderColor: 'gray', marginTop: 5}}
+                containerStyle={{paddingHorizontal: 20,  alignSelf:'center' }}
+                dropDownContainerStyle={{alignSelf:'center', backgroundColor: theme.inputColor, borderColor: 'gray'}}
+                searchContainerStyle={{borderBottomColor: '#D6D6D6'}}
+                searchTextInputStyle={{backgroundColor: "#FDFDFD"}}
+                placeholderStyle={{color: 'gray'}}
+                listMode="SCROLLVIEW"
                 addCustomItem={true}
                 open={tagMenuOpen}
                 searchable={true}
@@ -200,32 +345,31 @@ const AddItem = ({navigation, route}) => {
             />
 
 
+            <View style={styles.buttonContainer}>
             <View style={styles.addImageButton}>
-                <Button
-                    title="upload image"
-                    onPress={pickImage}
-
-                    color="#3CB371"/>
+                <Text
+                    style={styles.imageButton}
+                    onPress={pickImage}>upload image</Text>
             </View>
             <Text style={{alignSelf:'center'}}>or</Text>
             <View style={styles.addImageButton}> 
-                <Button 
-                
-                title="take a photo"
+                <Text 
+                style={styles.imageButton}
                 onPress={takePicture}
-                color="#3CB371"/>
+                >take a photo</Text>
 
+            </View>
             </View>
             {/*{image && <Image source={{uri: image}} style={{width: 300, height: 200, marginLeft:30,marginTop: 400, marginBottom: 10}}/>}*/}
 
-            <ScrollView style={{alignContent:'center', alignSelf:'center', marginBottom: 150, width: '100%'}}>
+            <ScrollView style={{alignContent:'center', alignSelf:'center', marginBottom: 90, width: '100%'}}>
                 {/* {image && <Image source={{uri: image.uri}} style={{position:'relative', width: 300, height: 200}}/>} */}
                 {image}
             </ScrollView>
 
             { item ? 
-                <Text style={styles.addItemBtn} onPress={() => AddNewItem(name, description, value, tagValues, onChangeError, navigation, imageList, itemTagValues, true, item)}>Update</Text> :
-                <Text style={styles.addItemBtn} onPress={() => AddNewItem(name, description, value, tagValues, onChangeError, navigation, imageList, itemTagValues, false)}>Post</Text>
+                <Text style={styles.addItemBtn} onPress={() => UpdateItem()}>Update</Text> :
+                <Text style={styles.addItemBtn} onPress={() => AddNewItem()}>Post</Text>
             }
             
 
@@ -237,115 +381,7 @@ const AddItem = ({navigation, route}) => {
 
 
 
-// addNewItem is used to pass the name, description and value to the the trade item class
-// to create a new trade item which is then added to the list of trade items
-// if the item is successfully created the app will return to the home page
-// if not it will display an error
-async function AddNewItem(name, description, value, tags, setError, navigation, image, itemTags, update, item) {
-    if (name == "" || description == "" || value == "" ) {
-        setError("Please fill in all the fields");
-        return;
-    }
 
-    if (update) {
-        await communicator.makeRequestByCommand("update-trade-item", [item.getID(),name,description, value]);
-
-        tags.forEach(async tag => {
-            let tagIn = false;
-            let foundIndex = 0;
-            item.getExchange().forEach((iTag, index) => {
-                if (tag.id == iTag.getID()) {
-                    tagIn = true;
-                    foundIndex = index
-                    return;
-                }
-            })
-
-            if (!tagIn) {
-                await communicator.makeRequestByCommand('add-item-tag', [item.getID(), tag.id, '1']); 
-            } else {
-                let temp = item.getExchange();
-                temp.splice(foundIndex, 1);
-                item.exchange = temp;
-            }
-        });
-
-        itemTags.forEach(async tag => {
-            let tagIn = false;
-            let foundIndex = 0;
-            item.getTags().forEach((iTag, index) => {
-                if (tag.id == iTag.getID()) {
-                    tagIn = true;
-                    foundIndex = index
-                    return;
-                }
-            })
-
-            if (!tagIn) {
-                await communicator.makeRequestByCommand('add-item-tag', [item.getID(), tag.id, '0']); 
-            } else {
-                let temp = item.getTags();
-                temp.splice(foundIndex, 1);
-                item.tags = temp;
-            }
-        })
-
-        item.getExchange().forEach(async tag => {
-            await communicator.makeRequestByCommand('delete-item-tag', [item.getID(), tag.id])
-        })
-
-        item.getTags().forEach(async tag => {
-            await communicator.makeRequestByCommand('delete-item-tag', [item.getID(), tag.id])
-        })
-
-        navigation.navigate("MainScreen");
-        return;
-        
-    }
-
-    await itemTags.forEach(async (tag, index) => {
-        if (typeof tag.id == 'undefined') {
-            tag = tag.toLowerCase();
-            communicator.makeRequestByCommand("add-Tag", [tag]).then(newTag => {
-                let addTag = tags_list.addTag(newTag);
-                itemTags.splice(index, 1, addTag);
-            })
-            
-        } 
-    })
-
-    await tags.forEach(async (tag, index) => {
-        if (typeof tag.id == 'undefined') {
-            tag = tag.toLowerCase();
-            let newTag = await communicator.makeRequestByCommand("add-Tag", [tag]);
-            let addTag = tags_list.addTag(newTag);
-            tags.splice(index, 1, addTag);
-        }
-    });
-
-
-    let owner_id = login_user.getID();
-    
-    communicator.makeRequestByCommand('add-trade-item', [name,description, value, owner_id]).then(async (trade_item) => {
-        let item_id = trade_item['id'];
-        await itemTags.forEach(async tag => {
-            await communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, '0']); 
-        })
-        await tags.forEach(async tag => {
-            await communicator.makeRequestByCommand('add-item-tag', [item_id, tag.id, '1']);
-        })
-
-        if (image != "") {
-            console.log("Item Id is:", item_id);
-            await communicator.makePostRequestForImage(image, item_id, "trade");
-        }
-        navigation.navigate('MainScreen');
-    })
-
-        
-
-        
-}
 
 // the styles for the add items screen
 const styles = StyleSheet.create({
@@ -357,14 +393,30 @@ const styles = StyleSheet.create({
         position: 'relative',
         height:'100%',
     },
+    imageButton: {
+        borderRadius: 25,
+        paddingHorizontal: 20,
+        paddingVertical: 5,
+        color:'white',
+        textAlign:'center',
+        alignSelf: 'center',
+        backgroundColor: "#3CB371",
+        margin: 2,
+    },
     header: {
         fontWeight: '400',
         fontSize: 25,
         textAlign: 'center',
         color: '#3CB371'
     },
+    buttonContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignSelf: 'center',
+        paddingTop: 10,
+    },
     TextInput: {
-        padding: 5,
+        padding: 10,
         color: "gray",
         alignSelf:"center",
         backgroundColor: "#F5F5F5",

@@ -11,12 +11,14 @@ import { communicator } from "../helpers/init";
 // to the database through the communicator
 const SignUpScreen = ({navigation}) =>{
     
-    const [fullName, onChangeName] = useState('');
-    const [username, onChangeUsername] = useState('');
-    const [password, onChangePassword] = useState('');
-    const [email, onChangeEmail] = useState('');
-    const [errorMessage, onChangeError] = useState('');
+    const [fullName, onChangeName] = useState(''); // the full name of the user
+    const [username, onChangeUsername] = useState(''); // the user of the user
+    const [password, onChangePassword] = useState(''); // the password enterd by the user
+    const [email, onChangeEmail] = useState(''); // the email of the user
+    const [errorMessage, onChangeError] = useState(''); // the error message displayed on the screen
 
+
+        // the GUI of the component
     return (
         <View style={styles.container}>
             <StatusBar style="auto"/>
@@ -80,7 +82,10 @@ const SignUpScreen = ({navigation}) =>{
     );
 }
 
-function register(fullName, username, password, email, navigation, onChangeError) {
+// the register function is used to create a new account for the user and save their data into the database
+// if successful the componet will navigate to the login screen
+// else it will display an errors message to the user
+async function register(fullName, username, password, email, navigation, onChangeError) {
 
     let new_user;
     new_user = new Registering_User(fullName, username, email, communicator);
@@ -89,8 +94,9 @@ function register(fullName, username, password, email, navigation, onChangeError
         return;
     }
 
-    let success = new_user.register_Account(password);
+    let success = await new_user.register_Account(password);
     
+    console.log(success);
 
     if (success == true) {
         navigation.navigate('SignInScreen');
@@ -99,6 +105,7 @@ function register(fullName, username, password, email, navigation, onChangeError
     }
  }
 
+ // the styles for the register screen
 const styles = StyleSheet.create({
     error_message: {
         color: "red",

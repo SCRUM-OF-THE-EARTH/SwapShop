@@ -7,11 +7,13 @@ import { customChatRoom } from '../classes/Chat_Rooms';
 import { User_Account } from '../classes/User_Account';
 import Tab from "../components/Tab"
 import themeContext from '../components/themeContext';
+import { useState } from 'react';
 
 const MessagesScreen = ({navigation}) => {
 
   // initialise message list
-  const Messages = [];
+  const [Messages, setMessages] = useState([]);
+  const [rendered, rerender] = useState(false);
 
   //the following functions will compare the members' details so as to distinguish them from the current logged in user
   function uname(variable){
@@ -80,6 +82,11 @@ const MessagesScreen = ({navigation}) => {
       }
     }
   }
+  if (!rendered) {
+    rerender(true);
+    setMessages(Messages);
+  }
+  
 
   const theme = useContext(themeContext);
   

@@ -38,20 +38,22 @@ const Detailed_Trade_item = ({route, navigation}) => {
     // retrieve the item passed through the navigation
     const { item } = route.params;
 
+    // the avalability status of the item
     const [soldStatus, setSoldStatus] = useState(item.sold);
 
     let loaded = false;
 
+    // the images the are attatched to the item being displayed
     const [images, setImages] = useState([]);
 
-    useEffect(() => {
+    useEffect(() => { // set the imagees in the image slide box to the images retrieved from the item object when the app and its data have loaded
         if (!loaded) {
             setImages(item.getImageSlideShow());
             loaded = true;
         }
     }, [loaded]);
 
-    let exchangeTags = [];
+    let exchangeTags = []; // load the tags the user wants in exchange for the item
     item.getExchange().forEach(tag => {
         exchangeTags.push(
             <Text style={styles.exchangeTag}>#{tag.getName()}</Text>
@@ -59,17 +61,18 @@ const Detailed_Trade_item = ({route, navigation}) => {
     });
 
     let itemTags = [];
-    item.getTags().forEach(tag => {
+    item.getTags().forEach(tag => { // load the tags that categories the item
         itemTags.push(
             <Text style={styles.itemTag}>#{tag.getName()}</Text>  
         )
     })
 
+    // the GUI component of the detialed item
     return (
         <ScrollView style={{ backgroundColor: theme.background }}>
             <View style={[styles.container, { backgroundColor: theme.background }]}>
             <View style={styles.imageWheel}>
-            <Slideshow style={styles.images} dataSource={images}/>
+            <Slideshow style={styles.images} dataSource={images} />
             </View>
             
                 <View style={[styles.detailContainer, { backgroundColor: theme.background }]}>
@@ -135,7 +138,7 @@ const Detailed_Trade_item = ({route, navigation}) => {
                             <Text style={[styles.button_text, {color: "#044B7F"}]}>{soldStatus == 0 ? "Mark as sold" : "Mark as available"}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.center_icon, styles.icon_button]} onPress={() => {
-                            navigation.navigate("addItemScreen", {item: item})}
+                            navigation.navigate("addItemScreen", {item: item, heading: "Update an item"})}
                         }
                         >
                             <Icon style={{padding: 10}} size={30} color="#3CB371" name="create-outline"></Icon>
@@ -152,6 +155,7 @@ const Detailed_Trade_item = ({route, navigation}) => {
     )
 }
 
+// the styles for the detailed item
 const styles = StyleSheet.create({
     center_icon: {
         justifyContent: 'center', 

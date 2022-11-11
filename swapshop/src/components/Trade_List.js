@@ -47,6 +47,7 @@ function initialise(available, sold, id, search, navigation) {
         promises.push(sold_trade_items_list.fetchItems());
     }
 
+
     return Promise.all(promises).then(async () => {
         loadItems(available, sold, id, navigation);
     });
@@ -85,15 +86,18 @@ function loadItems(available, sold, id, navigation) {
         }
 } 
 
-const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigation}) => {
+const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigation, scrolling}) => {
 
     const isFocused = useIsFocused();
-    const [displayItems, setDisplayItems] = useState([]);
-    const [loaded, setLoaded] = useState(false);
+    const [displayItems, setDisplayItems] = useState([]); // Items t be displayed in the scroll view
+    const [loaded, setLoaded] = useState(false);    // the loaded state of the app
 
+
+    // sort and filter is used to sort the data bny user selected sort
+    // and filter the data by tags nd search term
     const sortAndFilter = () => {
             let tempItems = [];
-            if (available) {
+            if (available) { // if selected to show available items then sort them 
                 trade_items_list.searchTerm = searchTerm;
                 trade_items_list.index = sortIndex;
                 let filtered = trade_items_list.filterByTags(tags);
@@ -104,7 +108,7 @@ const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigatio
                     tempItems.push(<ItemBlock key={`${item.id}-itemBlock`} item={item} navigation={navigation}/>);
                 })
             };
-            if (sold) {
+            if (sold) { //  id selected to show itmes that have been sold
                 sold_trade_items_list.searchTerm = searchTerm;
                 sold_trade_items_list.index = sortIndex;
                 let filtered = sold_trade_items_list.filterByTags(tags);
@@ -136,7 +140,7 @@ const Trade_List = ({sold, available, searchTerm, tags, id, sortIndex, navigatio
     }, [searchTerm, tags, sortIndex, loaded])
 
     if (displayItems.length >0 ) { // displaying the trade item blocks if there are any to show
-        return (<ScrollView nestedScrollEnabled={true} style={styles.center}>{displayItems}</ScrollView>);
+        return (<ScrollView scrollEnabled={scrolling} nestedScrollEnabled={true} style={styles.center}>{displayItems}</ScrollView>);
     }
     
     return (<Text style={styles.nullContainer}>(Nothing to show)</Text>); // display a message if there are none to show

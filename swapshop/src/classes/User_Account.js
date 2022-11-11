@@ -212,7 +212,7 @@ export class Registering_User extends Login_user {
             return this.setError("password can not be empty");
         }
         let response = await this.communicator.makeRequestByCommand("register_account", [this.getFirstName(), this.getLastName(), this.getUsername(), password, this.getEmail()]);
-    
+        console.log(response);
         if (!response) {
             return this.setError("sorry. Something went wrong");
         }

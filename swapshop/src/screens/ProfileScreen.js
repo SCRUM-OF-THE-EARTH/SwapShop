@@ -15,23 +15,24 @@ const windowHeight = Dimensions.get('window').height;
 DropDownPicker.setListMode("SCROLLVIEW");
 
 const ProfileScreen = ({ navigation }) => {
-    const theme = useContext(themeContext);
-    const isFocused = useIsFocused();
-    const [loaded, setLoaded] = useState(false);
-    const [tagMenuOpen, setTagMenuOpen] = useState(false);
-    const [tags, setTags] = useState([]);
-    const [interests, setInterests] = useState([]);
-    const [activeTags, setActiveTags] = useState([]);
-    const [image, setImage] = useState(null);
-    const [id, setID] = useState(null);
+    const theme = useContext(themeContext); // the theme
+    const isFocused = useIsFocused(); // the focused flag for the component
+    const [loaded, setLoaded] = useState(false); // the loaded status of the component
+    const [tagMenuOpen, setTagMenuOpen] = useState(false); // the open status of the tag menu
+    const [tags, setTags] = useState([]); // the list of tags to be displayed in the tag drop down menu
+    const [interests, setInterests] = useState([]); // the list of user interests in tags
+    const [activeTags, setActiveTags] = useState([]); // the list of selected user interests
+    const [image, setImage] = useState(null); // the profile image of the user
+    const [id, setID] = useState(null); // the id of the active user object
 
+// pick image is used to open the users gallery and retireve an image they select
     const pickImage = async() =>{
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             base64: true,
             aspect: [4, 3],
-            quality: 1,
+            quality: 0.2,
 
         });
         if(!result.cancelled){
@@ -41,7 +42,7 @@ const ProfileScreen = ({ navigation }) => {
         }
     };
 
-    useEffect(() => {
+    useEffect(() => { // reload the components data when it is in focus
         let tempTags = tags_list.getTags();
         let tempInterests = [];
         setInterests([]);
@@ -65,6 +66,8 @@ const ProfileScreen = ({ navigation }) => {
         setLoaded(true);
     }, [isFocused]);
 
+
+        // if the profile has been loaded display it
     if (loaded) {
         return (
             <View style={[styles.mainContainer, { backgroundColor: theme.profileColor }]}>
@@ -107,6 +110,7 @@ const ProfileScreen = ({ navigation }) => {
                                 min={0}
                                 max={5}
                                 mode="BADGE"
+                                listMode='MODAL'
                                 placeholder="add an interest"
                                 value={interests}
                                 items={tags}
@@ -123,6 +127,7 @@ const ProfileScreen = ({ navigation }) => {
                                     } else {
                                         let difference = value.filter(x => !activeTags.includes(x));
                                         addInterest(difference[0]).then(() => {
+                                            console.log("tag being logged in drop down",difference[0]);
                                             setActiveTags(value);
                                         })
                                     }
@@ -155,6 +160,7 @@ const ProfileScreen = ({ navigation }) => {
 
 }
 
+// the reload photo is used to wait for a newly selected profile image ot be loaded and them refresh the page with the new image
 async function reloadPhoto() {
     let new_profile = await communicator.makeRequestByCommand('fetch-profile-photo', [login_user.getID()]);
     if (new_profile['photo'] == login_user.getPhoto()) {
@@ -164,7 +170,11 @@ async function reloadPhoto() {
     }
 }
 
+// add Interest is used to save a new interest the uesr adds
 async function addInterest(tag) {
+    if (typeof(tag) == 'undefined'){
+        return;
+    }
     let tagId =  tag.id;
 
     let userId = login_user.getID();
@@ -173,7 +183,9 @@ async function addInterest(tag) {
     interests.push(tagId);
 }
 
+// remoove interest is used to remove an interest the user deselects 
 async function removeInterest(tag) {
+    console.log("tag in removeInterest:",tag)
     let tagId = tag.id;
 
     let userId = login_user.getID();
@@ -184,6 +196,7 @@ async function removeInterest(tag) {
     login_user.setInterests(newInterests);
 }
 
+// teh stles for the profile screen
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "white",

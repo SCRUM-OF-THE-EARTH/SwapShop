@@ -10,9 +10,6 @@ const ForgotPasswordScreen = ({navigation}) =>{
 
     // the react native GUI component
     return(
-
-
-
    <View style={styles.container}>
 
        <Text style={styles.textHeader}>ENTER YOUR EMAIL ADDRESS

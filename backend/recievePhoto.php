@@ -26,6 +26,7 @@
     }
 
     if ($item_type == 'trade') {
+        $conn->query($query);
         $query = "INSERT INTO trade_images (image_name, image_url, trade_id) VALUES ('$fileName', '$url', $item_id)";
     }   
     
