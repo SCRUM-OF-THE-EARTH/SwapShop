@@ -271,7 +271,7 @@ const ChatScreen = ({route, navigation}) => {
       renderBubble={renderBubble}
       alwaysShowSend
       renderSend={renderSend}
-      renderActions={renderActions}
+      //renderActions={renderActions}
       //renderMessageImage={renderMessageImage}
       scrollToBottom
       scrollToBottomComponent={scrollToBottomComponent}
