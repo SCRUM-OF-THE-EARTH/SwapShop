@@ -11,6 +11,7 @@ const theme = {
         Itemdetails: "#000000",
         profileColor: "#3CB371" ,
         profSecColor: "#F5F5F5",
+        placeholder: "#3CB371"
     },
     dark: {
         theme: "dark",
@@ -24,6 +25,7 @@ const theme = {
         profileColor: "#589774" ,
         Itemdetails: "#1E5C3A",
         profSecColor: "#6a8576",
+        placeholder: "#5C5C5C"
     },
 }
 

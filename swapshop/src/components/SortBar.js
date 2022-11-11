@@ -26,7 +26,9 @@ const SortBar = ({setIndex}) => {
                     setValue={setSortValue}
                     setItems={setSortItems}
                     placeholder="Sort"
-                    style={{ backgroundColor: theme.inputColor }}
+                    style={{ backgroundColor: theme.inputColor, borderColor: theme.inputColor}}
+                    dropDownContainerStyle={{backgroundColor: theme.inputColor, borderColor: theme.inputColor}}
+                    placeholderStyle={{color:theme.placeholder}}
                     onChangeValue={(value) => setIndex(value)}
                     zIndex={500}
                 />

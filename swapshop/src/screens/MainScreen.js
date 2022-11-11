@@ -89,7 +89,7 @@ const MainScreen = ({navigation}) =>{
         <View style={{flexDirection: 'row', zIndex: 50, paddingBottom: 10, width: "100%"}}>
             <TextInput 
                 style={[styles.TextInput, { backgroundColor: theme.inputColor }]}
-                placeholderTextColor="#3CB371" 
+                placeholderTextColor={theme.placeholder} 
                 placeholder="search" 
                 onChangeText={(value => setSearchTerm(value))}
             />
@@ -112,9 +112,12 @@ const MainScreen = ({navigation}) =>{
             searchable={true}
             placeholder="tags"
             listMode='MODAL'
-            style={[{ backgroundColor: theme.inputColor, zIndex:20 }]}
-            dropDownContainerStyle={{zIndex:10}}
-            containerStyle={{zIndex: 10}}
+            style={[{ backgroundColor: theme.inputColor, zIndex:20, borderColor: theme.inputColor}]}
+            containerStyle={{zIndex: 10, paddingHorizontal: 5}}
+            modalContentContainerStyle={{backgroundColor: theme.inputColor}}
+            searchContainerStyle={{borderBottomColor: '#D6D6D6'}}
+            searchTextInputStyle={{backgroundColor: "#FDFDFD"}}
+            placeholderStyle={{color: theme.placeholder}}
             multiple={true}
             itemKey="key"
             min={0}
@@ -191,7 +194,6 @@ const styles = StyleSheet.create({
         paddingHorizontal:20,
         color:"gray",
         alignSelf:'center',
-        backgroundColor:"#F5F5F5",
         borderRadius:10,
         width: '65%',
         marginHorizontal: 5,

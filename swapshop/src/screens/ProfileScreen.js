@@ -103,7 +103,11 @@ const ProfileScreen = ({ navigation }) => {
 
                         <View style={styles.drop}>
                             <DropDownPicker
-                                style={{ backgroundColor: theme.inputColor }}
+                                style={{ backgroundColor: theme.inputColor, borderColor: theme.inputColor }}
+                                modalContentContainerStyle={{backgroundColor: theme.inputColor}}
+                                containerStyle={{paddingHorizontal: 10}}
+                                searchContainerStyle={{borderBottomColor: '#D6D6D6'}}
+                                searchTextInputStyle={{backgroundColor: "#FDFDFD"}}
                                 open={tagMenuOpen}
                                 searchable={true}
                                 multiple={true}

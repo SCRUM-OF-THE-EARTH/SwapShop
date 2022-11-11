@@ -303,6 +303,8 @@ const AddItem = ({navigation, route}) => {
                     placeholderStyle={{color: 'gray'}}
                     containerStyle={{paddingHorizontal: 20,  alignSelf:'center' }}
                     dropDownContainerStyle={{alignSelf:'center', backgroundColor: theme.inputColor, borderColor: 'gray'}}
+                    searchContainerStyle={{borderBottomColor: '#D6D6D6'}}
+                    searchTextInputStyle={{backgroundColor: "#FDFDFD"}}
                     value={itemTagValues}
                     items={itemTags}
                     setOpen={setitemTagsMenuOpen}
