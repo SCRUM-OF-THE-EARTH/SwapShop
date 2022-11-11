@@ -104,9 +104,10 @@ const AddItem = ({navigation, route}) => {
         await itemTagValues.forEach(async (tag, index) => {
             if (typeof tag.id == 'undefined') {
                 tag = tag.toLowerCase();
+                console.log(tag);
                 communicator.makeRequestByCommand("add-Tag", [tag]).then(newTag => {
                     let addTag = tags_list.addTag(newTag);
-                    itemTagValues.splice(index, 1, addTag);
+                    itemTagValues.splice(index, 1, addtag);
                 })
                 
             } 
